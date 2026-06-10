@@ -24,23 +24,23 @@ export default async function TeamRankingsPage() {
   return (
     <div>
       <PageHeader
-        title="Rankings"
-        description="Follow your team's progress across the tournament."
+        title="Classificações"
+        description="Acompanha o progresso da sua equipa ao longo do torneio."
       />
 
       {myEntry ? (
         <Card className="mb-6 border-red-500/30 bg-red-500/5">
           <CardContent className="flex flex-wrap items-center justify-between gap-4 p-5">
             <div>
-              <p className="text-sm text-zinc-400">Your team</p>
+              <p className="text-sm text-zinc-400">A sua equipa</p>
               <p className="text-2xl font-bold text-white">{myEntry.teamName}</p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-zinc-400">Position</p>
+              <p className="text-sm text-zinc-400">Posição</p>
               <p className="text-3xl font-bold text-red-400">#{myEntry.position}</p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-zinc-400">Total points</p>
+              <p className="text-sm text-zinc-400">Pontos totais</p>
               <p className="text-3xl font-bold text-white">{myEntry.totalPoints}</p>
             </div>
           </CardContent>
@@ -49,7 +49,7 @@ export default async function TeamRankingsPage() {
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Overall ranking</CardTitle>
+          <CardTitle>Classificação geral</CardTitle>
         </CardHeader>
         <CardContent>
           <RankingTable entries={ranking} highlightTeamId={teamId} />

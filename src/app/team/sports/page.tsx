@@ -10,8 +10,8 @@ export default async function TeamSportsPage() {
   return (
     <div>
       <PageHeader
-        title="Sports"
-        description="View rules, groups, matches and rankings for each sport."
+        title="Desportos"
+        description="Consulta regras, grupos, jogos e classificações de cada desporto."
       />
 
       <div className="grid gap-4 md:grid-cols-2">

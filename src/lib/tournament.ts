@@ -65,12 +65,14 @@ export async function getOwnerDashboardStats() {
     upcomingMatches: matches,
     ranking: ranking.slice(0, 5),
     pendingActions: [
-      unpaidTeams > 0 ? `${unpaidTeams} teams with pending payment` : null,
+      unpaidTeams > 0
+        ? `${unpaidTeams} equipa${unpaidTeams > 1 ? "s" : ""} com pagamento pendente`
+        : null,
       teamsWithoutLogin > 0
-        ? `${teamsWithoutLogin} teams without login credentials`
+        ? `${teamsWithoutLogin} equipa${teamsWithoutLogin > 1 ? "s" : ""} sem credenciais de acesso`
         : null,
       teams.length < (settings?.maxTeams ?? 12)
-        ? `${(settings?.maxTeams ?? 12) - teams.length} team slots available`
+        ? `${(settings?.maxTeams ?? 12) - teams.length} vaga${(settings?.maxTeams ?? 12) - teams.length > 1 ? "s" : ""} disponível${(settings?.maxTeams ?? 12) - teams.length > 1 ? "is" : ""}`
         : null,
     ].filter(Boolean) as string[],
     announcements,

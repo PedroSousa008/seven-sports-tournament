@@ -4,6 +4,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { prisma } from "@/lib/db";
 import { formatCurrency } from "@/lib/utils";
 
+const availabilityLabels: Record<string, string> = {
+  available: "Disponível",
+  limited: "Limitado",
+  "sold-out": "Esgotado",
+};
+
 export default async function TeamStorePage() {
   const items = await prisma.storeItem.findMany({
     where: { active: true },
@@ -14,8 +20,8 @@ export default async function TeamStorePage() {
   return (
     <div>
       <PageHeader
-        title="Store"
-        description="Event products, vouchers and partner offers available to teams."
+        title="Loja"
+        description="Produtos do evento, vouchers e ofertas de parceiros disponíveis para as equipas."
       />
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -36,15 +42,16 @@ export default async function TeamStorePage() {
               <p className="text-lg font-semibold text-white">{item.name}</p>
               <p className="mt-1 text-sm text-zinc-400">{item.description}</p>
               <p className="mt-3 text-xl font-bold text-red-400">
-                {item.price ? formatCurrency(item.price) : "Contact for price"}
+                {item.price ? formatCurrency(item.price) : "Contactar para preço"}
               </p>
               <p className="mt-2 text-xs uppercase tracking-wide text-zinc-500">
-                {item.partner?.brandName ?? "Tournament"} · {item.availability}
+                {item.partner?.brandName ?? "Torneio"} ·{" "}
+                {availabilityLabels[item.availability] ?? item.availability}
               </p>
               {item.contactUrl ? (
                 <a href={item.contactUrl} target="_blank" rel="noreferrer">
                   <Button className="mt-4 w-full" variant="secondary">
-                    Reserve / Contact
+                    Reservar / Contactar
                   </Button>
                 </a>
               ) : null}

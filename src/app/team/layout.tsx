@@ -15,8 +15,8 @@ export default async function TeamLayout({
 
   return (
     <DashboardShell
-      title={team?.name ?? "Team Portal"}
-      subtitle="Captain dashboard"
+      title={team?.name ?? "Portal da Equipa"}
+      subtitle="Painel do capitão"
       navItems={teamNav}
     >
       {children}

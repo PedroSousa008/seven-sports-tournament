@@ -7,6 +7,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { createRevenueAction } from "@/lib/actions";
 import { REVENUE_CATEGORIES } from "@/lib/constants";
 import { prisma } from "@/lib/db";
+import { label, paymentStatusLabels } from "@/lib/labels";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { TrendingUp, Wallet } from "lucide-react";
 
@@ -29,24 +30,24 @@ export default async function OwnerRevenuePage() {
   return (
     <div>
       <PageHeader
-        title="Revenue"
-        description="Track registrations, sponsorships, merchandise and other income."
+        title="Receitas"
+        description="Acompanha inscrições, patrocínios, merchandising e outras receitas."
       />
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
-        <StatCard label="Total revenue" value={formatCurrency(total)} icon={Wallet} accent="green" />
-        <StatCard label="Paid revenue" value={formatCurrency(paid)} icon={TrendingUp} />
-        <StatCard label="Pending revenue" value={formatCurrency(pending)} icon={Wallet} accent="white" />
+        <StatCard label="Receita total" value={formatCurrency(total)} icon={Wallet} accent="green" />
+        <StatCard label="Receita paga" value={formatCurrency(paid)} icon={TrendingUp} />
+        <StatCard label="Receita pendente" value={formatCurrency(pending)} icon={Wallet} accent="white" />
       </div>
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Add revenue entry</CardTitle>
+          <CardTitle>Adicionar receita</CardTitle>
         </CardHeader>
         <CardContent>
           <form action={createRevenueAction} className="grid gap-4 md:grid-cols-2">
             <div>
-              <Label>Category</Label>
+              <Label>Categoria</Label>
               <Select name="category" required>
                 {REVENUE_CATEGORIES.map((category) => (
                   <option key={category} value={category}>
@@ -56,25 +57,25 @@ export default async function OwnerRevenuePage() {
               </Select>
             </div>
             <div>
-              <Label>Amount (€)</Label>
+              <Label>Valor (€)</Label>
               <Input name="amount" type="number" step="0.01" required />
             </div>
             <div>
-              <Label>Date</Label>
+              <Label>Data</Label>
               <Input name="date" type="date" required />
             </div>
             <div>
-              <Label>Payment status</Label>
+              <Label>Estado de pagamento</Label>
               <Select name="paymentStatus" defaultValue="UNPAID">
-                <option value="UNPAID">Unpaid</option>
-                <option value="PARTIAL">Partially paid</option>
-                <option value="PAID">Paid</option>
+                <option value="UNPAID">{paymentStatusLabels.UNPAID}</option>
+                <option value="PARTIAL">{paymentStatusLabels.PARTIAL}</option>
+                <option value="PAID">{paymentStatusLabels.PAID}</option>
               </Select>
             </div>
             <div>
-              <Label>Related team</Label>
+              <Label>Equipa relacionada</Label>
               <Select name="teamId" defaultValue="">
-                <option value="">None</option>
+                <option value="">Nenhuma</option>
                 {teams.map((team) => (
                   <option key={team.id} value={team.id}>
                     {team.name}
@@ -83,9 +84,9 @@ export default async function OwnerRevenuePage() {
               </Select>
             </div>
             <div>
-              <Label>Related partner</Label>
+              <Label>Parceiro relacionado</Label>
               <Select name="partnerId" defaultValue="">
-                <option value="">None</option>
+                <option value="">Nenhum</option>
                 {partners.map((partner) => (
                   <option key={partner.id} value={partner.id}>
                     {partner.brandName}
@@ -94,10 +95,10 @@ export default async function OwnerRevenuePage() {
               </Select>
             </div>
             <div className="md:col-span-2">
-              <Label>Notes</Label>
+              <Label>Notas</Label>
               <Input name="notes" />
             </div>
-            <Button type="submit">Add revenue</Button>
+            <Button type="submit">Adicionar receita</Button>
           </form>
         </CardContent>
       </Card>
@@ -118,7 +119,7 @@ export default async function OwnerRevenuePage() {
                 <Badge
                   variant={row.paymentStatus === "PAID" ? "success" : "warning"}
                 >
-                  {row.paymentStatus}
+                  {label(paymentStatusLabels, row.paymentStatus)}
                 </Badge>
                 <span className="text-lg font-bold text-emerald-400">
                   {formatCurrency(row.amount)}

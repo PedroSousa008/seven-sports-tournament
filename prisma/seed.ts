@@ -27,7 +27,7 @@ async function main() {
     update: {},
     create: {
       email: "owner@torneio5desportos.pt",
-      name: "Tournament Owner",
+      name: "Organizador do Torneio",
       passwordHash: ownerPassword,
       role: "OWNER",
     },

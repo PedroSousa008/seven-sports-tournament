@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TeamAvatar } from "@/components/ui/team-avatar";
 import { prisma } from "@/lib/db";
+import { label, paymentStatusLabels } from "@/lib/labels";
 import { getTournamentSettings } from "@/lib/tournament";
 
 export default async function OwnerTeamsPage() {
@@ -19,13 +20,13 @@ export default async function OwnerTeamsPage() {
   return (
     <div>
       <PageHeader
-        title="Teams"
-        description={`Manage up to ${settings?.maxTeams ?? 12} team accounts. Each team gets one captain login.`}
+        title="Equipas"
+        description={`Gira até ${settings?.maxTeams ?? 12} contas de equipa. Cada equipa tem um acesso de capitão.`}
       />
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Create team account</CardTitle>
+          <CardTitle>Criar conta de equipa</CardTitle>
         </CardHeader>
         <CardContent>
           <CreateTeamForm />
@@ -51,11 +52,11 @@ export default async function OwnerTeamsPage() {
                     {team.name}
                   </Link>
                   <p className="text-sm text-zinc-400">
-                    Captain: {team.captainName} · {team.captainEmail}
+                    Capitão: {team.captainName} · {team.captainEmail}
                   </p>
                   <p className="text-sm text-zinc-500">
-                    {team.players.length} players ·{" "}
-                    {team.user ? "Login active" : "No login yet"}
+                    {team.players.length} jogadores ·{" "}
+                    {team.user ? "Acesso ativo" : "Sem acesso criado"}
                   </p>
                 </div>
               </div>
@@ -69,10 +70,10 @@ export default async function OwnerTeamsPage() {
                         : "danger"
                   }
                 >
-                  {team.paymentStatus.toLowerCase()}
+                  {label(paymentStatusLabels, team.paymentStatus)}
                 </Badge>
                 {team.selectionsLocked ? (
-                  <Badge variant="warning">Selections locked</Badge>
+                  <Badge variant="warning">Seleções bloqueadas</Badge>
                 ) : null}
               </div>
             </CardContent>
@@ -81,7 +82,7 @@ export default async function OwnerTeamsPage() {
         {!teams.length ? (
           <Card>
             <CardContent className="py-10 text-center text-zinc-500">
-              No teams created yet.
+              Ainda não foram criadas equipas.
             </CardContent>
           </Card>
         ) : null}

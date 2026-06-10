@@ -27,13 +27,13 @@ export default async function OwnerRankingsPage() {
   return (
     <div>
       <PageHeader
-        title="Results & Rankings"
-        description="Global ranking calculated from sport points. Karts results carry extra weight."
+        title="Resultados e Classificações"
+        description="Classificação global calculada a partir dos pontos por desporto. Os resultados de Karts têm peso extra."
       />
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Overall ranking</CardTitle>
+          <CardTitle>Classificação geral</CardTitle>
         </CardHeader>
         <CardContent>
           <RankingTable entries={ranking} />
@@ -42,7 +42,7 @@ export default async function OwnerRankingsPage() {
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Points system</CardTitle>
+          <CardTitle>Sistema de pontos</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-3 md:grid-cols-2">
           {pointsConfig.map((row) => (
@@ -59,7 +59,7 @@ export default async function OwnerRankingsPage() {
                 className="flex-1"
               />
               <Button type="submit" size="sm">
-                Save
+                Guardar
               </Button>
             </form>
           ))}
@@ -70,7 +70,7 @@ export default async function OwnerRankingsPage() {
         {sportRankings.map(({ sport, ranking: sportRanking }) => (
           <Card key={sport.id}>
             <CardHeader>
-              <CardTitle>{sport.name} ranking</CardTitle>
+              <CardTitle>Classificação de {sport.name}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {sportRanking.map((row) => (

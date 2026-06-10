@@ -2,6 +2,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { prisma } from "@/lib/db";
+import { eventStatusLabels, label } from "@/lib/labels";
 import { requireSession } from "@/lib/session";
 import { formatDate } from "@/lib/utils";
 
@@ -20,8 +21,8 @@ export default async function TeamCalendarPage() {
   return (
     <div>
       <PageHeader
-        title="Calendar"
-        description="Full tournament schedule with your team's events."
+        title="Calendário"
+        description="Calendário completo do torneio com os eventos da sua equipa."
       />
 
       <div className="space-y-4">
@@ -39,7 +40,7 @@ export default async function TeamCalendarPage() {
                         : "default"
                   }
                 >
-                  {event.status}
+                  {label(eventStatusLabels, event.status)}
                 </Badge>
               </div>
               <p className="mt-1 text-sm text-zinc-400">

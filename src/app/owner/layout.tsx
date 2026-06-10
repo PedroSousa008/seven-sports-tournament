@@ -11,8 +11,8 @@ export default async function OwnerLayout({
 
   return (
     <DashboardShell
-      title="Owner Dashboard"
-      subtitle="Tournament control center"
+      title="Painel do Organizador"
+      subtitle="Centro de controlo do torneio"
       navItems={ownerNav}
     >
       {children}

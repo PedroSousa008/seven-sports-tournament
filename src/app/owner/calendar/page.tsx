@@ -5,7 +5,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input, Label, Select, Textarea } from "@/components/ui/input";
 import { createEventAction, deleteEventAction } from "@/lib/actions";
 import { prisma } from "@/lib/db";
-import { formatDate, formatDateTime } from "@/lib/utils";
+import { eventStatusLabels, label } from "@/lib/labels";
+import { formatDate } from "@/lib/utils";
+
+const viewLabels: Record<string, string> = {
+  list: "Lista",
+  month: "Mês",
+  week: "Semana",
+  day: "Dia",
+};
 
 export default async function OwnerCalendarPage({
   searchParams,
@@ -51,21 +59,21 @@ export default async function OwnerCalendarPage({
   return (
     <div>
       <PageHeader
-        title="Calendar"
-        description="Create and manage tournament events visible to assigned teams."
+        title="Calendário"
+        description="Cria e gere eventos do torneio visíveis para as equipas atribuídas."
         action={
           <div className="flex flex-wrap gap-2">
             {["list", "month", "week", "day"].map((item) => (
               <a
                 key={item}
                 href={`/owner/calendar?view=${item}`}
-                className={`rounded-xl px-3 py-2 text-sm capitalize ${
+                className={`rounded-xl px-3 py-2 text-sm ${
                   view === item
                     ? "bg-red-600 text-white"
                     : "border border-white/10 text-zinc-400"
                 }`}
               >
-                {item}
+                {viewLabels[item]}
               </a>
             ))}
           </div>
@@ -74,18 +82,18 @@ export default async function OwnerCalendarPage({
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Create event</CardTitle>
+          <CardTitle>Criar evento</CardTitle>
         </CardHeader>
         <CardContent>
           <form action={createEventAction} className="grid gap-4 md:grid-cols-2">
             <div>
-              <Label>Title</Label>
+              <Label>Título</Label>
               <Input name="title" required />
             </div>
             <div>
-              <Label>Sport</Label>
+              <Label>Desporto</Label>
               <Select name="sportId" defaultValue="">
-                <option value="">General event</option>
+                <option value="">Evento geral</option>
                 {sports.map((sport) => (
                   <option key={sport.id} value={sport.id}>
                     {sport.name}
@@ -94,27 +102,27 @@ export default async function OwnerCalendarPage({
               </Select>
             </div>
             <div>
-              <Label>Date</Label>
+              <Label>Data</Label>
               <Input name="date" type="date" required />
             </div>
             <div>
-              <Label>Time</Label>
+              <Label>Hora</Label>
               <Input name="time" placeholder="14:30" />
             </div>
             <div>
-              <Label>Location</Label>
+              <Label>Local</Label>
               <Input name="location" />
             </div>
             <div>
-              <Label>Status</Label>
+              <Label>Estado</Label>
               <Select name="status" defaultValue="UPCOMING">
-                <option value="UPCOMING">Upcoming</option>
-                <option value="LIVE">Live</option>
-                <option value="FINISHED">Finished</option>
+                <option value="UPCOMING">{eventStatusLabels.UPCOMING}</option>
+                <option value="LIVE">{eventStatusLabels.LIVE}</option>
+                <option value="FINISHED">{eventStatusLabels.FINISHED}</option>
               </Select>
             </div>
             <div className="md:col-span-2">
-              <Label>Teams (leave empty for all teams)</Label>
+              <Label>Equipas (deixar vazio para todas as equipas)</Label>
               <select
                 name="teamIds"
                 multiple
@@ -128,10 +136,10 @@ export default async function OwnerCalendarPage({
               </select>
             </div>
             <div className="md:col-span-2">
-              <Label>Notes</Label>
+              <Label>Notas</Label>
               <Textarea name="notes" />
             </div>
-            <Button type="submit">Create event</Button>
+            <Button type="submit">Criar evento</Button>
           </form>
         </CardContent>
       </Card>
@@ -152,7 +160,7 @@ export default async function OwnerCalendarPage({
                           : "default"
                     }
                   >
-                    {event.status}
+                    {label(eventStatusLabels, event.status)}
                   </Badge>
                 </div>
                 <p className="mt-1 text-sm text-zinc-400">
@@ -164,10 +172,10 @@ export default async function OwnerCalendarPage({
                   <Badge className="mt-2">{event.sport.name}</Badge>
                 ) : null}
                 <p className="mt-3 text-sm text-zinc-300">
-                  Teams:{" "}
+                  Equipas:{" "}
                   {event.teams.length
                     ? event.teams.map((item) => item.team.name).join(", ")
-                    : "All teams"}
+                    : "Todas as equipas"}
                 </p>
                 {event.notes ? (
                   <p className="mt-2 text-sm text-zinc-500">{event.notes}</p>
@@ -175,7 +183,7 @@ export default async function OwnerCalendarPage({
               </div>
               <form action={deleteEventAction.bind(null, event.id)}>
                 <Button type="submit" variant="ghost">
-                  Delete
+                  Eliminar
                 </Button>
               </form>
             </CardContent>
@@ -184,7 +192,7 @@ export default async function OwnerCalendarPage({
         {!visibleEvents.length ? (
           <Card>
             <CardContent className="py-10 text-center text-zinc-500">
-              No events in this view.
+              Sem eventos nesta vista.
             </CardContent>
           </Card>
         ) : null}

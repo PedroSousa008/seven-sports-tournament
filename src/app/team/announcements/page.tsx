@@ -2,6 +2,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { getAnnouncementsForTeam } from "@/lib/tournament";
+import { announcementPriorityLabels, label } from "@/lib/labels";
 import { requireSession } from "@/lib/session";
 import { formatDate } from "@/lib/utils";
 
@@ -12,8 +13,8 @@ export default async function TeamAnnouncementsPage() {
   return (
     <div>
       <PageHeader
-        title="Announcements"
-        description="Official updates from the tournament organizers."
+        title="Anúncios"
+        description="Atualizações oficiais dos organizadores do torneio."
       />
 
       <div className="space-y-4">
@@ -31,7 +32,7 @@ export default async function TeamAnnouncementsPage() {
                         : "default"
                   }
                 >
-                  {item.priority}
+                  {label(announcementPriorityLabels, item.priority)}
                 </Badge>
               </div>
               <p className="mt-1 text-sm text-zinc-400">{formatDate(item.date)}</p>
@@ -45,7 +46,7 @@ export default async function TeamAnnouncementsPage() {
         {!announcements.length ? (
           <Card>
             <CardContent className="py-10 text-center text-zinc-500">
-              No announcements yet.
+              Ainda sem anúncios.
             </CardContent>
           </Card>
         ) : null}

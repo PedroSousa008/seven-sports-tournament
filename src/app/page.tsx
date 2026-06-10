@@ -14,14 +14,14 @@ export default async function HomePage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-red-500">
-              Braga · July 2026
+              Braga · Julho 2026
             </p>
             <h1 className="text-xl font-bold">
               {settings?.name ?? "Torneio 5 Desportos Braga"}
             </h1>
           </div>
           <Link href="/login">
-            <Button>Login</Button>
+            <Button>Iniciar sessão</Button>
           </Link>
         </div>
       </header>
@@ -29,35 +29,35 @@ export default async function HomePage() {
       <main className="mx-auto max-w-6xl px-6 py-16">
         <section className="max-w-3xl">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-red-500">
-            Multi-sport tournament
+            Torneio multidesportivo
           </p>
           <h2 className="mt-4 text-5xl font-bold tracking-tight sm:text-6xl">
-            The complete platform for teams and organizers.
+            A plataforma completa para equipas e organizadores.
           </h2>
           <p className="mt-6 text-lg leading-8 text-zinc-400">
-            Manage registrations, schedules, rankings, partnerships and
-            communications for the Torneio 5 Desportos Braga — Futebol 7, Padel,
-            Karts, Ténis and Voleibol.
+            Gira inscrições, calendários, classificações, parcerias e
+            comunicações do Torneio 5 Desportos Braga — Futebol 7, Padel,
+            Karts, Ténis e Voleibol.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link href="/login">
-              <Button size="lg">Enter platform</Button>
+              <Button size="lg">Entrar na plataforma</Button>
             </Link>
           </div>
         </section>
 
         <section className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: Users, label: "12 teams", value: "10 players max" },
+            { icon: Users, label: "12 equipas", value: "Máx. 10 jogadores" },
             {
               icon: Calendar,
               label: settings
                 ? `${formatDate(settings.startDate)} – ${formatDate(settings.endDate)}`
-                : "04–09 July",
-              value: "Tournament week",
+                : "04–09 julho",
+              value: "Semana do torneio",
             },
             { icon: MapPin, label: "Braga", value: "Portugal" },
-            { icon: Trophy, label: "5 sports", value: "Global ranking" },
+            { icon: Trophy, label: "5 desportos", value: "Classificação global" },
           ].map((item) => (
             <Card key={item.label}>
               <CardContent>
@@ -73,24 +73,24 @@ export default async function HomePage() {
           <Card>
             <CardContent>
               <p className="text-sm uppercase tracking-wide text-red-500">
-                Owner access
+                Acesso de organizador
               </p>
-              <h3 className="mt-2 text-2xl font-bold">Organizer dashboard</h3>
+              <h3 className="mt-2 text-2xl font-bold">Painel do organizador</h3>
               <p className="mt-3 text-zinc-400">
-                Full control over teams, sports, calendar, rankings, revenue,
-                costs, partnerships and announcements.
+                Controlo total sobre equipas, desportos, calendário, classificações,
+                receitas, custos, parcerias e anúncios.
               </p>
             </CardContent>
           </Card>
           <Card>
             <CardContent>
               <p className="text-sm uppercase tracking-wide text-red-500">
-                Team access
+                Acesso de equipa
               </p>
-              <h3 className="mt-2 text-2xl font-bold">Captain portal</h3>
+              <h3 className="mt-2 text-2xl font-bold">Portal do capitão</h3>
               <p className="mt-3 text-zinc-400">
-                Manage your squad, select players per sport, follow schedules,
-                rankings, promotions and store offers.
+                Gira o plantel, seleciona jogadores por desporto, acompanha horários,
+                classificações, promoções e ofertas da loja.
               </p>
             </CardContent>
           </Card>

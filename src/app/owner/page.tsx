@@ -19,21 +19,21 @@ export default async function OwnerHomePage() {
   return (
     <div>
       <PageHeader
-        title={stats.settings?.name ?? "Tournament Overview"}
+        title={stats.settings?.name ?? "Visão geral do torneio"}
         description={`${stats.settings?.location ?? "Braga"} · ${stats.settings ? formatDate(stats.settings.startDate) : ""} – ${stats.settings ? formatDate(stats.settings.endDate) : ""}`}
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard label="Teams registered" value={stats.teamsCount} icon={Users} />
-        <StatCard label="Players registered" value={stats.playersCount} icon={Users} accent="white" />
-        <StatCard label="Total revenue" value={formatCurrency(stats.totalRevenue)} icon={Wallet} accent="green" />
-        <StatCard label="Estimated profit" value={formatCurrency(stats.estimatedProfit)} icon={TrendingUp} />
+        <StatCard label="Equipas inscritas" value={stats.teamsCount} icon={Users} />
+        <StatCard label="Jogadores inscritos" value={stats.playersCount} icon={Users} accent="white" />
+        <StatCard label="Receita total" value={formatCurrency(stats.totalRevenue)} icon={Wallet} accent="green" />
+        <StatCard label="Lucro estimado" value={formatCurrency(stats.estimatedProfit)} icon={TrendingUp} />
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Current overall ranking</CardTitle>
+            <CardTitle>Classificação geral atual</CardTitle>
           </CardHeader>
           <CardContent>
             <RankingTable entries={stats.ranking} />
@@ -43,23 +43,23 @@ export default async function OwnerHomePage() {
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Financial snapshot</CardTitle>
+              <CardTitle>Resumo financeiro</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-zinc-400">Revenue paid</span>
+                <span className="text-zinc-400">Receita paga</span>
                 <span className="font-semibold text-emerald-400">
                   {formatCurrency(stats.paidRevenue)}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-zinc-400">Total costs</span>
+                <span className="text-zinc-400">Custos totais</span>
                 <span className="font-semibold text-white">
                   {formatCurrency(stats.totalCosts)}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-zinc-400">Costs paid</span>
+                <span className="text-zinc-400">Custos pagos</span>
                 <span className="font-semibold text-zinc-300">
                   {formatCurrency(stats.paidCosts)}
                 </span>
@@ -71,7 +71,7 @@ export default async function OwnerHomePage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <AlertCircle className="h-4 w-4 text-red-500" />
-                Pending actions
+                Ações pendentes
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -82,7 +82,7 @@ export default async function OwnerHomePage() {
                   </p>
                 ))
               ) : (
-                <p className="text-sm text-zinc-500">No pending actions.</p>
+                <p className="text-sm text-zinc-500">Sem ações pendentes.</p>
               )}
             </CardContent>
           </Card>
@@ -94,7 +94,7 @@ export default async function OwnerHomePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Calendar className="h-4 w-4 text-red-500" />
-              Next event
+              Próximo evento
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -112,14 +112,14 @@ export default async function OwnerHomePage() {
                 ) : null}
               </div>
             ) : (
-              <p className="text-sm text-zinc-500">No upcoming events scheduled.</p>
+              <p className="text-sm text-zinc-500">Sem eventos agendados.</p>
             )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Upcoming matches</CardTitle>
+            <CardTitle>Próximos jogos</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {stats.upcomingMatches.length ? (
@@ -138,7 +138,7 @@ export default async function OwnerHomePage() {
                 </div>
               ))
             ) : (
-              <p className="text-sm text-zinc-500">No matches scheduled yet.</p>
+              <p className="text-sm text-zinc-500">Ainda sem jogos agendados.</p>
             )}
           </CardContent>
         </Card>

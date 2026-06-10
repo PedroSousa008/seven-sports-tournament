@@ -12,6 +12,7 @@ import {
   updateTeamAction,
 } from "@/lib/actions";
 import { prisma } from "@/lib/db";
+import { label, paymentStatusLabels } from "@/lib/labels";
 
 export default async function OwnerTeamDetailPage({
   params,
@@ -35,50 +36,50 @@ export default async function OwnerTeamDetailPage({
     <div>
       <PageHeader
         title={team.name}
-        description={`Captain ${team.captainName} · ${team.captainEmail}`}
+        description={`Capitão ${team.captainName} · ${team.captainEmail}`}
       />
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Team details</CardTitle>
+            <CardTitle>Detalhes da equipa</CardTitle>
           </CardHeader>
           <CardContent>
             <form action={updateTeamAction.bind(null, team.id)} className="grid gap-4 md:grid-cols-2">
               <div>
-                <Label>Team name</Label>
+                <Label>Nome da equipa</Label>
                 <Input name="name" defaultValue={team.name} required />
               </div>
               <div>
-                <Label>Captain name</Label>
+                <Label>Nome do capitão</Label>
                 <Input name="captainName" defaultValue={team.captainName} required />
               </div>
               <div>
-                <Label>Captain email</Label>
+                <Label>Email do capitão</Label>
                 <Input name="captainEmail" defaultValue={team.captainEmail} required />
               </div>
               <div>
-                <Label>Phone</Label>
+                <Label>Telefone</Label>
                 <Input name="phone" defaultValue={team.phone ?? ""} />
               </div>
               <div>
-                <Label>Color</Label>
+                <Label>Cor</Label>
                 <Input name="color" type="color" defaultValue={team.color} />
               </div>
               <div>
-                <Label>Payment status</Label>
+                <Label>Estado de pagamento</Label>
                 <Select name="paymentStatus" defaultValue={team.paymentStatus}>
-                  <option value="UNPAID">Unpaid</option>
-                  <option value="PARTIAL">Partially paid</option>
-                  <option value="PAID">Paid</option>
+                  <option value="UNPAID">{paymentStatusLabels.UNPAID}</option>
+                  <option value="PARTIAL">{paymentStatusLabels.PARTIAL}</option>
+                  <option value="PAID">{paymentStatusLabels.PAID}</option>
                 </Select>
               </div>
               <div className="md:col-span-2">
-                <Label>Logo URL</Label>
+                <Label>URL do logótipo</Label>
                 <Input name="logoUrl" defaultValue={team.logoUrl ?? ""} />
               </div>
               <div className="md:col-span-2">
-                <Label>Notes</Label>
+                <Label>Notas</Label>
                 <Textarea name="notes" defaultValue={team.notes ?? ""} />
               </div>
               <label className="flex items-center gap-2 text-sm text-zinc-300 md:col-span-2">
@@ -87,9 +88,9 @@ export default async function OwnerTeamDetailPage({
                   name="selectionsLocked"
                   defaultChecked={team.selectionsLocked}
                 />
-                Lock player selections for this team
+                Bloquear seleções de jogadores desta equipa
               </label>
-              <Button type="submit">Save team</Button>
+              <Button type="submit">Guardar equipa</Button>
             </form>
           </CardContent>
         </Card>
@@ -111,14 +112,14 @@ export default async function OwnerTeamDetailPage({
                     : "danger"
               }
             >
-              {team.paymentStatus}
+              {label(paymentStatusLabels, team.paymentStatus)}
             </Badge>
             <p className="text-sm text-zinc-400">
-              Login: {team.user ? team.user.email : "Not created"}
+              Acesso: {team.user ? team.user.email : "Não criado"}
             </p>
             <form action={deleteTeamAction.bind(null, team.id)}>
               <Button type="submit" variant="danger">
-                Delete team
+                Eliminar equipa
               </Button>
             </form>
           </CardContent>
@@ -127,16 +128,16 @@ export default async function OwnerTeamDetailPage({
 
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle>Players ({team.players.length}/10)</CardTitle>
+          <CardTitle>Jogadores ({team.players.length}/10)</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <form action={createPlayerAction.bind(null, team.id)} className="grid gap-4 md:grid-cols-4">
-            <Input name="name" placeholder="Player name" required />
-            <Input name="age" type="number" placeholder="Age" />
-            <Input name="phone" placeholder="Phone" />
+            <Input name="name" placeholder="Nome do jogador" required />
+            <Input name="age" type="number" placeholder="Idade" />
+            <Input name="phone" placeholder="Telefone" />
             <Input name="email" placeholder="Email" />
             <Button type="submit" className="md:col-span-4 md:w-fit">
-              Add player
+              Adicionar jogador
             </Button>
           </form>
 
@@ -149,7 +150,7 @@ export default async function OwnerTeamDetailPage({
                 <div>
                   <p className="font-medium text-white">{player.name}</p>
                   <p className="text-sm text-zinc-400">
-                    {player.age ? `${player.age} yrs` : "Age n/a"}
+                    {player.age ? `${player.age} anos` : "Idade n/d"}
                     {player.phone ? ` · ${player.phone}` : ""}
                   </p>
                   <div className="mt-2 flex flex-wrap gap-2">
@@ -160,7 +161,7 @@ export default async function OwnerTeamDetailPage({
                 </div>
                 <form action={deletePlayerAction.bind(null, player.id)}>
                   <Button type="submit" variant="ghost">
-                    Remove
+                    Remover
                   </Button>
                 </form>
               </div>

@@ -6,6 +6,11 @@ import { Input, Label, Select, Textarea } from "@/components/ui/input";
 import { createPartnerAction, createPromotionAction } from "@/lib/actions";
 import { PARTNERSHIP_TYPES } from "@/lib/constants";
 import { prisma } from "@/lib/db";
+import {
+  label,
+  partnershipStatusLabels,
+  partnershipTypeLabels,
+} from "@/lib/labels";
 import { formatCurrency } from "@/lib/utils";
 
 export default async function OwnerPartnershipsPage() {
@@ -17,26 +22,26 @@ export default async function OwnerPartnershipsPage() {
   return (
     <div>
       <PageHeader
-        title="Partnerships"
-        description="Manage sponsors, partners, promotions and collaboration value."
+        title="Parcerias"
+        description="Gira patrocinadores, parceiros, promoções e valor das colaborações."
       />
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Add partner</CardTitle>
+          <CardTitle>Adicionar parceiro</CardTitle>
         </CardHeader>
         <CardContent>
           <form action={createPartnerAction} className="grid gap-4 md:grid-cols-2">
             <div>
-              <Label>Brand name</Label>
+              <Label>Nome da marca</Label>
               <Input name="brandName" required />
             </div>
             <div>
-              <Label>Category</Label>
+              <Label>Categoria</Label>
               <Input name="category" />
             </div>
             <div>
-              <Label>Contact person</Label>
+              <Label>Pessoa de contacto</Label>
               <Input name="contactPerson" />
             </div>
             <div>
@@ -44,11 +49,11 @@ export default async function OwnerPartnershipsPage() {
               <Input name="email" type="email" />
             </div>
             <div>
-              <Label>Phone</Label>
+              <Label>Telefone</Label>
               <Input name="phone" />
             </div>
             <div>
-              <Label>Partnership type</Label>
+              <Label>Tipo de parceria</Label>
               <Select name="partnershipType" defaultValue="OFFICIAL_PARTNER">
                 {PARTNERSHIP_TYPES.map((type) => (
                   <option key={type.value} value={type.value}>
@@ -58,31 +63,31 @@ export default async function OwnerPartnershipsPage() {
               </Select>
             </div>
             <div>
-              <Label>Value (€)</Label>
+              <Label>Valor (€)</Label>
               <Input name="value" type="number" />
             </div>
             <div>
-              <Label>Status</Label>
+              <Label>Estado</Label>
               <Select name="status" defaultValue="PENDING">
-                <option value="PENDING">Pending</option>
-                <option value="CONFIRMED">Confirmed</option>
-                <option value="PAID">Paid</option>
-                <option value="COMPLETED">Completed</option>
+                <option value="PENDING">{partnershipStatusLabels.PENDING}</option>
+                <option value="CONFIRMED">{partnershipStatusLabels.CONFIRMED}</option>
+                <option value="PAID">{partnershipStatusLabels.PAID}</option>
+                <option value="COMPLETED">{partnershipStatusLabels.COMPLETED}</option>
               </Select>
             </div>
             <div className="md:col-span-2">
-              <Label>Website URL</Label>
+              <Label>URL do website</Label>
               <Input name="websiteUrl" />
             </div>
             <div className="md:col-span-2">
-              <Label>Benefits promised</Label>
+              <Label>Benefícios prometidos</Label>
               <Textarea name="benefits" />
             </div>
             <div className="md:col-span-2">
-              <Label>Notes</Label>
+              <Label>Notas</Label>
               <Textarea name="notes" />
             </div>
-            <Button type="submit">Add partner</Button>
+            <Button type="submit">Adicionar parceiro</Button>
           </form>
         </CardContent>
       </Card>
@@ -97,12 +102,16 @@ export default async function OwnerPartnershipsPage() {
                     {partner.brandName}
                   </p>
                   <p className="text-sm text-zinc-400">
-                    {partner.contactPerson ?? "No contact"} ·{" "}
-                    {partner.email ?? "No email"}
+                    {partner.contactPerson ?? "Sem contacto"} ·{" "}
+                    {partner.email ?? "Sem email"}
                   </p>
                   <div className="mt-2 flex flex-wrap gap-2">
-                    <Badge>{partner.partnershipType.replaceAll("_", " ")}</Badge>
-                    <Badge variant="warning">{partner.status}</Badge>
+                    <Badge>
+                      {label(partnershipTypeLabels, partner.partnershipType)}
+                    </Badge>
+                    <Badge variant="warning">
+                      {label(partnershipStatusLabels, partner.status)}
+                    </Badge>
                     {partner.value ? (
                       <Badge variant="success">
                         {formatCurrency(partner.value)}
@@ -116,10 +125,10 @@ export default async function OwnerPartnershipsPage() {
                 action={createPromotionAction.bind(null, partner.id)}
                 className="mt-4 grid gap-3 md:grid-cols-4"
               >
-                <Input name="title" placeholder="Promotion title" required />
-                <Input name="code" placeholder="Discount code" />
-                <Input name="url" placeholder="Promotion URL" />
-                <Button type="submit">Add promotion</Button>
+                <Input name="title" placeholder="Título da promoção" required />
+                <Input name="code" placeholder="Código de desconto" />
+                <Input name="url" placeholder="URL da promoção" />
+                <Button type="submit">Adicionar promoção</Button>
               </form>
 
               {partner.promotions.length ? (
@@ -131,7 +140,7 @@ export default async function OwnerPartnershipsPage() {
                     >
                       <p className="font-medium text-white">{promo.title}</p>
                       {promo.code ? (
-                        <p className="text-red-400">Code: {promo.code}</p>
+                        <p className="text-red-400">Código: {promo.code}</p>
                       ) : null}
                       {promo.url ? (
                         <a

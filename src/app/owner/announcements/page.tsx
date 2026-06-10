@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input, Label, Select, Textarea } from "@/components/ui/input";
 import { createAnnouncementAction } from "@/lib/actions";
 import { prisma } from "@/lib/db";
+import { announcementPriorityLabels, label } from "@/lib/labels";
 import { formatDate } from "@/lib/utils";
 
 export default async function OwnerAnnouncementsPage() {
@@ -20,36 +21,36 @@ export default async function OwnerAnnouncementsPage() {
   return (
     <div>
       <PageHeader
-        title="Announcements"
-        description="Publish updates visible to all teams or selected teams."
+        title="Anúncios"
+        description="Publica atualizações visíveis para todas as equipas ou equipas selecionadas."
       />
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>New announcement</CardTitle>
+          <CardTitle>Novo anúncio</CardTitle>
         </CardHeader>
         <CardContent>
           <form action={createAnnouncementAction} className="grid gap-4 md:grid-cols-2">
             <div>
-              <Label>Title</Label>
+              <Label>Título</Label>
               <Input name="title" required />
             </div>
             <div>
-              <Label>Priority</Label>
+              <Label>Prioridade</Label>
               <Select name="priority" defaultValue="NORMAL">
-                <option value="NORMAL">Normal</option>
-                <option value="IMPORTANT">Important</option>
-                <option value="URGENT">Urgent</option>
+                <option value="NORMAL">{announcementPriorityLabels.NORMAL}</option>
+                <option value="IMPORTANT">{announcementPriorityLabels.IMPORTANT}</option>
+                <option value="URGENT">{announcementPriorityLabels.URGENT}</option>
               </Select>
             </div>
             <div>
-              <Label>Date</Label>
+              <Label>Data</Label>
               <Input name="date" type="date" />
             </div>
             <div>
-              <Label>Related sport</Label>
+              <Label>Desporto relacionado</Label>
               <Select name="sportId" defaultValue="">
-                <option value="">General</option>
+                <option value="">Geral</option>
                 {sports.map((sport) => (
                   <option key={sport.id} value={sport.id}>
                     {sport.name}
@@ -58,11 +59,11 @@ export default async function OwnerAnnouncementsPage() {
               </Select>
             </div>
             <div className="md:col-span-2">
-              <Label>Message</Label>
+              <Label>Mensagem</Label>
               <Textarea name="message" required />
             </div>
             <div className="md:col-span-2">
-              <Label>Visible to selected teams</Label>
+              <Label>Visível para equipas selecionadas</Label>
               <select
                 name="teamIds"
                 multiple
@@ -76,10 +77,10 @@ export default async function OwnerAnnouncementsPage() {
               </select>
               <label className="mt-2 flex items-center gap-2 text-sm text-zinc-400">
                 <input type="checkbox" name="allTeams" defaultChecked />
-                Visible to all teams if none selected
+                Visível para todas as equipas se nenhuma for selecionada
               </label>
             </div>
-            <Button type="submit">Publish announcement</Button>
+            <Button type="submit">Publicar anúncio</Button>
           </form>
         </CardContent>
       </Card>
@@ -99,15 +100,15 @@ export default async function OwnerAnnouncementsPage() {
                         : "default"
                   }
                 >
-                  {item.priority}
+                  {label(announcementPriorityLabels, item.priority)}
                 </Badge>
               </div>
               <p className="mt-2 text-sm text-zinc-400">{formatDate(item.date)}</p>
               <p className="mt-3 text-zinc-300">{item.message}</p>
               <p className="mt-3 text-sm text-zinc-500">
-                Visible to:{" "}
+                Visível para:{" "}
                 {item.allTeams
-                  ? "All teams"
+                  ? "Todas as equipas"
                   : item.targets.map((target) => target.team.name).join(", ")}
               </p>
             </CardContent>

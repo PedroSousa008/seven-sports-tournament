@@ -15,6 +15,7 @@ import {
 import { SPORTS } from "@/lib/constants";
 import { getSportRanking } from "@/lib/rankings";
 import { prisma } from "@/lib/db";
+import { eventStatusLabels, label } from "@/lib/labels";
 import { formatDateTime } from "@/lib/utils";
 
 export default async function OwnerSportDetailPage({
@@ -60,12 +61,12 @@ export default async function OwnerSportDetailPage({
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Sport overview</CardTitle>
+            <CardTitle>Visão geral do desporto</CardTitle>
           </CardHeader>
           <CardContent>
             <form action={updateSportAction.bind(null, sport.id)} className="space-y-4">
               <div>
-                <Label>Date</Label>
+                <Label>Data</Label>
                 <Input
                   name="date"
                   type="date"
@@ -75,33 +76,33 @@ export default async function OwnerSportDetailPage({
                 />
               </div>
               <div>
-                <Label>Time</Label>
+                <Label>Hora</Label>
                 <Input name="time" defaultValue={sport.time ?? ""} />
               </div>
               <div>
-                <Label>Location</Label>
+                <Label>Local</Label>
                 <Input name="location" defaultValue={sport.location ?? ""} />
               </div>
               <div>
-                <Label>Rules</Label>
+                <Label>Regras</Label>
                 <Textarea name="rules" defaultValue={sport.rules ?? ""} />
               </div>
               <div>
-                <Label>Format</Label>
+                <Label>Formato</Label>
                 <Textarea name="format" defaultValue={sport.format ?? ""} />
               </div>
               <div>
-                <Label>Notes</Label>
+                <Label>Notas</Label>
                 <Textarea name="notes" defaultValue={sport.notes ?? ""} />
               </div>
-              <Button type="submit">Save sport settings</Button>
+              <Button type="submit">Guardar definições do desporto</Button>
             </form>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Classification</CardTitle>
+            <CardTitle>Classificação</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {ranking.map((row) => (
@@ -127,10 +128,10 @@ export default async function OwnerSportDetailPage({
 
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle>Groups</CardTitle>
+          <CardTitle>Grupos</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-6 md:grid-cols-2">
-          {["Group A", "Group B", "Group C", "Group D"].map((groupName) => {
+          {["Grupo A", "Grupo B", "Grupo C", "Grupo D"].map((groupName) => {
             const group = sport.groups.find((g) => g.name === groupName);
             return (
               <form
@@ -146,7 +147,7 @@ export default async function OwnerSportDetailPage({
                     defaultValue={group?.teams[index]?.teamId ?? ""}
                     className="mb-2 h-11 w-full rounded-xl border border-white/10 bg-black/40 px-4 text-sm text-white"
                   >
-                    <option value="">Select team</option>
+                    <option value="">Selecionar equipa</option>
                     {teams.map((team) => (
                       <option key={team.id} value={team.id}>
                         {team.name}
@@ -155,7 +156,7 @@ export default async function OwnerSportDetailPage({
                   </select>
                 ))}
                 <Button type="submit" variant="secondary" className="mt-2">
-                  Save group
+                  Guardar grupo
                 </Button>
               </form>
             );
@@ -165,18 +166,18 @@ export default async function OwnerSportDetailPage({
 
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle>Matches & results</CardTitle>
+          <CardTitle>Jogos e resultados</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <form action={createMatchAction.bind(null, sport.id)} className="grid gap-4 md:grid-cols-3">
-            <Input name="title" placeholder="Match title" required />
-            <Input name="round" placeholder="Round (group, semi, final)" />
+            <Input name="title" placeholder="Título do jogo" required />
+            <Input name="round" placeholder="Fase (grupo, meias, final)" />
             <Input name="scheduledAt" type="datetime-local" />
             <select
               name="homeTeamId"
               className="h-11 rounded-xl border border-white/10 bg-black/40 px-4 text-sm text-white"
             >
-              <option value="">Home team</option>
+              <option value="">Equipa da casa</option>
               {teams.map((team) => (
                 <option key={team.id} value={team.id}>
                   {team.name}
@@ -187,14 +188,14 @@ export default async function OwnerSportDetailPage({
               name="awayTeamId"
               className="h-11 rounded-xl border border-white/10 bg-black/40 px-4 text-sm text-white"
             >
-              <option value="">Away team</option>
+              <option value="">Equipa visitante</option>
               {teams.map((team) => (
                 <option key={team.id} value={team.id}>
                   {team.name}
                 </option>
               ))}
             </select>
-            <Button type="submit">Add match</Button>
+            <Button type="submit">Adicionar jogo</Button>
           </form>
 
           {sport.matches.map((match) => (
@@ -206,13 +207,13 @@ export default async function OwnerSportDetailPage({
                 <div>
                   <p className="font-semibold text-white">{match.title}</p>
                   <p className="text-sm text-zinc-400">
-                    {match.round ?? "Match"}
+                    {match.round ?? "Jogo"}
                     {match.scheduledAt
                       ? ` · ${formatDateTime(match.scheduledAt)}`
                       : ""}
                   </p>
                   <p className="mt-1 text-sm text-zinc-300">
-                    {match.homeTeam?.name ?? "TBD"} vs {match.awayTeam?.name ?? "TBD"}
+                    {match.homeTeam?.name ?? "A definir"} vs {match.awayTeam?.name ?? "A definir"}
                   </p>
                 </div>
                 <Badge
@@ -224,27 +225,27 @@ export default async function OwnerSportDetailPage({
                         : "default"
                   }
                 >
-                  {match.status}
+                  {label(eventStatusLabels, match.status)}
                 </Badge>
               </div>
               <form
                 action={updateMatchResultAction.bind(null, match.id)}
                 className="mt-4 grid gap-3 md:grid-cols-4"
               >
-                <Input name="homeScore" placeholder="Home score" defaultValue={match.homeScore ?? ""} />
-                <Input name="awayScore" placeholder="Away score" defaultValue={match.awayScore ?? ""} />
-                <Input name="detail" placeholder="Sets / detail" defaultValue={match.detail ?? ""} />
+                <Input name="homeScore" placeholder="Resultado casa" defaultValue={match.homeScore ?? ""} />
+                <Input name="awayScore" placeholder="Resultado visitante" defaultValue={match.awayScore ?? ""} />
+                <Input name="detail" placeholder="Sets / detalhe" defaultValue={match.detail ?? ""} />
                 <select
                   name="status"
                   defaultValue={match.status}
                   className="h-11 rounded-xl border border-white/10 bg-black/40 px-4 text-sm text-white"
                 >
-                  <option value="UPCOMING">Upcoming</option>
-                  <option value="LIVE">Live</option>
-                  <option value="FINISHED">Finished</option>
+                  <option value="UPCOMING">{eventStatusLabels.UPCOMING}</option>
+                  <option value="LIVE">{eventStatusLabels.LIVE}</option>
+                  <option value="FINISHED">{eventStatusLabels.FINISHED}</option>
                 </select>
                 <Button type="submit" className="md:col-span-4 md:w-fit">
-                  Save result
+                  Guardar resultado
                 </Button>
               </form>
             </div>
@@ -254,7 +255,7 @@ export default async function OwnerSportDetailPage({
 
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle>Assign final positions & points</CardTitle>
+          <CardTitle>Atribuir posições finais e pontos</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           {teams.map((team) => (
@@ -278,7 +279,7 @@ export default async function OwnerSportDetailPage({
                 placeholder="#"
               />
               <Button type="submit" size="sm">
-                Set
+                Definir
               </Button>
             </form>
           ))}

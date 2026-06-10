@@ -10,8 +10,8 @@ export default async function OwnerSportsPage() {
   return (
     <div>
       <PageHeader
-        title="Sports"
-        description="Manage formats, groups, matches, results and classifications for each sport."
+        title="Desportos"
+        description="Gira formatos, grupos, jogos, resultados e classificações de cada desporto."
       />
 
       <div className="grid gap-4 md:grid-cols-2">

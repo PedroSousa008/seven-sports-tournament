@@ -6,6 +6,12 @@ import { createStoreItemAction } from "@/lib/actions";
 import { prisma } from "@/lib/db";
 import { formatCurrency } from "@/lib/utils";
 
+const availabilityLabels: Record<string, string> = {
+  available: "Disponível",
+  limited: "Limitado",
+  "sold-out": "Esgotado",
+};
+
 export default async function OwnerStorePage() {
   const [items, partners] = await Promise.all([
     prisma.storeItem.findMany({
@@ -18,28 +24,28 @@ export default async function OwnerStorePage() {
   return (
     <div>
       <PageHeader
-        title="Store / Purchases"
-        description="Add products, vouchers and promotional items visible to teams."
+        title="Loja / Compras"
+        description="Adiciona produtos, vouchers e artigos promocionais visíveis para as equipas."
       />
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Add store item</CardTitle>
+          <CardTitle>Adicionar artigo</CardTitle>
         </CardHeader>
         <CardContent>
           <form action={createStoreItemAction} className="grid gap-4 md:grid-cols-2">
             <div>
-              <Label>Name</Label>
+              <Label>Nome</Label>
               <Input name="name" required />
             </div>
             <div>
-              <Label>Price (€)</Label>
+              <Label>Preço (€)</Label>
               <Input name="price" type="number" step="0.01" />
             </div>
             <div>
-              <Label>Partner / brand</Label>
+              <Label>Parceiro / marca</Label>
               <Select name="partnerId" defaultValue="">
-                <option value="">Tournament</option>
+                <option value="">Torneio</option>
                 {partners.map((partner) => (
                   <option key={partner.id} value={partner.id}>
                     {partner.brandName}
@@ -48,26 +54,26 @@ export default async function OwnerStorePage() {
               </Select>
             </div>
             <div>
-              <Label>Availability</Label>
+              <Label>Disponibilidade</Label>
               <Select name="availability" defaultValue="available">
-                <option value="available">Available</option>
-                <option value="limited">Limited</option>
-                <option value="sold-out">Sold out</option>
+                <option value="available">{availabilityLabels.available}</option>
+                <option value="limited">{availabilityLabels.limited}</option>
+                <option value="sold-out">{availabilityLabels["sold-out"]}</option>
               </Select>
             </div>
             <div className="md:col-span-2">
-              <Label>Image URL</Label>
+              <Label>URL da imagem</Label>
               <Input name="imageUrl" />
             </div>
             <div className="md:col-span-2">
-              <Label>Description</Label>
+              <Label>Descrição</Label>
               <Input name="description" />
             </div>
             <div className="md:col-span-2">
-              <Label>Contact / purchase URL</Label>
+              <Label>URL de contacto / compra</Label>
               <Input name="contactUrl" />
             </div>
-            <Button type="submit">Add item</Button>
+            <Button type="submit">Adicionar artigo</Button>
           </form>
         </CardContent>
       </Card>
@@ -84,16 +90,17 @@ export default async function OwnerStorePage() {
                 />
               ) : (
                 <div className="mb-4 flex h-40 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
-                  No image
+                  Sem imagem
                 </div>
               )}
               <p className="text-lg font-semibold text-white">{item.name}</p>
               <p className="mt-1 text-sm text-zinc-400">{item.description}</p>
               <p className="mt-3 text-xl font-bold text-red-400">
-                {item.price ? formatCurrency(item.price) : "Contact"}
+                {item.price ? formatCurrency(item.price) : "Contactar"}
               </p>
               <p className="mt-2 text-xs uppercase tracking-wide text-zinc-500">
-                {item.partner?.brandName ?? "Tournament"} · {item.availability}
+                {item.partner?.brandName ?? "Torneio"} ·{" "}
+                {availabilityLabels[item.availability] ?? item.availability}
               </p>
             </CardContent>
           </Card>

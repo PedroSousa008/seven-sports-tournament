@@ -2,6 +2,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { prisma } from "@/lib/db";
+import { label, partnershipTypeLabels } from "@/lib/labels";
 
 export default async function TeamPartnersPage() {
   const partners = await prisma.partner.findMany({
@@ -13,8 +14,8 @@ export default async function TeamPartnersPage() {
   return (
     <div>
       <PageHeader
-        title="Partners & Promotions"
-        description="Sponsor offers, discount codes and partner deals."
+        title="Parceiros e Promoções"
+        description="Ofertas de patrocinadores, códigos de desconto e promoções de parceiros."
       />
 
       <div className="space-y-4">
@@ -25,7 +26,9 @@ export default async function TeamPartnersPage() {
                 <p className="text-lg font-semibold text-white">
                   {partner.brandName}
                 </p>
-                <Badge>{partner.partnershipType.replaceAll("_", " ")}</Badge>
+                <Badge>
+                  {label(partnershipTypeLabels, partner.partnershipType)}
+                </Badge>
               </div>
               {partner.benefits ? (
                 <p className="mt-2 text-sm text-zinc-400">{partner.benefits}</p>
@@ -37,7 +40,7 @@ export default async function TeamPartnersPage() {
                   rel="noreferrer"
                   className="mt-3 inline-block text-sm text-red-400 hover:text-red-300"
                 >
-                  Visit partner website
+                  Visitar website do parceiro
                 </a>
               ) : null}
               <div className="mt-4 space-y-2">
@@ -51,7 +54,7 @@ export default async function TeamPartnersPage() {
                       <p className="text-sm text-zinc-400">{promo.description}</p>
                     ) : null}
                     {promo.code ? (
-                      <p className="mt-1 text-red-400">Code: {promo.code}</p>
+                      <p className="mt-1 text-red-400">Código: {promo.code}</p>
                     ) : null}
                     {promo.url ? (
                       <a
@@ -60,7 +63,7 @@ export default async function TeamPartnersPage() {
                         rel="noreferrer"
                         className="text-sm text-zinc-400 hover:text-white"
                       >
-                        View offer
+                        Ver oferta
                       </a>
                     ) : null}
                   </div>

@@ -25,15 +25,15 @@ export default async function OwnerCostsPage() {
   return (
     <div>
       <PageHeader
-        title="Costs"
-        description="Track tournament expenses and estimated profit."
+        title="Custos"
+        description="Acompanha despesas do torneio e lucro estimado."
       />
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
-        <StatCard label="Total costs" value={formatCurrency(totalCosts)} icon={Receipt} />
-        <StatCard label="Paid costs" value={formatCurrency(paidCosts)} icon={Receipt} accent="white" />
+        <StatCard label="Custos totais" value={formatCurrency(totalCosts)} icon={Receipt} />
+        <StatCard label="Custos pagos" value={formatCurrency(paidCosts)} icon={Receipt} accent="white" />
         <StatCard
-          label="Estimated profit"
+          label="Lucro estimado"
           value={formatCurrency(totalRevenue - totalCosts)}
           icon={TrendingUp}
           accent="green"
@@ -42,12 +42,12 @@ export default async function OwnerCostsPage() {
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Add cost</CardTitle>
+          <CardTitle>Adicionar custo</CardTitle>
         </CardHeader>
         <CardContent>
           <form action={createCostAction} className="grid gap-4 md:grid-cols-2">
             <div>
-              <Label>Category</Label>
+              <Label>Categoria</Label>
               <Select name="category" required>
                 {COST_CATEGORIES.map((category) => (
                   <option key={category} value={category}>
@@ -57,30 +57,30 @@ export default async function OwnerCostsPage() {
               </Select>
             </div>
             <div>
-              <Label>Amount (€)</Label>
+              <Label>Valor (€)</Label>
               <Input name="amount" type="number" step="0.01" required />
             </div>
             <div>
-              <Label>Date</Label>
+              <Label>Data</Label>
               <Input name="date" type="date" required />
             </div>
             <div>
-              <Label>Supplier</Label>
+              <Label>Fornecedor</Label>
               <Input name="supplier" />
             </div>
             <div>
-              <Label>Receipt URL</Label>
+              <Label>URL do recibo</Label>
               <Input name="receiptUrl" />
             </div>
             <label className="flex items-center gap-2 text-sm text-zinc-300">
               <input type="checkbox" name="paid" />
-              Paid
+              Pago
             </label>
             <div className="md:col-span-2">
-              <Label>Notes</Label>
+              <Label>Notas</Label>
               <Input name="notes" />
             </div>
-            <Button type="submit">Add cost</Button>
+            <Button type="submit">Adicionar custo</Button>
           </form>
         </CardContent>
       </Card>
@@ -98,7 +98,7 @@ export default async function OwnerCostsPage() {
               </div>
               <div className="flex items-center gap-3">
                 <Badge variant={row.paid ? "success" : "warning"}>
-                  {row.paid ? "Paid" : "Unpaid"}
+                  {row.paid ? "Pago" : "Por pagar"}
                 </Badge>
                 <span className="text-lg font-bold text-white">
                   {formatCurrency(row.amount)}

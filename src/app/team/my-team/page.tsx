@@ -33,27 +33,27 @@ export default async function TeamMyTeamPage() {
   return (
     <div>
       <PageHeader
-        title="My Team"
-        description="Manage your squad and select players for each sport."
+        title="A Minha Equipa"
+        description="Gira o plantel e seleciona jogadores para cada desporto."
         action={
           team.selectionsLocked ? (
-            <Badge variant="warning">Selections locked by organizer</Badge>
+            <Badge variant="warning">Seleções bloqueadas pelo organizador</Badge>
           ) : null
         }
       />
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Add player</CardTitle>
+          <CardTitle>Adicionar jogador</CardTitle>
         </CardHeader>
         <CardContent>
           <form action={createPlayerAction.bind(null, teamId)} className="grid gap-4 md:grid-cols-4">
-            <Input name="name" placeholder="Player name" required />
-            <Input name="age" type="number" placeholder="Age" />
-            <Input name="phone" placeholder="Phone" />
+            <Input name="name" placeholder="Nome do jogador" required />
+            <Input name="age" type="number" placeholder="Idade" />
+            <Input name="phone" placeholder="Telefone" />
             <Input name="email" placeholder="Email" />
             <Button type="submit" className="md:col-span-4 md:w-fit">
-              Add player
+              Adicionar jogador
             </Button>
           </form>
         </CardContent>
@@ -67,7 +67,7 @@ export default async function TeamMyTeamPage() {
                 <div>
                   <p className="text-lg font-semibold text-white">{player.name}</p>
                   <p className="text-sm text-zinc-400">
-                    {player.age ? `${player.age} years` : "Age not set"}
+                    {player.age ? `${player.age} anos` : "Idade não definida"}
                     {player.phone ? ` · ${player.phone}` : ""}
                   </p>
                 </div>
@@ -77,12 +77,12 @@ export default async function TeamMyTeamPage() {
                     variant="ghost"
                     disabled={team.selectionsLocked}
                   >
-                    Remove
+                    Remover
                   </Button>
                 </form>
               </div>
               <div className="mt-4">
-                <p className="mb-2 text-sm text-zinc-500">Sports competing in</p>
+                <p className="mb-2 text-sm text-zinc-500">Desportos em que compete</p>
                 <PlayerSportSelector
                   playerId={player.id}
                   sports={sportsWithLimits}

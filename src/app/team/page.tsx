@@ -15,30 +15,30 @@ export default async function TeamHomePage() {
   return (
     <div>
       <PageHeader
-        title={stats.team?.name ?? "Team Home"}
-        description="Your tournament overview, next events and latest updates."
+        title={stats.team?.name ?? "Início"}
+        description="Visão geral do torneio, próximos eventos e últimas atualizações."
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
-          label="Overall position"
+          label="Posição geral"
           value={stats.position ? `#${stats.position}` : "—"}
           icon={Trophy}
         />
         <StatCard
-          label="Total points"
+          label="Pontos totais"
           value={stats.totalPoints}
           icon={Trophy}
           accent="green"
         />
         <StatCard
-          label="Players"
+          label="Jogadores"
           value={stats.team?.players.length ?? 0}
           icon={Users}
           accent="white"
         />
         <StatCard
-          label="Announcements"
+          label="Anúncios"
           value={stats.announcements.length}
           icon={Megaphone}
         />
@@ -49,7 +49,7 @@ export default async function TeamHomePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Calendar className="h-4 w-4 text-red-500" />
-              Next event
+              Próximo evento
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -67,21 +67,21 @@ export default async function TeamHomePage() {
                 ) : null}
               </div>
             ) : (
-              <p className="text-sm text-zinc-500">No upcoming events.</p>
+              <p className="text-sm text-zinc-500">Sem eventos agendados.</p>
             )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Quick links</CardTitle>
+            <CardTitle>Atalhos</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-2 sm:grid-cols-2">
             {[
-              ["/team/my-team", "Manage squad"],
-              ["/team/calendar", "View calendar"],
-              ["/team/rankings", "Check rankings"],
-              ["/team/store", "Browse store"],
+              ["/team/my-team", "Gerir plantel"],
+              ["/team/calendar", "Ver calendário"],
+              ["/team/rankings", "Ver classificações"],
+              ["/team/store", "Explorar loja"],
             ].map(([href, label]) => (
               <Link
                 key={href}
@@ -98,7 +98,7 @@ export default async function TeamHomePage() {
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Upcoming matches</CardTitle>
+            <CardTitle>Próximos jogos</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {stats.upcomingMatches.length ? (
@@ -117,14 +117,14 @@ export default async function TeamHomePage() {
                 </div>
               ))
             ) : (
-              <p className="text-sm text-zinc-500">No matches scheduled.</p>
+              <p className="text-sm text-zinc-500">Sem jogos agendados.</p>
             )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Latest announcements</CardTitle>
+            <CardTitle>Últimos anúncios</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {stats.announcements.map((item) => (

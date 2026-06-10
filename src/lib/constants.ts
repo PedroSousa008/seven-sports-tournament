@@ -11,14 +11,14 @@ export const SPORTS = [
     name: "Padel",
     maxPlayers: 2,
     format:
-      "12 equipas · 4 grupos de 3 · Top 2 de cada grupo · Quartos · Meias · Final · Melhor de 3 sets · 2 jogadores",
+      "12 equipas · 4 grupos de 3 · Top 2 de cada grupo · Quartos-de-final · Meias-finais · Final · Melhor de 3 sets · 2 jogadores",
   },
   {
     slug: "tenis",
     name: "Ténis",
     maxPlayers: 1,
     format:
-      "12 equipas · 4 grupos de 3 · Top 2 qualificam · Quartos · Meias · Final · 1 jogador por equipa",
+      "12 equipas · 4 grupos de 3 · Top 2 qualificam · Quartos-de-final · Meias-finais · Final · 1 jogador por equipa",
   },
   {
     slug: "karts",
@@ -52,39 +52,39 @@ export const DEFAULT_POINTS = [
 ];
 
 export const REVENUE_CATEGORIES = [
-  "Team registrations",
-  "Sponsorships",
-  "Equipment commissions",
-  "Bar revenue",
-  "Merchandise",
-  "Other",
+  "Inscrições de equipas",
+  "Patrocínios",
+  "Comissões de equipamento",
+  "Receita do bar",
+  "Merchandising",
+  "Outros",
 ];
 
 export const COST_CATEGORIES = [
-  "Football field rental",
-  "Padel court rental",
-  "Tennis court rental",
-  "Karting costs",
-  "Volleyball costs",
-  "Balls and equipment",
-  "Trophies",
-  "Medals",
-  "Insurance",
+  "Aluguer de campo de futebol",
+  "Aluguer de courts de padel",
+  "Aluguer de courts de ténis",
+  "Custos de karting",
+  "Custos de voleibol",
+  "Bolas e equipamento",
+  "Troféus",
+  "Medalhas",
+  "Seguro",
   "Staff",
-  "Photographer/videographer",
+  "Fotógrafo/videógrafo",
   "Marketing",
-  "Printing flyers",
-  "Food and drinks",
-  "Other",
+  "Impressão de flyers",
+  "Comida e bebidas",
+  "Outros",
 ];
 
 export const PARTNERSHIP_TYPES = [
-  { value: "MAIN_SPONSOR", label: "Main sponsor" },
-  { value: "OFFICIAL_PARTNER", label: "Official partner" },
-  { value: "SPORTS_PARTNER", label: "Sports partner" },
-  { value: "FOOD_BEVERAGE", label: "Food & beverage partner" },
-  { value: "EQUIPMENT", label: "Equipment partner" },
-  { value: "HEALTH_PHYSIO", label: "Health/physio partner" },
-  { value: "MEDIA", label: "Media partner" },
-  { value: "LOCAL_BUSINESS", label: "Local business promotion" },
+  { value: "MAIN_SPONSOR", label: "Patrocinador principal" },
+  { value: "OFFICIAL_PARTNER", label: "Parceiro oficial" },
+  { value: "SPORTS_PARTNER", label: "Parceiro desportivo" },
+  { value: "FOOD_BEVERAGE", label: "Parceiro de restauração" },
+  { value: "EQUIPMENT", label: "Parceiro de equipamento" },
+  { value: "HEALTH_PHYSIO", label: "Parceiro de saúde/fisioterapia" },
+  { value: "MEDIA", label: "Parceiro de media" },
+  { value: "LOCAL_BUSINESS", label: "Promoção de negócio local" },
 ];

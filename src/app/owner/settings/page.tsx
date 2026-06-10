@@ -11,26 +11,26 @@ export default async function OwnerSettingsPage() {
   return (
     <div>
       <PageHeader
-        title="Settings"
-        description="Tournament configuration, branding and platform defaults."
+        title="Definições"
+        description="Configuração do torneio, identidade visual e valores predefinidos da plataforma."
       />
 
       <Card>
         <CardHeader>
-          <CardTitle>Tournament settings</CardTitle>
+          <CardTitle>Definições do torneio</CardTitle>
         </CardHeader>
         <CardContent>
           <form action={updateSettingsAction} className="grid gap-4 md:grid-cols-2">
             <div>
-              <Label>Tournament name</Label>
+              <Label>Nome do torneio</Label>
               <Input name="name" defaultValue={settings?.name ?? ""} required />
             </div>
             <div>
-              <Label>Location</Label>
+              <Label>Local</Label>
               <Input name="location" defaultValue={settings?.location ?? ""} required />
             </div>
             <div>
-              <Label>Start date</Label>
+              <Label>Data de início</Label>
               <Input
                 name="startDate"
                 type="date"
@@ -43,7 +43,7 @@ export default async function OwnerSettingsPage() {
               />
             </div>
             <div>
-              <Label>End date</Label>
+              <Label>Data de fim</Label>
               <Input
                 name="endDate"
                 type="date"
@@ -56,7 +56,7 @@ export default async function OwnerSettingsPage() {
               />
             </div>
             <div>
-              <Label>Number of teams</Label>
+              <Label>Número de equipas</Label>
               <Input
                 name="maxTeams"
                 type="number"
@@ -64,7 +64,7 @@ export default async function OwnerSettingsPage() {
               />
             </div>
             <div>
-              <Label>Max players per team</Label>
+              <Label>Máx. jogadores por equipa</Label>
               <Input
                 name="maxPlayersPerTeam"
                 type="number"
@@ -72,7 +72,7 @@ export default async function OwnerSettingsPage() {
               />
             </div>
             <div>
-              <Label>Registration price (€)</Label>
+              <Label>Preço de inscrição (€)</Label>
               <Input
                 name="registrationPrice"
                 type="number"
@@ -80,7 +80,7 @@ export default async function OwnerSettingsPage() {
               />
             </div>
             <div>
-              <Label>Primary color</Label>
+              <Label>Cor principal</Label>
               <Input
                 name="primaryColor"
                 type="color"
@@ -88,23 +88,23 @@ export default async function OwnerSettingsPage() {
               />
             </div>
             <div className="md:col-span-2">
-              <Label>Logo URL</Label>
+              <Label>URL do logótipo</Label>
               <Input name="logoUrl" defaultValue={settings?.logoUrl ?? ""} />
             </div>
-            <Button type="submit">Save settings</Button>
+            <Button type="submit">Guardar definições</Button>
           </form>
         </CardContent>
       </Card>
 
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle>Default owner account</CardTitle>
+          <CardTitle>Conta de organizador predefinida</CardTitle>
         </CardHeader>
         <CardContent className="text-sm text-zinc-400">
           <p>Email: owner@torneio5desportos.pt</p>
-          <p>Password: owner2026</p>
+          <p>Palavra-passe: owner2026</p>
           <p className="mt-3 text-zinc-500">
-            Change this password after first login in production.
+            Altere esta palavra-passe após o primeiro acesso em produção.
           </p>
         </CardContent>
       </Card>

@@ -14,8 +14,8 @@ export function RankingTable({
         <thead className="bg-zinc-900 text-zinc-400">
           <tr>
             <th className="px-4 py-3 font-medium">#</th>
-            <th className="px-4 py-3 font-medium">Team</th>
-            <th className="px-4 py-3 font-medium">Points</th>
+            <th className="px-4 py-3 font-medium">Equipa</th>
+            <th className="px-4 py-3 font-medium">Pontos</th>
           </tr>
         </thead>
         <tbody>

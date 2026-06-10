@@ -24,7 +24,7 @@ export default function LoginPage() {
     });
     setLoading(false);
     if (result?.error) {
-      setError("Invalid email or password.");
+      setError("Email ou palavra-passe inválidos.");
       return;
     }
     window.location.href = "/login/redirect";
@@ -37,15 +37,15 @@ export default function LoginPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-red-500">
             Torneio 5 Desportos Braga
           </p>
-          <h1 className="mt-3 text-3xl font-bold text-white">Sign in</h1>
+          <h1 className="mt-3 text-3xl font-bold text-white">Iniciar sessão</h1>
           <p className="mt-2 text-sm text-zinc-400">
-            Owner or team captain access
+            Acesso de organizador ou capitão de equipa
           </p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Login</CardTitle>
+            <CardTitle>Iniciar sessão</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={onSubmit} className="space-y-4">
@@ -55,12 +55,12 @@ export default function LoginPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="captain@team.com"
+                  placeholder="capitao@equipa.com"
                   required
                 />
               </div>
               <div>
-                <Label>Password</Label>
+                <Label>Palavra-passe</Label>
                 <Input
                   type="password"
                   value={password}
@@ -70,7 +70,7 @@ export default function LoginPage() {
               </div>
               {error ? <p className="text-sm text-red-400">{error}</p> : null}
               <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Signing in..." : "Sign in"}
+                {loading ? "A iniciar sessão..." : "Iniciar sessão"}
               </Button>
             </form>
           </CardContent>
@@ -78,7 +78,7 @@ export default function LoginPage() {
 
         <p className="mt-6 text-center text-sm text-zinc-500">
           <Link href="/" className="hover:text-white">
-            Back to homepage
+            Voltar à página inicial
           </Link>
         </p>
       </div>

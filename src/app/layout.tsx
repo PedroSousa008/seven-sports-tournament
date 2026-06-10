@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Torneio 5 Desportos Braga",
   description:
-    "Official tournament platform for Torneio 5 Desportos Braga — teams, schedule, rankings and management.",
+    "Plataforma oficial do Torneio 5 Desportos Braga — equipas, calendário, classificações e gestão.",
 };
 
 export default function RootLayout({

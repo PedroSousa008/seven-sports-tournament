@@ -76,7 +76,7 @@ export function DashboardShell({
               onClick={() => signOut({ callbackUrl: "/login" })}
             >
               <LogOut className="h-4 w-4" />
-              Sign out
+              Terminar sessão
             </Button>
           </div>
         </aside>
@@ -107,7 +107,7 @@ export function DashboardShell({
                     onClick={() => signOut({ callbackUrl: "/login" })}
                   >
                     <LogOut className="h-4 w-4" />
-                    Sign out
+                    Terminar sessão
                   </Button>
                 </div>
               </div>

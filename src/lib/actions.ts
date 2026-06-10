@@ -20,7 +20,7 @@ async function requireOwner() {
 
 async function requireTeam() {
   const session = await requireSession("TEAM");
-  if (!session.user.teamId) throw new Error("Team not found");
+  if (!session.user.teamId) throw new Error("Equipa não encontrada");
   return session;
 }
 
@@ -31,7 +31,7 @@ export async function createTeamAction(formData: FormData) {
   });
   const count = await prisma.team.count();
   if (count >= (settings?.maxTeams ?? 12)) {
-    throw new Error("Maximum number of teams reached");
+    throw new Error("Número máximo de equipas atingido");
   }
 
   const name = String(formData.get("name") ?? "").trim();
@@ -98,7 +98,7 @@ export async function deleteTeamAction(teamId: string) {
 export async function resetTeamPasswordAction(teamId: string, password: string) {
   await requireOwner();
   const user = await prisma.user.findFirst({ where: { teamId } });
-  if (!user) throw new Error("Team login not found");
+  if (!user) throw new Error("Acesso da equipa não encontrado");
   const passwordHash = await bcrypt.hash(password, 12);
   await prisma.user.update({ where: { id: user.id }, data: { passwordHash } });
 }
@@ -106,7 +106,7 @@ export async function resetTeamPasswordAction(teamId: string, password: string) 
 export async function createPlayerAction(teamId: string, formData: FormData) {
   const session = await requireSession();
   if (session.user.role === "TEAM" && session.user.teamId !== teamId) {
-    throw new Error("Unauthorized");
+    throw new Error("Não autorizado");
   }
   if (session.user.role === "OWNER") await requireOwner();
 
@@ -117,9 +117,9 @@ export async function createPlayerAction(teamId: string, formData: FormData) {
   const settings = await prisma.tournamentSettings.findUnique({
     where: { id: "default" },
   });
-  if (!team) throw new Error("Team not found");
+  if (!team) throw new Error("Equipa não encontrada");
   if (team.players.length >= (settings?.maxPlayersPerTeam ?? 10)) {
-    throw new Error("Maximum players reached");
+    throw new Error("Número máximo de jogadores atingido");
   }
 
   await prisma.player.create({
@@ -141,7 +141,7 @@ export async function deletePlayerAction(playerId: string) {
   if (!player) return;
   const session = await requireSession();
   if (session.user.role === "TEAM" && session.user.teamId !== player.teamId) {
-    throw new Error("Unauthorized");
+    throw new Error("Não autorizado");
   }
   await prisma.player.delete({ where: { id: playerId } });
   revalidatePath("/team/my-team");
@@ -159,7 +159,7 @@ export async function togglePlayerSportAction(
   if (session.user.role === "TEAM") {
     if (session.user.teamId !== player.teamId) throw new Error("Unauthorized");
     const team = await prisma.team.findUnique({ where: { id: player.teamId } });
-    if (team?.selectionsLocked) throw new Error("Selections are locked");
+    if (team?.selectionsLocked) throw new Error("As seleções estão bloqueadas");
   }
 
   if (selected) {

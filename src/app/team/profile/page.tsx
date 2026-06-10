@@ -18,23 +18,23 @@ export default async function TeamProfilePage() {
   return (
     <div>
       <PageHeader
-        title="Profile"
-        description="Update your captain account and team details."
+        title="Perfil"
+        description="Atualiza a conta de capitão e os detalhes da equipa."
       />
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Team profile</CardTitle>
+            <CardTitle>Perfil da equipa</CardTitle>
           </CardHeader>
           <CardContent>
             <form action={updateTeamProfileAction} className="grid gap-4 md:grid-cols-2">
               <div>
-                <Label>Team name</Label>
+                <Label>Nome da equipa</Label>
                 <Input name="name" defaultValue={team.name} required />
               </div>
               <div>
-                <Label>Captain name</Label>
+                <Label>Nome do capitão</Label>
                 <Input name="captainName" defaultValue={team.captainName} required />
               </div>
               <div>
@@ -47,14 +47,14 @@ export default async function TeamProfilePage() {
                 />
               </div>
               <div>
-                <Label>Phone</Label>
+                <Label>Telefone</Label>
                 <Input name="phone" defaultValue={team.phone ?? ""} />
               </div>
               <div className="md:col-span-2">
-                <Label>Team logo URL</Label>
+                <Label>URL do logótipo da equipa</Label>
                 <Input name="logoUrl" defaultValue={team.logoUrl ?? ""} />
               </div>
-              <Button type="submit">Save profile</Button>
+              <Button type="submit">Guardar perfil</Button>
             </form>
           </CardContent>
         </Card>
@@ -76,7 +76,7 @@ export default async function TeamProfilePage() {
 
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle>Change password</CardTitle>
+          <CardTitle>Alterar palavra-passe</CardTitle>
         </CardHeader>
         <CardContent>
           <form
@@ -92,12 +92,12 @@ export default async function TeamProfilePage() {
             <Input
               name="password"
               type="password"
-              placeholder="New password"
+              placeholder="Nova palavra-passe"
               minLength={6}
               required
             />
             <Button type="submit" className="w-fit">
-              Update password
+              Atualizar palavra-passe
             </Button>
           </form>
         </CardContent>

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getSportRanking } from "@/lib/rankings";
 import { prisma } from "@/lib/db";
+import { eventStatusLabels, label } from "@/lib/labels";
 import { requireSession } from "@/lib/session";
 import { formatDateTime } from "@/lib/utils";
 
@@ -46,18 +47,18 @@ export default async function TeamSportDetailPage({
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Rules & format</CardTitle>
+            <CardTitle>Regras e formato</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm text-zinc-300">
             <p>{sport.rules}</p>
             <p>{sport.format}</p>
-            {sport.location ? <p>Location: {sport.location}</p> : null}
+            {sport.location ? <p>Local: {sport.location}</p> : null}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Your selected players</CardTitle>
+            <CardTitle>Jogadores selecionados</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {selections.length ? (
@@ -68,7 +69,7 @@ export default async function TeamSportDetailPage({
               ))
             ) : (
               <p className="text-sm text-zinc-500">
-                No players selected for this sport yet.
+                Ainda não foram selecionados jogadores para este desporto.
               </p>
             )}
           </CardContent>
@@ -77,7 +78,7 @@ export default async function TeamSportDetailPage({
 
       <Card className="mt-4">
         <CardHeader>
-          <CardTitle>Groups</CardTitle>
+          <CardTitle>Grupos</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           {sport.groups.map((group) => (
@@ -108,7 +109,7 @@ export default async function TeamSportDetailPage({
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Matches</CardTitle>
+            <CardTitle>Jogos</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {sport.matches.map((match) => (
@@ -118,10 +119,10 @@ export default async function TeamSportDetailPage({
               >
                 <div className="flex items-center justify-between gap-2">
                   <p className="font-medium text-white">{match.title}</p>
-                  <Badge>{match.status}</Badge>
+                  <Badge>{label(eventStatusLabels, match.status)}</Badge>
                 </div>
                 <p className="text-sm text-zinc-400">
-                  {match.homeTeam?.name ?? "TBD"} vs {match.awayTeam?.name ?? "TBD"}
+                  {match.homeTeam?.name ?? "A definir"} vs {match.awayTeam?.name ?? "A definir"}
                 </p>
                 {match.scheduledAt ? (
                   <p className="text-sm text-zinc-500">
@@ -140,7 +141,7 @@ export default async function TeamSportDetailPage({
 
         <Card>
           <CardHeader>
-            <CardTitle>Sport ranking</CardTitle>
+            <CardTitle>Classificação do desporto</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {ranking.map((row) => (

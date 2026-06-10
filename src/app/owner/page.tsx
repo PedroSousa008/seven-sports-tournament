@@ -5,13 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatCard } from "@/components/ui/stat-card";
 import { getOwnerDashboardStats } from "@/lib/tournament";
 import { formatCurrency, formatDate, formatDateTime } from "@/lib/utils";
-import {
-  AlertCircle,
-  Calendar,
-  TrendingUp,
-  Users,
-  Wallet,
-} from "lucide-react";
+import { AlertCircle, Calendar } from "lucide-react";
 
 export default async function OwnerHomePage() {
   const stats = await getOwnerDashboardStats();
@@ -24,10 +18,10 @@ export default async function OwnerHomePage() {
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard label="Equipas inscritas" value={stats.teamsCount} icon={Users} />
-        <StatCard label="Jogadores inscritos" value={stats.playersCount} icon={Users} accent="white" />
-        <StatCard label="Receita total" value={formatCurrency(stats.totalRevenue)} icon={Wallet} accent="green" />
-        <StatCard label="Lucro estimado" value={formatCurrency(stats.estimatedProfit)} icon={TrendingUp} />
+        <StatCard label="Equipas inscritas" value={stats.teamsCount} icon="users" />
+        <StatCard label="Jogadores inscritos" value={stats.playersCount} icon="users" accent="white" />
+        <StatCard label="Receita total" value={formatCurrency(stats.totalRevenue)} icon="wallet" accent="green" />
+        <StatCard label="Lucro estimado" value={formatCurrency(stats.estimatedProfit)} icon="trending-up" />
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-3">

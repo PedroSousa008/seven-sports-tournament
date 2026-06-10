@@ -8,7 +8,6 @@ import { createCostAction } from "@/lib/actions";
 import { COST_CATEGORIES } from "@/lib/constants";
 import { prisma } from "@/lib/db";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { Receipt, TrendingUp } from "lucide-react";
 
 export default async function OwnerCostsPage() {
   const [costs, revenues] = await Promise.all([
@@ -30,12 +29,12 @@ export default async function OwnerCostsPage() {
       />
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
-        <StatCard label="Custos totais" value={formatCurrency(totalCosts)} icon={Receipt} />
-        <StatCard label="Custos pagos" value={formatCurrency(paidCosts)} icon={Receipt} accent="white" />
+        <StatCard label="Custos totais" value={formatCurrency(totalCosts)} icon="receipt" />
+        <StatCard label="Custos pagos" value={formatCurrency(paidCosts)} icon="receipt" accent="white" />
         <StatCard
           label="Lucro estimado"
           value={formatCurrency(totalRevenue - totalCosts)}
-          icon={TrendingUp}
+          icon="trending-up"
           accent="green"
         />
       </div>

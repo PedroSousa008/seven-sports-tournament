@@ -3,16 +3,53 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { LogOut, Menu, X } from "lucide-react";
+import {
+  BarChart3,
+  Calendar,
+  Handshake,
+  Home,
+  LogOut,
+  Megaphone,
+  Menu,
+  Receipt,
+  Settings,
+  ShoppingBag,
+  Trophy,
+  User,
+  Users,
+  Wallet,
+  X,
+  type LucideIcon,
+} from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
+const ICONS: Record<string, LucideIcon> = {
+  home: Home,
+  users: Users,
+  trophy: Trophy,
+  calendar: Calendar,
+  "bar-chart": BarChart3,
+  handshake: Handshake,
+  wallet: Wallet,
+  receipt: Receipt,
+  "shopping-bag": ShoppingBag,
+  megaphone: Megaphone,
+  settings: Settings,
+  user: User,
+};
+
 export type NavItem = {
   href: string;
   label: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: string;
 };
+
+function NavIcon({ name, className }: { name: string; className?: string }) {
+  const Icon = ICONS[name] ?? Home;
+  return <Icon className={className} />;
+}
 
 export function DashboardShell({
   title,
@@ -34,7 +71,6 @@ export function DashboardShell({
         const active =
           pathname === item.href ||
           (item.href !== navItems[0].href && pathname.startsWith(item.href));
-        const Icon = item.icon;
         return (
           <Link
             key={item.href}
@@ -47,7 +83,7 @@ export function DashboardShell({
                 : "text-zinc-400 hover:bg-white/5 hover:text-white"
             )}
           >
-            <Icon className="h-4 w-4" />
+            <NavIcon name={item.icon} className="h-4 w-4" />
             {item.label}
           </Link>
         );
@@ -122,7 +158,6 @@ export function DashboardShell({
             <div className="grid grid-cols-4 gap-1 px-2 py-2">
               {navItems.slice(0, 4).map((item) => {
                 const active = pathname.startsWith(item.href);
-                const Icon = item.icon;
                 return (
                   <Link
                     key={item.href}
@@ -132,7 +167,7 @@ export function DashboardShell({
                       active ? "text-red-400" : "text-zinc-500"
                     )}
                   >
-                    <Icon className="h-4 w-4" />
+                    <NavIcon name={item.icon} className="h-4 w-4" />
                     <span className="truncate">{item.label}</span>
                   </Link>
                 );

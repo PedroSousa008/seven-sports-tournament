@@ -9,7 +9,6 @@ import { REVENUE_CATEGORIES } from "@/lib/constants";
 import { prisma } from "@/lib/db";
 import { label, paymentStatusLabels } from "@/lib/labels";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { TrendingUp, Wallet } from "lucide-react";
 
 export default async function OwnerRevenuePage() {
   const [revenues, teams, partners] = await Promise.all([
@@ -35,9 +34,9 @@ export default async function OwnerRevenuePage() {
       />
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
-        <StatCard label="Receita total" value={formatCurrency(total)} icon={Wallet} accent="green" />
-        <StatCard label="Receita paga" value={formatCurrency(paid)} icon={TrendingUp} />
-        <StatCard label="Receita pendente" value={formatCurrency(pending)} icon={Wallet} accent="white" />
+        <StatCard label="Receita total" value={formatCurrency(total)} icon="wallet" accent="green" />
+        <StatCard label="Receita paga" value={formatCurrency(paid)} icon="trending-up" />
+        <StatCard label="Receita pendente" value={formatCurrency(pending)} icon="wallet" accent="white" />
       </div>
 
       <Card className="mb-6">

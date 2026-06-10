@@ -6,7 +6,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { requireSession } from "@/lib/session";
 import { getTeamDashboardStats } from "@/lib/tournament";
 import { formatDate, formatDateTime } from "@/lib/utils";
-import { Calendar, Megaphone, Trophy, Users } from "lucide-react";
+import { Calendar } from "lucide-react";
 
 export default async function TeamHomePage() {
   const session = await requireSession("TEAM");
@@ -23,24 +23,24 @@ export default async function TeamHomePage() {
         <StatCard
           label="Posição geral"
           value={stats.position ? `#${stats.position}` : "—"}
-          icon={Trophy}
+          icon="trophy"
         />
         <StatCard
           label="Pontos totais"
           value={stats.totalPoints}
-          icon={Trophy}
+          icon="trophy"
           accent="green"
         />
         <StatCard
           label="Jogadores"
           value={stats.team?.players.length ?? 0}
-          icon={Users}
+          icon="users"
           accent="white"
         />
         <StatCard
           label="Anúncios"
           value={stats.announcements.length}
-          icon={Megaphone}
+          icon="megaphone"
         />
       </div>
 

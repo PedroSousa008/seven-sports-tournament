@@ -1,20 +1,40 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import type { LucideIcon } from "lucide-react";
+import {
+  Calendar,
+  Megaphone,
+  Receipt,
+  TrendingUp,
+  Trophy,
+  Users,
+  Wallet,
+  type LucideIcon,
+} from "lucide-react";
+
+const STAT_ICONS: Record<string, LucideIcon> = {
+  users: Users,
+  wallet: Wallet,
+  "trending-up": TrendingUp,
+  trophy: Trophy,
+  calendar: Calendar,
+  megaphone: Megaphone,
+  receipt: Receipt,
+};
 
 export function StatCard({
   label,
   value,
   hint,
-  icon: Icon,
+  icon,
   accent = "red",
 }: {
   label: string;
   value: string | number;
   hint?: string;
-  icon: LucideIcon;
+  icon: string;
   accent?: "red" | "white" | "green";
 }) {
+  const Icon = STAT_ICONS[icon] ?? Users;
   const accentClasses = {
     red: "text-red-400 bg-red-500/10",
     white: "text-white bg-white/10",

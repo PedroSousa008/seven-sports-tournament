@@ -9,7 +9,7 @@ export function CtaSection() {
   return (
     <section className="relative min-h-[70vh] overflow-hidden">
       <Image
-        src="https://images.unsplash.com/photo-1517649763962-0a6230683ca2?auto=format&fit=crop&w=2400&q=80"
+        src="/home/cta/fundo.jpg"
         alt="Pódio e celebração"
         fill
         className="object-cover"

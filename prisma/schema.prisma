@@ -1,0 +1,366 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  OWNER
+  TEAM
+}
+
+enum PaymentStatus {
+  UNPAID
+  PARTIAL
+  PAID
+}
+
+enum EventStatus {
+  UPCOMING
+  LIVE
+  FINISHED
+}
+
+enum AnnouncementPriority {
+  NORMAL
+  IMPORTANT
+  URGENT
+}
+
+enum PartnershipStatus {
+  PENDING
+  CONFIRMED
+  PAID
+  COMPLETED
+}
+
+enum PartnershipType {
+  MAIN_SPONSOR
+  OFFICIAL_PARTNER
+  SPORTS_PARTNER
+  FOOD_BEVERAGE
+  EQUIPMENT
+  HEALTH_PHYSIO
+  MEDIA
+  LOCAL_BUSINESS
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  role         UserRole
+  teamId       String?  @unique
+  team         Team?    @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Team {
+  id                   String                 @id @default(cuid())
+  name                 String
+  captainName          String
+  captainEmail         String
+  phone                String?
+  logoUrl              String?
+  color                String                 @default("#DC2626")
+  paymentStatus        PaymentStatus          @default(UNPAID)
+  notes                String?
+  selectionsLocked     Boolean                @default(false)
+  players              Player[]
+  user                 User?
+  groupEntries         SportGroupTeam[]
+  homeMatches          Match[]                @relation("HomeTeam")
+  awayMatches          Match[]                @relation("AwayTeam")
+  sportPoints          TeamSportPoints[]
+  revenueEntries       Revenue[]
+  eventTeams           EventTeam[]
+  announcementTargets  AnnouncementTarget[]
+  sportSelections      PlayerSportSelection[]
+  kartResults          KartResult[]
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+}
+
+model Player {
+  id        String                 @id @default(cuid())
+  teamId    String
+  team      Team                   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  name      String
+  age       Int?
+  phone     String?
+  email     String?
+  available Boolean                @default(true)
+  sports    PlayerSportSelection[]
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
+}
+
+model PlayerSportSelection {
+  id       String @id @default(cuid())
+  playerId String
+  player   Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  teamId   String
+  team     Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  sportId  String
+  sport    Sport  @relation(fields: [sportId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, sportId])
+}
+
+model Sport {
+  id            String                 @id @default(cuid())
+  slug          String                 @unique
+  name          String
+  description   String?
+  date          DateTime?
+  time          String?
+  location      String?
+  rules         String?
+  format        String?
+  notes         String?
+  groups        SportGroup[]
+  matches       Match[]
+  events        Event[]
+  points        TeamSportPoints[]
+  selections    PlayerSportSelection[]
+  pointsConfigs PointsConfig[]
+  announcements Announcement[]
+  kartHeats     KartHeat[]
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+}
+
+model SportGroup {
+  id      String           @id @default(cuid())
+  sportId String
+  sport   Sport            @relation(fields: [sportId], references: [id], onDelete: Cascade)
+  name    String
+  order   Int              @default(0)
+  teams   SportGroupTeam[]
+  matches Match[]
+}
+
+model SportGroupTeam {
+  id       String     @id @default(cuid())
+  groupId  String
+  group    SportGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  teamId   String
+  team     Team       @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  position Int?
+  points   Int        @default(0)
+
+  @@unique([groupId, teamId])
+}
+
+model Match {
+  id          String      @id @default(cuid())
+  sportId     String
+  sport       Sport       @relation(fields: [sportId], references: [id], onDelete: Cascade)
+  eventId     String?
+  event       Event?      @relation(fields: [eventId], references: [id])
+  title       String
+  round       String?
+  groupId     String?
+  group       SportGroup? @relation(fields: [groupId], references: [id])
+  homeTeamId  String?
+  homeTeam    Team?       @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeamId  String?
+  awayTeam    Team?       @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  scheduledAt DateTime?
+  location    String?
+  status      EventStatus @default(UPCOMING)
+  homeScore   String?
+  awayScore   String?
+  detail      String?
+  notes       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model KartHeat {
+  id      String       @id @default(cuid())
+  sportId String
+  sport   Sport        @relation(fields: [sportId], references: [id], onDelete: Cascade)
+  name    String
+  order   Int          @default(0)
+  results KartResult[]
+}
+
+model KartResult {
+  id       String   @id @default(cuid())
+  heatId   String
+  heat     KartHeat @relation(fields: [heatId], references: [id], onDelete: Cascade)
+  teamId   String
+  team     Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  position Int
+  points   Int      @default(0)
+  time     String?
+
+  @@unique([heatId, teamId])
+}
+
+model Event {
+  id            String         @id @default(cuid())
+  title         String
+  sportId       String?
+  sport         Sport?         @relation(fields: [sportId], references: [id])
+  date          DateTime
+  time          String?
+  location      String?
+  status        EventStatus    @default(UPCOMING)
+  notes         String?
+  teams         EventTeam[]
+  matches       Match[]
+  announcements Announcement[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model EventTeam {
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  teamId  String
+  team    Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, teamId])
+}
+
+model PointsConfig {
+  id       String @id @default(cuid())
+  position Int
+  points   Int
+  sportId  String?
+  sport    Sport? @relation(fields: [sportId], references: [id], onDelete: Cascade)
+
+  @@unique([position, sportId])
+}
+
+model TeamSportPoints {
+  id       String @id @default(cuid())
+  teamId   String
+  team     Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  sportId  String
+  sport    Sport  @relation(fields: [sportId], references: [id], onDelete: Cascade)
+  position Int?
+  points   Int    @default(0)
+
+  @@unique([teamId, sportId])
+}
+
+model Partner {
+  id              String            @id @default(cuid())
+  brandName       String
+  logoUrl         String?
+  category        String?
+  contactPerson   String?
+  email           String?
+  phone           String?
+  partnershipType PartnershipType
+  value           Float?
+  benefits        String?
+  status          PartnershipStatus @default(PENDING)
+  websiteUrl      String?
+  notes           String?
+  promotions      Promotion[]
+  storeItems      StoreItem[]
+  revenueEntries  Revenue[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model Promotion {
+  id          String  @id @default(cuid())
+  partnerId   String
+  partner     Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  code        String?
+  url         String?
+  active      Boolean @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model Revenue {
+  id            String        @id @default(cuid())
+  category      String
+  amount        Float
+  date          DateTime
+  teamId        String?
+  team          Team?         @relation(fields: [teamId], references: [id])
+  partnerId     String?
+  partner       Partner?      @relation(fields: [partnerId], references: [id])
+  paymentStatus PaymentStatus @default(UNPAID)
+  notes         String?
+  createdAt     DateTime      @default(now())
+}
+
+model Cost {
+  id         String   @id @default(cuid())
+  category   String
+  amount     Float
+  date       DateTime
+  paid       Boolean  @default(false)
+  supplier   String?
+  notes      String?
+  receiptUrl String?
+  createdAt  DateTime @default(now())
+}
+
+model StoreItem {
+  id           String   @id @default(cuid())
+  name         String
+  imageUrl     String?
+  description  String?
+  price        Float?
+  partnerId    String?
+  partner      Partner? @relation(fields: [partnerId], references: [id])
+  availability String   @default("available")
+  contactUrl   String?
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+}
+
+model Announcement {
+  id        String               @id @default(cuid())
+  title     String
+  message   String
+  date      DateTime             @default(now())
+  sportId   String?
+  sport     Sport?               @relation(fields: [sportId], references: [id])
+  eventId   String?
+  event     Event?               @relation(fields: [eventId], references: [id])
+  priority  AnnouncementPriority @default(NORMAL)
+  allTeams  Boolean              @default(true)
+  targets   AnnouncementTarget[]
+  createdAt DateTime             @default(now())
+}
+
+model AnnouncementTarget {
+  id             String       @id @default(cuid())
+  announcementId String
+  announcement   Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+  teamId         String
+  team           Team         @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([announcementId, teamId])
+}
+
+model TournamentSettings {
+  id                String   @id @default("default")
+  name              String
+  location          String
+  startDate         DateTime
+  endDate           DateTime
+  maxTeams          Int      @default(12)
+  maxPlayersPerTeam Int      @default(10)
+  registrationPrice Float    @default(500)
+  logoUrl           String?
+  primaryColor      String   @default("#DC2626")
+  updatedAt         DateTime @updatedAt
+}

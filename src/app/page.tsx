@@ -1,53 +1,101 @@
-export default function Home() {
+import Link from "next/link";
+import { Calendar, MapPin, Trophy, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { getTournamentSettings } from "@/lib/tournament";
+import { formatDate } from "@/lib/utils";
+
+export default async function HomePage() {
+  const settings = await getTournamentSettings();
+
   return (
-    <div className="flex min-h-full flex-col bg-zinc-950 text-zinc-50">
+    <div className="min-h-screen bg-black text-white">
       <header className="border-b border-white/10">
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-5">
-          <p className="text-sm font-semibold tracking-[0.2em] text-emerald-400 uppercase">
-            7 Sports
-          </p>
-          <p className="text-sm text-zinc-400">Tournament 2026</p>
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-red-500">
+              Braga · July 2026
+            </p>
+            <h1 className="text-xl font-bold">
+              {settings?.name ?? "Torneio 5 Desportos Braga"}
+            </h1>
+          </div>
+          <Link href="/login">
+            <Button>Login</Button>
+          </Link>
         </div>
       </header>
 
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center px-6 py-20">
-        <div className="max-w-2xl">
-          <p className="mb-4 text-sm font-medium tracking-wide text-emerald-400 uppercase">
-            Coming soon
+      <main className="mx-auto max-w-6xl px-6 py-16">
+        <section className="max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-red-500">
+            Multi-sport tournament
           </p>
-          <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-6xl">
-            7 Sports Tournament
-          </h1>
+          <h2 className="mt-4 text-5xl font-bold tracking-tight sm:text-6xl">
+            The complete platform for teams and organizers.
+          </h2>
           <p className="mt-6 text-lg leading-8 text-zinc-400">
-            The official home for teams, fixtures, standings, and everything
-            you need to follow the tournament.
+            Manage registrations, schedules, rankings, partnerships and
+            communications for the Torneio 5 Desportos Braga — Futebol 7, Padel,
+            Karts, Ténis and Voleibol.
           </p>
-        </div>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Link href="/login">
+              <Button size="lg">Enter platform</Button>
+            </Link>
+          </div>
+        </section>
 
-        <div className="mt-12 grid gap-4 sm:grid-cols-3">
+        <section className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { title: "Teams", description: "Meet the squads competing this year." },
-            { title: "Schedule", description: "Fixtures and match times in one place." },
-            { title: "Results", description: "Live scores and final standings." },
+            { icon: Users, label: "12 teams", value: "10 players max" },
+            {
+              icon: Calendar,
+              label: settings
+                ? `${formatDate(settings.startDate)} – ${formatDate(settings.endDate)}`
+                : "04–09 July",
+              value: "Tournament week",
+            },
+            { icon: MapPin, label: "Braga", value: "Portugal" },
+            { icon: Trophy, label: "5 sports", value: "Global ranking" },
           ].map((item) => (
-            <div
-              key={item.title}
-              className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur"
-            >
-              <h2 className="text-lg font-medium text-white">{item.title}</h2>
-              <p className="mt-2 text-sm leading-6 text-zinc-400">
-                {item.description}
-              </p>
-            </div>
+            <Card key={item.label}>
+              <CardContent>
+                <item.icon className="h-5 w-5 text-red-500" />
+                <p className="mt-4 text-lg font-semibold text-white">{item.label}</p>
+                <p className="mt-1 text-sm text-zinc-400">{item.value}</p>
+              </CardContent>
+            </Card>
           ))}
-        </div>
-      </main>
+        </section>
 
-      <footer className="border-t border-white/10">
-        <div className="mx-auto w-full max-w-5xl px-6 py-6 text-sm text-zinc-500">
-          Built for the 7 Sports Tournament.
-        </div>
-      </footer>
+        <section className="mt-16 grid gap-4 md:grid-cols-2">
+          <Card>
+            <CardContent>
+              <p className="text-sm uppercase tracking-wide text-red-500">
+                Owner access
+              </p>
+              <h3 className="mt-2 text-2xl font-bold">Organizer dashboard</h3>
+              <p className="mt-3 text-zinc-400">
+                Full control over teams, sports, calendar, rankings, revenue,
+                costs, partnerships and announcements.
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent>
+              <p className="text-sm uppercase tracking-wide text-red-500">
+                Team access
+              </p>
+              <h3 className="mt-2 text-2xl font-bold">Captain portal</h3>
+              <p className="mt-3 text-zinc-400">
+                Manage your squad, select players per sport, follow schedules,
+                rankings, promotions and store offers.
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+      </main>
     </div>
   );
 }

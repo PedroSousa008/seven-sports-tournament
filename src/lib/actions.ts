@@ -483,6 +483,33 @@ export async function updateTeamPasswordAction(password: string) {
   });
 }
 
+export async function updateOwnerAccountAction(formData: FormData) {
+  const session = await requireOwner();
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  const name = String(formData.get("name") ?? "").trim();
+  const password = String(formData.get("password") ?? "");
+
+  if (!email) throw new Error("O email é obrigatório.");
+
+  const existing = await prisma.user.findFirst({
+    where: { email, NOT: { id: session.user.id } },
+  });
+  if (existing) throw new Error("Este email já está a ser utilizado.");
+
+  await prisma.user.update({
+    where: { id: session.user.id },
+    data: {
+      email,
+      name: name || "Organizador",
+      ...(password.length >= 6
+        ? { passwordHash: await bcrypt.hash(password, 12) }
+        : {}),
+    },
+  });
+
+  revalidatePath("/owner/settings");
+}
+
 export async function saveKartHeatAction(sportId: string, formData: FormData) {
   await requireOwner();
   const heatName = String(formData.get("heatName") ?? "");

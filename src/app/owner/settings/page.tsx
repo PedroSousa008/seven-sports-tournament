@@ -2,18 +2,91 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input, Label } from "@/components/ui/input";
-import { updateSettingsAction } from "@/lib/actions";
+import { updateOwnerAccountAction, updateSettingsAction } from "@/lib/actions";
+import { OWNER_EMAIL } from "@/lib/owner-account";
+import { prisma } from "@/lib/db";
 import { getTournamentSettings } from "@/lib/tournament";
+import { requireSession } from "@/lib/session";
 
 export default async function OwnerSettingsPage() {
-  const settings = await getTournamentSettings();
+  await requireSession("OWNER");
+  const [settings, owner] = await Promise.all([
+    getTournamentSettings(),
+    prisma.user.findFirst({ where: { role: "OWNER" } }),
+  ]);
 
   return (
     <div>
       <PageHeader
         title="Definições"
-        description="Configuração do torneio, identidade visual e valores predefinidos da plataforma."
+        description="Configuração do torneio, conta de organizador e identidade visual."
       />
+
+      <Card className="mb-6 border-red-500/30 bg-red-500/5">
+        <CardHeader>
+          <CardTitle>Acesso de organizador</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4 text-sm">
+          <p className="text-zinc-300">
+            Utiliza estas credenciais para iniciar sessão em{" "}
+            <strong className="text-white">/login</strong> e gerir todo o
+            torneio.
+          </p>
+          <div className="rounded-xl border border-white/10 bg-black/40 p-4 font-mono text-sm">
+            <p className="text-zinc-400">Email</p>
+            <p className="mt-1 text-lg font-semibold text-white">
+              {owner?.email ?? OWNER_EMAIL}
+            </p>
+            <p className="mt-4 text-zinc-400">Palavra-passe inicial</p>
+            <p className="mt-1 text-lg font-semibold text-red-400">
+              Torneio5Braga
+            </p>
+          </div>
+          <p className="text-zinc-500">
+            Recomendamos alterar a palavra-passe abaixo após o primeiro acesso.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Conta de organizador</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form
+            action={updateOwnerAccountAction}
+            className="grid gap-4 md:grid-cols-2"
+          >
+            <div>
+              <Label>Nome</Label>
+              <Input
+                name="name"
+                defaultValue={owner?.name ?? "Organizador"}
+                required
+              />
+            </div>
+            <div>
+              <Label>Email de acesso</Label>
+              <Input
+                name="email"
+                type="email"
+                defaultValue={owner?.email ?? OWNER_EMAIL}
+                required
+              />
+            </div>
+            <div className="md:col-span-2">
+              <Label>Nova palavra-passe (opcional)</Label>
+              <Input
+                name="password"
+                type="password"
+                placeholder="Mínimo 6 caracteres"
+                minLength={6}
+              />
+            </div>
+            <Button type="submit">Guardar conta</Button>
+          </form>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
@@ -93,19 +166,6 @@ export default async function OwnerSettingsPage() {
             </div>
             <Button type="submit">Guardar definições</Button>
           </form>
-        </CardContent>
-      </Card>
-
-      <Card className="mt-6">
-        <CardHeader>
-          <CardTitle>Conta de organizador predefinida</CardTitle>
-        </CardHeader>
-        <CardContent className="text-sm text-zinc-400">
-          <p>Email: owner@torneio5desportos.pt</p>
-          <p>Palavra-passe: owner2026</p>
-          <p className="mt-3 text-zinc-500">
-            Altere esta palavra-passe após o primeiro acesso em produção.
-          </p>
         </CardContent>
       </Card>
     </div>

@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        password: { label: "Palavra-passe", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
@@ -38,7 +38,7 @@ export const authOptions: NextAuthOptions = {
         return {
           id: user.id,
           email: user.email,
-          name: user.name ?? user.team?.name ?? "User",
+          name: user.name ?? user.team?.name ?? "Utilizador",
           role: user.role,
           teamId: user.teamId ?? undefined,
         };

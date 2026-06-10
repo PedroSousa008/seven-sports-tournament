@@ -4,6 +4,9 @@ import { DEFAULT_POINTS, SPORTS } from "../src/lib/constants";
 
 const prisma = new PrismaClient();
 
+const OWNER_EMAIL = "organizador@torneio5desportos.pt";
+const OWNER_PASSWORD = "Torneio5Braga";
+
 async function main() {
   await prisma.tournamentSettings.upsert({
     where: { id: "default" },
@@ -21,14 +24,24 @@ async function main() {
     },
   });
 
-  const ownerPassword = await bcrypt.hash("owner2026", 12);
+  const ownerPasswordHash = await bcrypt.hash(OWNER_PASSWORD, 12);
+
+  // Remove conta antiga se existir
+  await prisma.user.deleteMany({
+    where: { email: "owner@torneio5desportos.pt", role: "OWNER" },
+  });
+
   await prisma.user.upsert({
-    where: { email: "owner@torneio5desportos.pt" },
-    update: {},
+    where: { email: OWNER_EMAIL },
+    update: {
+      name: "Organizador",
+      passwordHash: ownerPasswordHash,
+      role: "OWNER",
+    },
     create: {
-      email: "owner@torneio5desportos.pt",
-      name: "Organizador do Torneio",
-      passwordHash: ownerPassword,
+      email: OWNER_EMAIL,
+      name: "Organizador",
+      passwordHash: ownerPasswordHash,
       role: "OWNER",
     },
   });
@@ -65,6 +78,10 @@ async function main() {
       });
     }
   }
+
+  console.log("Conta de organizador pronta:");
+  console.log(`  Email: ${OWNER_EMAIL}`);
+  console.log(`  Palavra-passe: ${OWNER_PASSWORD}`);
 }
 
 main()

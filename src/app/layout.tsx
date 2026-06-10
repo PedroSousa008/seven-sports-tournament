@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bebas_Neue, Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
 import "./globals.css";
 
@@ -13,10 +13,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const bebas = Bebas_Neue({
+  weight: "400",
+  variable: "--font-bebas",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
-  title: "Torneio 5 Desportos Braga",
+  title: "Torneio 5 Desportos Braga | 04–09 Julho 2026",
   description:
-    "Plataforma oficial do Torneio 5 Desportos Braga — equipas, calendário, classificações e gestão.",
+    "O maior torneio multidesportivo de Braga. 12 equipas, 5 desportos, 1 campeão. Futebol 7, Padel, Karts, Ténis e Voleibol.",
 };
 
 export default function RootLayout({
@@ -27,7 +33,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${bebas.variable} h-full antialiased`}
     >
       <body className="min-h-full">
         <Providers>{children}</Providers>

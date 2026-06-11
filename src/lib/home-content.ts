@@ -1,3 +1,7 @@
+import { SPORTS, TOURNAMENT } from "./constants";
+
+export { TOURNAMENT };
+
 export const HERO_SLIDES = [
   {
     image: "/home/hero/01-futebol-celebracao.jpg",
@@ -21,7 +25,7 @@ export const STATS = [
   { value: 12, label: "Equipas", suffix: "" },
   { value: 120, label: "Atletas", suffix: "" },
   { value: 4, label: "Desportos", suffix: "" },
-  { value: 5, label: "Dias", suffix: "" },
+  { value: 4, label: "Dias", suffix: "" },
   { value: 1, label: "Campeão", suffix: "" },
 ] as const;
 
@@ -29,7 +33,7 @@ export const SPORTS_SHOWCASE = [
   {
     slug: "futebol7",
     name: "Futebol 7",
-    format: "4 grupos · Eliminatórias · Final épica",
+    format: "10 Julho · 4 grupos · Eliminatórias · Final épica",
     description: "12 equipas, 7 em campo, emoção até ao último apito.",
     image: "/home/sports/futebol7.jpg",
     icon: "⚽",
@@ -37,53 +41,53 @@ export const SPORTS_SHOWCASE = [
   {
     slug: "padel",
     name: "Padel",
-    format: "Grupos · Quartos · Melhor de 3 sets",
+    format: "11 Julho · Grupos · Quartos · Melhor de 3 sets",
     description: "Duplas de elite em duelos intensos na rede.",
     image: "/home/sports/padel.jpg",
     icon: "🎾",
   },
   {
+    slug: "voleibol",
+    name: "Voleibol",
+    format: "17 Julho · Grupos · Fase final · Equipas completas",
+    description: "Bloqueios, smashes e espírito de equipa em Braga.",
+    image: "/home/sports/voleibol.jpg",
+    icon: "🏐",
+  },
+  {
     slug: "karts",
     name: "Karts",
-    format: "Grande Final · Máxima pontuação",
+    format: "18 Julho · Grande Final · Máxima pontuação",
     description: "O momento decisivo. Velocidade, estratégia e glória.",
     image: "/home/sports/karts.jpg",
     icon: "🏎️",
     featured: true,
-  },
-  {
-    slug: "voleibol",
-    name: "Voleibol",
-    format: "Grupos · Fase final · Equipas completas",
-    description: "Bloqueios, smashes e espírito de equipa em Braga.",
-    image: "/home/sports/voleibol.jpg",
-    icon: "🏐",
   },
 ] as const;
 
 export const JOURNEY = [
   {
     day: "Dia 1",
-    sport: "Padel",
-    date: "04 Julho",
-    image: "/home/journey/dia1-padel.jpg",
+    sport: "Futebol 7",
+    date: SPORTS[0].dateLabel,
+    image: "/home/journey/dia1-futebol7.jpg",
   },
   {
     day: "Dia 2",
-    sport: "Voleibol",
-    date: "05 Julho",
-    image: "/home/journey/dia2-voleibol.jpg",
+    sport: "Padel",
+    date: SPORTS[1].dateLabel,
+    image: "/home/journey/dia2-padel.jpg",
   },
   {
     day: "Dia 3",
-    sport: "Futebol 7",
-    date: "06 Julho",
-    image: "/home/journey/dia3-futebol7.jpg",
+    sport: "Voleibol",
+    date: SPORTS[2].dateLabel,
+    image: "/home/journey/dia3-voleibol.jpg",
   },
   {
     day: "Dia 4",
     sport: "Karts Grand Final",
-    date: "07–08 Julho",
+    date: SPORTS[3].dateLabel,
     image: "/home/journey/dia4-karts-final.jpg",
     featured: true,
   },

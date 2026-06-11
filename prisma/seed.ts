@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { DEFAULT_POINTS, SPORTS } from "../src/lib/constants";
+import { DEFAULT_POINTS, SPORTS, TOURNAMENT } from "../src/lib/constants";
 
 const prisma = new PrismaClient();
 
@@ -10,13 +10,16 @@ const OWNER_PASSWORD = "Torneio5Braga";
 async function main() {
   await prisma.tournamentSettings.upsert({
     where: { id: "default" },
-    update: {},
+    update: {
+      startDate: new Date(TOURNAMENT.startDate),
+      endDate: new Date(TOURNAMENT.endDate),
+    },
     create: {
       id: "default",
       name: "Torneio 5 Desportos Braga",
       location: "Braga",
-      startDate: new Date("2026-07-04"),
-      endDate: new Date("2026-07-09"),
+      startDate: new Date(TOURNAMENT.startDate),
+      endDate: new Date(TOURNAMENT.endDate),
       maxTeams: 12,
       maxPlayersPerTeam: 10,
       registrationPrice: 500,
@@ -54,11 +57,13 @@ async function main() {
       update: {
         format: sport.format,
         name: sport.name,
+        date: new Date(sport.date),
       },
       create: {
         slug: sport.slug,
         name: sport.name,
         format: sport.format,
+        date: new Date(sport.date),
         location: "Braga",
         rules: `Regras oficiais de ${sport.name}.`,
       },

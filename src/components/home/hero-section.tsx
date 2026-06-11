@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { HERO_SLIDES } from "@/lib/home-content";
+import { HERO_SLIDES, TOURNAMENT } from "@/lib/home-content";
 
 export function HeroSection() {
   const [index, setIndex] = useState(0);
@@ -68,7 +68,7 @@ export function HeroSection() {
           transition={{ delay: 0.5, duration: 0.8 }}
           className="mt-6 text-lg tracking-[0.25em] text-zinc-300 sm:text-xl"
         >
-          04–09 JULHO 2026
+          {TOURNAMENT.dateRangeUpper}
         </motion.p>
 
         <motion.div

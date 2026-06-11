@@ -1,7 +1,16 @@
+export const TOURNAMENT = {
+  startDate: "2026-07-10",
+  endDate: "2026-07-18",
+  dateRange: "10–18 Julho 2026",
+  dateRangeUpper: "10–18 JULHO 2026",
+} as const;
+
 export const SPORTS = [
   {
     slug: "futebol7",
     name: "Futebol 7",
+    date: "2026-07-10",
+    dateLabel: "10 Julho",
     maxPlayers: 10,
     format:
       "12 equipas · 4 grupos de 3 · Apenas 1º de cada grupo qualifica · Meias-finais · Final · 7 jogadores em campo",
@@ -9,23 +18,29 @@ export const SPORTS = [
   {
     slug: "padel",
     name: "Padel",
+    date: "2026-07-11",
+    dateLabel: "11 Julho",
     maxPlayers: 2,
     format:
       "12 equipas · 4 grupos de 3 · Top 2 de cada grupo · Quartos-de-final · Meias-finais · Final · Melhor de 3 sets · 2 jogadores",
   },
   {
-    slug: "karts",
-    name: "Karts",
-    maxPlayers: 2,
-    format:
-      "Grande final do torneio · Cada equipa seleciona 2 pilotos · Provas, finais e pontuação com peso elevado no ranking geral",
-  },
-  {
     slug: "voleibol",
     name: "Voleibol",
+    date: "2026-07-17",
+    dateLabel: "17 Julho",
     maxPlayers: 10,
     format:
       "4 grupos de 3 equipas · Top 2 qualificam · Fase a eliminar · Até 10 jogadores por equipa",
+  },
+  {
+    slug: "karts",
+    name: "Karts",
+    date: "2026-07-18",
+    dateLabel: "18 Julho",
+    maxPlayers: 2,
+    format:
+      "Grande final do torneio · Cada equipa seleciona 2 pilotos · Provas, finais e pontuação com peso elevado no ranking geral",
   },
 ] as const;
 
@@ -78,5 +93,5 @@ export const PARTNERSHIP_TYPES = [
   { value: "EQUIPMENT", label: "Parceiro de equipamento" },
   { value: "HEALTH_PHYSIO", label: "Parceiro de saúde/fisioterapia" },
   { value: "MEDIA", label: "Parceiro de media" },
-  { value: "LOCAL_BUSINESS", label: "Promoção de negócio local" },
+  { value: "LOCAL_BUSINESS", label: "Promoção de negóio local" },
 ];

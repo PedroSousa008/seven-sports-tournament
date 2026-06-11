@@ -23,10 +23,10 @@ Substitui os ficheiros `.jpg` em cada pasta pelas tuas fotos, **mantendo o mesmo
 ### `journey/` — Linha temporal do torneio (4 imagens)
 | Ficheiro | Descrição |
 |----------|-----------|
-| `dia1-padel.jpg` | Dia 1 — Padel |
-| `dia2-voleibol.jpg` | Dia 2 — Voleibol |
-| `dia3-futebol7.jpg` | Dia 3 — Futebol 7 |
-| `dia4-karts-final.jpg` | Dia 4 — Karts Grand Final |
+| `dia1-futebol7.jpg` | Dia 1 — Futebol 7 (10 Julho) |
+| `dia2-padel.jpg` | Dia 2 — Padel (11 Julho) |
+| `dia3-voleibol.jpg` | Dia 3 — Voleibol (17 Julho) |
+| `dia4-karts-final.jpg` | Dia 4 — Karts Grand Final (18 Julho) |
 
 ### `trophies/` — Troféus (4 imagens)
 | Ficheiro | Descrição |

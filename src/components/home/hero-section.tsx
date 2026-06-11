@@ -79,7 +79,7 @@ export function HeroSection() {
         >
           <span>12 Equipas</span>
           <span className="h-1 w-1 rounded-full bg-red-500" />
-          <span>5 Desportos</span>
+          <span>4 Desportos</span>
           <span className="h-1 w-1 rounded-full bg-red-500" />
           <span>1 Campeão</span>
         </motion.div>

@@ -11,10 +11,10 @@ export function SportsSection() {
       <div className="mx-auto max-w-7xl px-6">
         <FadeIn className="mb-16 max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-red-500">
-            Cinco Desportos
+            Quatro Desportos
           </p>
           <h2 className="font-display mt-4 text-4xl text-white sm:text-5xl">
-            CINCO ARENAS. UMA COROA.
+            QUATRO ARENAS. UMA COROA.
           </h2>
           <p className="mt-4 text-lg text-zinc-400">
             Cada modalidade conta para a classificação final. Os Karts fecham o

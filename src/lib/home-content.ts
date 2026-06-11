@@ -12,11 +12,7 @@ export const HERO_SLIDES = [
     alt: "Piloto de kart numa curva",
   },
   {
-    image: "/home/hero/04-tenis.jpg",
-    alt: "Jogador de ténis ao serviço",
-  },
-  {
-    image: "/home/hero/05-voleibol.jpg",
+    image: "/home/hero/04-voleibol.jpg",
     alt: "Ação de voleibol",
   },
 ] as const;
@@ -24,8 +20,8 @@ export const HERO_SLIDES = [
 export const STATS = [
   { value: 12, label: "Equipas", suffix: "" },
   { value: 120, label: "Atletas", suffix: "" },
-  { value: 5, label: "Desportos", suffix: "" },
-  { value: 6, label: "Dias", suffix: "" },
+  { value: 4, label: "Desportos", suffix: "" },
+  { value: 5, label: "Dias", suffix: "" },
   { value: 1, label: "Campeão", suffix: "" },
 ] as const;
 
@@ -54,14 +50,6 @@ export const SPORTS_SHOWCASE = [
     image: "/home/sports/karts.jpg",
     icon: "🏎️",
     featured: true,
-  },
-  {
-    slug: "tenis",
-    name: "Ténis",
-    format: "Grupos · Eliminatórias · 1 atleta por equipa",
-    description: "Precisão, nervos de aço e pontos que contam.",
-    image: "/home/sports/tenis.jpg",
-    icon: "🎾",
   },
   {
     slug: "voleibol",
@@ -94,15 +82,9 @@ export const JOURNEY = [
   },
   {
     day: "Dia 4",
-    sport: "Ténis",
-    date: "07 Julho",
-    image: "/home/journey/dia4-tenis.jpg",
-  },
-  {
-    day: "Dia 5",
     sport: "Karts Grand Final",
-    date: "08–09 Julho",
-    image: "/home/journey/dia5-karts-final.jpg",
+    date: "07–08 Julho",
+    image: "/home/journey/dia4-karts-final.jpg",
     featured: true,
   },
 ] as const;

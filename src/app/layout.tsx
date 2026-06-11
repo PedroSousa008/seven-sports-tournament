@@ -22,7 +22,7 @@ const bebas = Bebas_Neue({
 export const metadata: Metadata = {
   title: "Torneio 5 Desportos Braga | 04–09 Julho 2026",
   description:
-    "O maior torneio multidesportivo de Braga. 12 equipas, 5 desportos, 1 campeão. Futebol 7, Padel, Karts, Ténis e Voleibol.",
+    "O maior torneio multidesportivo de Braga. 12 equipas, 4 desportos, 1 campeão. Futebol 7, Padel, Karts e Voleibol.",
 };
 
 export default function RootLayout({

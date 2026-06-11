@@ -4,32 +4,29 @@ Substitui os ficheiros `.jpg` em cada pasta pelas tuas fotos, **mantendo o mesmo
 
 ## Estrutura
 
-### `hero/` — Carrossel principal (5 imagens)
+### `hero/` — Carrossel principal (4 imagens)
 | Ficheiro | Descrição |
 |----------|-----------|
 | `01-futebol-celebracao.jpg` | Slide 1 — Futebol |
 | `02-padel.jpg` | Slide 2 — Padel |
 | `03-karts.jpg` | Slide 3 — Karts |
-| `04-tenis.jpg` | Slide 4 — Ténis |
-| `05-voleibol.jpg` | Slide 5 — Voleibol |
+| `04-voleibol.jpg` | Slide 4 — Voleibol |
 
-### `sports/` — Secção dos 5 desportos (5 imagens)
+### `sports/` — Secção dos 4 desportos (4 imagens)
 | Ficheiro | Descrição |
 |----------|-----------|
 | `futebol7.jpg` | Futebol 7 |
 | `padel.jpg` | Padel |
 | `karts.jpg` | Karts |
-| `tenis.jpg` | Ténis |
 | `voleibol.jpg` | Voleibol |
 
-### `journey/` — Linha temporal do torneio (5 imagens)
+### `journey/` — Linha temporal do torneio (4 imagens)
 | Ficheiro | Descrição |
 |----------|-----------|
 | `dia1-padel.jpg` | Dia 1 — Padel |
 | `dia2-voleibol.jpg` | Dia 2 — Voleibol |
 | `dia3-futebol7.jpg` | Dia 3 — Futebol 7 |
-| `dia4-tenis.jpg` | Dia 4 — Ténis |
-| `dia5-karts-final.jpg` | Dia 5 — Karts Grand Final |
+| `dia4-karts-final.jpg` | Dia 4 — Karts Grand Final |
 
 ### `trophies/` — Troféus (4 imagens)
 | Ficheiro | Descrição |

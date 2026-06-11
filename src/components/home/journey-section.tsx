@@ -15,7 +15,7 @@ export function JourneySection() {
             A Jornada
           </p>
           <h2 className="font-display mt-4 text-4xl text-white sm:text-5xl">
-            SEIS DIAS PARA A HISTÓRIA
+            CINCO DIAS PARA A HISTÓRIA
           </h2>
         </FadeIn>
 

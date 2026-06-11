@@ -46,6 +46,8 @@ async function main() {
     },
   });
 
+  await prisma.sport.deleteMany({ where: { slug: "tenis" } });
+
   for (const sport of SPORTS) {
     await prisma.sport.upsert({
       where: { slug: sport.slug },

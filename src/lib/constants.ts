@@ -14,13 +14,6 @@ export const SPORTS = [
       "12 equipas · 4 grupos de 3 · Top 2 de cada grupo · Quartos-de-final · Meias-finais · Final · Melhor de 3 sets · 2 jogadores",
   },
   {
-    slug: "tenis",
-    name: "Ténis",
-    maxPlayers: 1,
-    format:
-      "12 equipas · 4 grupos de 3 · Top 2 qualificam · Quartos-de-final · Meias-finais · Final · 1 jogador por equipa",
-  },
-  {
     slug: "karts",
     name: "Karts",
     maxPlayers: 2,
@@ -63,7 +56,6 @@ export const REVENUE_CATEGORIES = [
 export const COST_CATEGORIES = [
   "Aluguer de campo de futebol",
   "Aluguer de courts de padel",
-  "Aluguer de courts de ténis",
   "Custos de karting",
   "Custos de voleibol",
   "Bolas e equipamento",

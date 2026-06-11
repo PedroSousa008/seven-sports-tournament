@@ -95,28 +95,40 @@ export const JOURNEY = [
 
 export const TROPHIES = [
   {
+    slug: "futebol7",
     title: "Troféu de Campeão",
-    subtitle: "1.º Lugar",
-    image: "/home/trophies/campeao.jpg",
+    subtitle: "Futebol 7",
+    image: "/home/trophies/futebol7.jpg",
     accent: "from-amber-400/30 to-yellow-600/10",
   },
   {
-    title: "Troféu Vice-Campeão",
-    subtitle: "2.º Lugar",
-    image: "/home/trophies/vice-campeao.jpg",
+    slug: "padel",
+    title: "Troféu de Campeão",
+    subtitle: "Padel",
+    image: "/home/trophies/padel.jpg",
     accent: "from-zinc-300/20 to-zinc-500/10",
   },
   {
-    title: "Troféu 3.º Lugar",
-    subtitle: "Pódio",
-    image: "/home/trophies/terceiro-lugar.jpg",
+    slug: "voleibol",
+    title: "Troféu de Campeão",
+    subtitle: "Voleibol",
+    image: "/home/trophies/voleibol.jpg",
     accent: "from-orange-400/20 to-amber-700/10",
   },
   {
-    title: "Troféu Fair Play",
-    subtitle: "Espírito desportivo",
-    image: "/home/trophies/fair-play.jpg",
+    slug: "karts",
+    title: "Troféu de Campeão",
+    subtitle: "Karts",
+    image: "/home/trophies/karts.jpg",
     accent: "from-red-500/20 to-red-900/10",
+  },
+  {
+    slug: "campeoes-torneio",
+    title: "1.ª Edição",
+    subtitle: "Campeões do Torneio",
+    image: "/home/trophies/campeoes-torneio.jpg",
+    accent: "from-amber-300/30 to-yellow-500/20",
+    featured: true,
   },
 ] as const;
 

@@ -93,44 +93,44 @@ export const JOURNEY = [
   },
 ] as const;
 
-export const TROPHIES = [
+export const SPORT_TROPHIES = [
   {
     slug: "futebol7",
     title: "Troféu de Campeão",
     subtitle: "Futebol 7",
-    image: "/home/trophies/futebol7.jpg",
+    image: "/home/trophies/futebol7.png",
     accent: "from-amber-400/30 to-yellow-600/10",
   },
   {
     slug: "padel",
     title: "Troféu de Campeão",
     subtitle: "Padel",
-    image: "/home/trophies/padel.jpg",
+    image: "/home/trophies/padel.png",
     accent: "from-zinc-300/20 to-zinc-500/10",
   },
   {
     slug: "voleibol",
     title: "Troféu de Campeão",
     subtitle: "Voleibol",
-    image: "/home/trophies/voleibol.jpg",
+    image: "/home/trophies/voleibol.png",
     accent: "from-orange-400/20 to-amber-700/10",
   },
   {
     slug: "karts",
     title: "Troféu de Campeão",
     subtitle: "Karts",
-    image: "/home/trophies/karts.jpg",
+    image: "/home/trophies/karts.png",
     accent: "from-red-500/20 to-red-900/10",
   },
-  {
-    slug: "campeoes-torneio",
-    title: "1.ª Edição",
-    subtitle: "Campeões do Torneio",
-    image: "/home/trophies/campeoes-torneio.jpg",
-    accent: "from-amber-300/30 to-yellow-500/20",
-    featured: true,
-  },
 ] as const;
+
+export const GRAND_TROPHY = {
+  slug: "campeoes-torneio",
+  title: "1.ª Edição",
+  subtitle: "Campeões do Torneio",
+  image: "/home/trophies/campeoes-torneio.png",
+  accent: "from-amber-300/30 to-yellow-500/20",
+} as const;
 
 export const GALLERY_IMAGES = [
   {

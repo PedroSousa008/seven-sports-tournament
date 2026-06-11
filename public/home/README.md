@@ -28,14 +28,14 @@ Substitui os ficheiros `.jpg` em cada pasta pelas tuas fotos, **mantendo o mesmo
 | `dia3-voleibol.jpg` | Dia 3 — Voleibol (17 Julho) |
 | `dia4-karts-final.jpg` | Dia 4 — Karts Grand Final (18 Julho) |
 
-### `trophies/` — Troféus (5 imagens)
+### `trophies/` — Troféus (5 imagens PNG)
 | Ficheiro | Descrição |
 |----------|-----------|
-| `futebol7.jpg` | Futebol 7 — Troféu de Campeão |
-| `padel.jpg` | Padel — Troféu de Campeão |
-| `voleibol.jpg` | Voleibol — Troféu de Campeão |
-| `karts.jpg` | Karts — Troféu de Campeão |
-| `campeoes-torneio.jpg` | Campeões do Torneio — 1.ª Edição |
+| `futebol7.png` | Futebol 7 — Troféu de Campeão |
+| `padel.png` | Padel — Troféu de Campeão |
+| `voleibol.png` | Voleibol — Troféu de Campeão |
+| `karts.png` | Karts — Troféu de Campeão |
+| `campeoes-torneio.png` | Campeões do Torneio — 1.ª Edição |
 
 ### `gallery/` — Galeria de momentos (8 imagens)
 | Ficheiro | Descrição |

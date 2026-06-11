@@ -1,0 +1,14 @@
+---
+description: Fazer commit e push automaticamente após alterações concluídas
+alwaysApply: true
+---
+
+# Push automático
+
+Depois de concluir alterações no projeto (código, imagens, configuração):
+
+1. Faz `git add` dos ficheiros relevantes (nunca `.env` ou credenciais).
+2. Cria um commit com mensagem concisa em português ou inglês, conforme o estilo do repo.
+3. Faz `git push origin main` (ou o branch atual) sem pedir confirmação ao utilizador.
+
+Só não fazes push se o utilizador pedir explicitamente para não enviar, ou se o push falhar (nesse caso reporta o erro e tenta corrigir).

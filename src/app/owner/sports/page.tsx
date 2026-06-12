@@ -11,7 +11,7 @@ export default async function OwnerSportsPage() {
     <div>
       <PageHeader
         title="Desportos"
-        description="Gira formatos, grupos, jogos, resultados e classificações de cada desporto."
+        description="Escolhe um desporto para gerir grupos, resultados e fase eliminatória."
       />
 
       <div className="grid gap-4 md:grid-cols-2">

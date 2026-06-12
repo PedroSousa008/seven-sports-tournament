@@ -1,22 +1,14 @@
 import { notFound } from "next/navigation";
-import { PageHeader } from "@/components/layout/page-header";
-import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import { ChevronLeft, Settings2 } from "lucide-react";
+import { OwnerSportSchedule } from "@/components/owner/owner-sport-schedule";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input, Label, Textarea } from "@/components/ui/input";
-import { TeamAvatar } from "@/components/ui/team-avatar";
-import {
-  createMatchAction,
-  saveSportGroupAction,
-  setTeamSportPositionAction,
-  updateMatchResultAction,
-  updateSportAction,
-} from "@/lib/actions";
-import { SPORTS } from "@/lib/constants";
-import { getSportRanking } from "@/lib/rankings";
+import { getSportCalendar } from "@/lib/calendar";
+import { updateSportAction } from "@/lib/actions";
 import { prisma } from "@/lib/db";
-import { eventStatusLabels, label } from "@/lib/labels";
-import { formatDateTime } from "@/lib/utils";
+import { SPORT_FORMATS, KNOCKOUT_LABELS } from "@/lib/sport-formats";
+import { formatDate } from "@/lib/utils";
 
 export default async function OwnerSportDetailPage({
   params,
@@ -24,267 +16,105 @@ export default async function OwnerSportDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const sport = await prisma.sport.findUnique({
-    where: { slug },
-    include: {
-      groups: {
-        include: {
-          teams: { include: { team: true } },
-        },
-        orderBy: { order: "asc" },
-      },
-      matches: {
-        include: { homeTeam: true, awayTeam: true, group: true },
-        orderBy: { scheduledAt: "asc" },
-      },
-      kartHeats: {
-        include: { results: { include: { team: true } } },
-        orderBy: { order: "asc" },
-      },
-    },
-  });
-  if (!sport) notFound();
 
-  const [teams, ranking] = await Promise.all([
-    prisma.team.findMany({ orderBy: { name: "asc" } }),
-    getSportRanking(sport.id),
+  const [sport, calendar, teams] = await Promise.all([
+    prisma.sport.findUnique({ where: { slug } }),
+    getSportCalendar(slug),
+    prisma.team.findMany({
+      orderBy: { name: "asc" },
+      select: { id: true, name: true, logoUrl: true, color: true },
+    }),
   ]);
-  const sportMeta = SPORTS.find((item) => item.slug === slug);
+
+  if (!sport || !calendar) notFound();
+
+  const format = SPORT_FORMATS[slug];
 
   return (
-    <div>
-      <PageHeader
-        title={sport.name}
-        description={sport.format ?? sportMeta?.format}
-      />
+    <div className="space-y-8">
+      <div>
+        <Link
+          href="/owner/sports"
+          className="mb-4 inline-flex items-center gap-1 text-sm text-zinc-500 transition hover:text-white"
+        >
+          <ChevronLeft className="h-4 w-4" />
+          Voltar aos desportos
+        </Link>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Visão geral do desporto</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form action={updateSportAction.bind(null, sport.id)} className="space-y-4">
-              <div>
-                <Label>Data</Label>
-                <Input
-                  name="date"
-                  type="date"
-                  defaultValue={
-                    sport.date ? sport.date.toISOString().slice(0, 10) : ""
-                  }
-                />
-              </div>
-              <div>
-                <Label>Hora</Label>
-                <Input name="time" defaultValue={sport.time ?? ""} />
-              </div>
-              <div>
-                <Label>Local</Label>
-                <Input name="location" defaultValue={sport.location ?? ""} />
-              </div>
-              <div>
-                <Label>Regras</Label>
-                <Textarea name="rules" defaultValue={sport.rules ?? ""} />
-              </div>
-              <div>
-                <Label>Formato</Label>
-                <Textarea name="format" defaultValue={sport.format ?? ""} />
-              </div>
-              <div>
-                <Label>Notas</Label>
-                <Textarea name="notes" defaultValue={sport.notes ?? ""} />
-              </div>
-              <Button type="submit">Guardar definições do desporto</Button>
-            </form>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Classificação</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {ranking.map((row) => (
-              <div
-                key={row.teamId}
-                className="flex items-center justify-between rounded-xl border border-white/10 p-3"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="w-6 text-zinc-500">{row.position}</span>
-                  <TeamAvatar
-                    name={row.teamName}
-                    color={row.teamColor}
-                    logoUrl={row.logoUrl}
-                  />
-                  <span className="font-medium text-white">{row.teamName}</span>
-                </div>
-                <span className="font-bold text-red-400">{row.points} pts</span>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 className="font-display text-4xl tracking-wide text-white">
+              {sport.name}
+            </h1>
+            <p className="mt-2 text-zinc-400">
+              {sport.date ? formatDate(sport.date) : "Data a definir"}
+              {sport.time ? ` · ${sport.time}` : ""}
+              {sport.location ? ` · ${sport.location}` : ""}
+            </p>
+            {format && !format.placeholder ? (
+              <p className="mt-1 text-sm text-zinc-500">
+                {format.groups.length} grupos ·{" "}
+                {format.qualifiersPerGroup === 1
+                  ? "1º qualifica"
+                  : `Top ${format.qualifiersPerGroup} qualificam`}{" "}
+                · {format.knockoutRounds.map((r) => KNOCKOUT_LABELS[r]).join(" · ")}
+              </p>
+            ) : null}
+          </div>
+        </div>
       </div>
 
-      <Card className="mt-6">
-        <CardHeader>
-          <CardTitle>Grupos</CardTitle>
-        </CardHeader>
-        <CardContent className="grid gap-6 md:grid-cols-2">
-          {["Grupo A", "Grupo B", "Grupo C", "Grupo D"].map((groupName) => {
-            const group = sport.groups.find((g) => g.name === groupName);
-            return (
-              <form
-                key={groupName}
-                action={saveSportGroupAction.bind(null, sport.id, groupName)}
-                className="rounded-2xl border border-white/10 p-4"
-              >
-                <p className="mb-4 font-semibold text-white">{groupName}</p>
-                {[0, 1, 2].map((index) => (
-                  <select
-                    key={index}
-                    name={`teamIds`}
-                    defaultValue={group?.teams[index]?.teamId ?? ""}
-                    className="mb-2 h-11 w-full rounded-xl border border-white/10 bg-black/40 px-4 text-sm text-white"
-                  >
-                    <option value="">Selecionar equipa</option>
-                    {teams.map((team) => (
-                      <option key={team.id} value={team.id}>
-                        {team.name}
-                      </option>
-                    ))}
-                  </select>
-                ))}
-                <Button type="submit" variant="secondary" className="mt-2">
-                  Guardar grupo
-                </Button>
-              </form>
-            );
-          })}
-        </CardContent>
-      </Card>
-
-      <Card className="mt-6">
-        <CardHeader>
-          <CardTitle>Jogos e resultados</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <form action={createMatchAction.bind(null, sport.id)} className="grid gap-4 md:grid-cols-3">
-            <Input name="title" placeholder="Título do jogo" required />
-            <Input name="round" placeholder="Fase (grupo, meias, final)" />
-            <Input name="scheduledAt" type="datetime-local" />
-            <select
-              name="homeTeamId"
-              className="h-11 rounded-xl border border-white/10 bg-black/40 px-4 text-sm text-white"
-            >
-              <option value="">Equipa da casa</option>
-              {teams.map((team) => (
-                <option key={team.id} value={team.id}>
-                  {team.name}
-                </option>
-              ))}
-            </select>
-            <select
-              name="awayTeamId"
-              className="h-11 rounded-xl border border-white/10 bg-black/40 px-4 text-sm text-white"
-            >
-              <option value="">Equipa visitante</option>
-              {teams.map((team) => (
-                <option key={team.id} value={team.id}>
-                  {team.name}
-                </option>
-              ))}
-            </select>
-            <Button type="submit">Adicionar jogo</Button>
-          </form>
-
-          {sport.matches.map((match) => (
-            <div
-              key={match.id}
-              className="rounded-2xl border border-white/10 p-4"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <p className="font-semibold text-white">{match.title}</p>
-                  <p className="text-sm text-zinc-400">
-                    {match.round ?? "Jogo"}
-                    {match.scheduledAt
-                      ? ` · ${formatDateTime(match.scheduledAt)}`
-                      : ""}
-                  </p>
-                  <p className="mt-1 text-sm text-zinc-300">
-                    {match.homeTeam?.name ?? "A definir"} vs {match.awayTeam?.name ?? "A definir"}
-                  </p>
-                </div>
-                <Badge
-                  variant={
-                    match.status === "LIVE"
-                      ? "live"
-                      : match.status === "FINISHED"
-                        ? "success"
-                        : "default"
-                  }
-                >
-                  {label(eventStatusLabels, match.status)}
-                </Badge>
-              </div>
-              <form
-                action={updateMatchResultAction.bind(null, match.id)}
-                className="mt-4 grid gap-3 md:grid-cols-4"
-              >
-                <Input name="homeScore" placeholder="Resultado casa" defaultValue={match.homeScore ?? ""} />
-                <Input name="awayScore" placeholder="Resultado visitante" defaultValue={match.awayScore ?? ""} />
-                <Input name="detail" placeholder="Sets / detalhe" defaultValue={match.detail ?? ""} />
-                <select
-                  name="status"
-                  defaultValue={match.status}
-                  className="h-11 rounded-xl border border-white/10 bg-black/40 px-4 text-sm text-white"
-                >
-                  <option value="UPCOMING">{eventStatusLabels.UPCOMING}</option>
-                  <option value="LIVE">{eventStatusLabels.LIVE}</option>
-                  <option value="FINISHED">{eventStatusLabels.FINISHED}</option>
-                </select>
-                <Button type="submit" className="md:col-span-4 md:w-fit">
-                  Guardar resultado
-                </Button>
-              </form>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-
-      <Card className="mt-6">
-        <CardHeader>
-          <CardTitle>Atribuir posições finais e pontos</CardTitle>
-        </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-2">
-          {teams.map((team) => (
-            <form
-              key={team.id}
-              action={async (formData) => {
-                "use server";
-                const position = Number(formData.get("position"));
-                await setTeamSportPositionAction(sport.id, team.id, position);
-              }}
-              className="flex items-center gap-3 rounded-xl border border-white/10 p-3"
-            >
-              <TeamAvatar name={team.name} color={team.color} logoUrl={team.logoUrl} />
-              <span className="flex-1 text-white">{team.name}</span>
+      <details className="group rounded-2xl border border-white/10 bg-white/[0.02]">
+        <summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-4 text-sm font-semibold text-zinc-400 transition hover:text-white [&::-webkit-details-marker]:hidden">
+          <Settings2 className="h-4 w-4" />
+          Definições do desporto
+          <span className="ml-auto text-xs text-zinc-600 group-open:hidden">
+            Data, hora, local, regras
+          </span>
+        </summary>
+        <form
+          action={updateSportAction.bind(null, sport.id)}
+          className="space-y-4 border-t border-white/10 px-5 py-5"
+        >
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div>
+              <Label>Data</Label>
               <Input
-                name="position"
-                type="number"
-                min={1}
-                max={12}
-                className="w-20"
-                placeholder="#"
+                name="date"
+                type="date"
+                defaultValue={
+                  sport.date ? sport.date.toISOString().slice(0, 10) : ""
+                }
               />
-              <Button type="submit" size="sm">
-                Definir
-              </Button>
-            </form>
-          ))}
-        </CardContent>
-      </Card>
+            </div>
+            <div>
+              <Label>Hora</Label>
+              <Input name="time" defaultValue={sport.time ?? ""} placeholder="09:00" />
+            </div>
+            <div>
+              <Label>Local</Label>
+              <Input name="location" defaultValue={sport.location ?? ""} />
+            </div>
+          </div>
+          <div>
+            <Label>Regras</Label>
+            <Textarea name="rules" defaultValue={sport.rules ?? ""} rows={2} />
+          </div>
+          <div>
+            <Label>Formato (texto público)</Label>
+            <Textarea name="format" defaultValue={sport.format ?? ""} rows={2} />
+          </div>
+          <div>
+            <Label>Notas internas</Label>
+            <Textarea name="notes" defaultValue={sport.notes ?? ""} rows={2} />
+          </div>
+          <Button type="submit" variant="secondary" size="sm">
+            Guardar definições
+          </Button>
+        </form>
+      </details>
+
+      <OwnerSportSchedule calendar={calendar} teams={teams} />
     </div>
   );
 }

@@ -30,6 +30,20 @@ export const PARTNER_LOGOS: PartnerLogo[] = [
     partnershipType: "OFFICIAL_PARTNER",
     logoFit: "fit",
   },
+  {
+    slug: "fut7",
+    brandName: "FUT 7",
+    logo: "/partners/official-partners/fut7.png",
+    partnershipType: "OFFICIAL_PARTNER",
+    logoFit: "fit",
+  },
+  {
+    slug: "mesh",
+    brandName: "Mesh",
+    logo: "/partners/official-partners/mesh.png",
+    partnershipType: "OFFICIAL_PARTNER",
+    logoFit: "fill",
+  },
 ];
 
 export function getHomePartners() {

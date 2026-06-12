@@ -9,17 +9,37 @@ import { SponsorsSection } from "@/components/home/sponsors-section";
 import { SportsSection } from "@/components/home/sports-section";
 import { StatsSection } from "@/components/home/stats-section";
 import { TrophiesSection } from "@/components/home/trophies-section";
+import { getHomePartners } from "@/lib/partners-content";
 import { getOverallRanking } from "@/lib/rankings";
 import { prisma } from "@/lib/db";
 
 export default async function HomePage() {
-  const [ranking, partners] = await Promise.all([
+  const [ranking, dbPartners] = await Promise.all([
     getOverallRanking(),
     prisma.partner.findMany({
       where: { status: { in: ["CONFIRMED", "PAID", "COMPLETED"] } },
       orderBy: { brandName: "asc" },
     }),
   ]);
+
+  const staticPartners = getHomePartners();
+  const staticNames = new Set(staticPartners.map((partner) => partner.brandName));
+
+  const partners = [
+    ...staticPartners,
+    ...dbPartners
+      .filter(
+        (partner) =>
+          partner.logoUrl && !staticNames.has(partner.brandName)
+      )
+      .map((partner) => ({
+        id: partner.id,
+        brandName: partner.brandName,
+        logoUrl: partner.logoUrl,
+        partnershipType: partner.partnershipType,
+        websiteUrl: partner.websiteUrl,
+      })),
+  ];
 
   return (
     <div className="bg-black text-white">

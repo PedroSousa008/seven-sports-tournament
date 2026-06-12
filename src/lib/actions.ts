@@ -342,6 +342,7 @@ export async function createPartnerAction(formData: FormData) {
     },
   });
   revalidatePath("/owner/partnerships");
+  revalidatePath("/");
 }
 
 export async function createPromotionAction(partnerId: string, formData: FormData) {

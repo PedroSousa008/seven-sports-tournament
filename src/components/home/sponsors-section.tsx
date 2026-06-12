@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { SPONSOR_CATEGORIES } from "@/lib/home-content";
 import { FadeIn } from "./fade-in";
@@ -9,6 +10,7 @@ type Sponsor = {
   brandName: string;
   logoUrl: string | null;
   partnershipType: string;
+  websiteUrl?: string | null;
 };
 
 export function SponsorsSection({ partners }: { partners: Sponsor[] }) {
@@ -41,25 +43,51 @@ export function SponsorsSection({ partners }: { partners: Sponsor[] }) {
                       {group.label}
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-8">
-                      {group.partners.map((partner) => (
-                        <motion.div
-                          key={partner.id}
-                          whileHover={{ scale: 1.05, y: -4 }}
-                          className="flex h-24 min-w-[180px] items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] px-8 backdrop-blur transition hover:border-white/25 hover:bg-white/[0.06]"
-                        >
-                          {partner.logoUrl ? (
-                            <img
-                              src={partner.logoUrl}
-                              alt={partner.brandName}
-                              className="max-h-12 max-w-[140px] object-contain brightness-0 invert"
-                            />
-                          ) : (
-                            <span className="text-lg font-bold text-white">
-                              {partner.brandName}
-                            </span>
-                          )}
-                        </motion.div>
-                      ))}
+                      {group.partners.map((partner) => {
+                        const content = (
+                          <>
+                            {partner.logoUrl ? (
+                              <div className="relative h-12 w-[140px]">
+                                <Image
+                                  src={partner.logoUrl}
+                                  alt={partner.brandName}
+                                  fill
+                                  className="object-contain"
+                                  sizes="140px"
+                                />
+                              </div>
+                            ) : (
+                              <span className="text-lg font-bold text-zinc-900">
+                                {partner.brandName}
+                              </span>
+                            )}
+                          </>
+                        );
+
+                        const className =
+                          "flex h-24 min-w-[180px] items-center justify-center rounded-2xl border border-white/10 bg-white px-8 shadow-lg shadow-black/20 transition hover:border-white/25 hover:bg-white/95";
+
+                        return partner.websiteUrl ? (
+                          <motion.a
+                            key={partner.id}
+                            href={partner.websiteUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            whileHover={{ scale: 1.05, y: -4 }}
+                            className={className}
+                          >
+                            {content}
+                          </motion.a>
+                        ) : (
+                          <motion.div
+                            key={partner.id}
+                            whileHover={{ scale: 1.05, y: -4 }}
+                            className={className}
+                          >
+                            {content}
+                          </motion.div>
+                        );
+                      })}
                     </div>
                   </div>
                 )

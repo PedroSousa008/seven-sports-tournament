@@ -52,6 +52,20 @@ export default async function OwnerPartnershipsPage() {
               <Label>Telefone</Label>
               <Input name="phone" />
             </div>
+            <div className="md:col-span-2">
+              <Label>URL do logo</Label>
+              <Input
+                name="logoUrl"
+                placeholder="/partners/official-partners/marca-exemplo.png"
+              />
+              <p className="mt-1 text-xs text-zinc-500">
+                Coloca o ficheiro em{" "}
+                <code className="text-zinc-400">public/partners/</code> e usa o
+                caminho público, ou regista em{" "}
+                <code className="text-zinc-400">src/lib/partners-content.ts</code>
+                .
+              </p>
+            </div>
             <div>
               <Label>Tipo de parceria</Label>
               <Select name="partnershipType" defaultValue="OFFICIAL_PARTNER">

@@ -1,3 +1,4 @@
+import { CalendarSection } from "@/components/home/calendar-section";
 import { CtaSection } from "@/components/home/cta-section";
 import { GallerySection } from "@/components/home/gallery-section";
 import { HeroSection } from "@/components/home/hero-section";
@@ -9,17 +10,19 @@ import { SponsorsSection } from "@/components/home/sponsors-section";
 import { SportsSection } from "@/components/home/sports-section";
 import { StatsSection } from "@/components/home/stats-section";
 import { TrophiesSection } from "@/components/home/trophies-section";
+import { getAllSportCalendars } from "@/lib/calendar";
 import { getHomePartners } from "@/lib/partners-content";
 import { getOverallRanking } from "@/lib/rankings";
 import { prisma } from "@/lib/db";
 
 export default async function HomePage() {
-  const [ranking, dbPartners] = await Promise.all([
+  const [ranking, dbPartners, calendars] = await Promise.all([
     getOverallRanking(),
     prisma.partner.findMany({
       where: { status: { in: ["CONFIRMED", "PAID", "COMPLETED"] } },
       orderBy: { brandName: "asc" },
     }),
+    getAllSportCalendars(),
   ]);
 
   const staticPartners = getHomePartners();
@@ -49,6 +52,7 @@ export default async function HomePage() {
       <StatsSection />
       <SportsSection />
       <JourneySection />
+      <CalendarSection calendars={calendars} />
       <LeaderboardSection ranking={ranking} />
       <TrophiesSection />
       <SponsorsSection partners={partners} />

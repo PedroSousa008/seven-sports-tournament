@@ -102,6 +102,12 @@ export function HeroSection() {
           >
             Explorar o Torneio
           </a>
+          <a
+            href="#calendario"
+            className="rounded-full border border-white/10 px-8 py-4 text-sm font-bold uppercase tracking-wider text-zinc-300 backdrop-blur transition hover:border-red-500/40 hover:text-white"
+          >
+            Calendário
+          </a>
         </motion.div>
 
         <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">

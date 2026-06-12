@@ -13,7 +13,9 @@ import { TeamAvatar } from "@/components/ui/team-avatar";
 import { DEFAULT_TEAM_BANNER, JOURNEY_STATUS_LABELS } from "@/lib/team-content";
 import type { TeamHubData } from "@/lib/team-hub";
 import { formatCurrency, formatDate, formatDateTime } from "@/lib/utils";
+import { SportCalendarView } from "@/components/calendar/sport-calendar-view";
 import { SportDetailModal } from "./sport-detail-modal";
+import type { SportCalendarData } from "@/lib/calendar";
 
 function SectionTitle({
   eyebrow,
@@ -34,7 +36,13 @@ function SectionTitle({
   );
 }
 
-export function TeamHubView({ data }: { data: TeamHubData }) {
+export function TeamHubView({
+  data,
+  calendars,
+}: {
+  data: TeamHubData;
+  calendars: SportCalendarData[];
+}) {
   const [selectedSport, setSelectedSport] = useState<
     TeamHubData["sportsHub"][number] | null
   >(null);
@@ -322,6 +330,20 @@ export function TeamHubView({ data }: { data: TeamHubData }) {
               <p className="text-sm text-zinc-500">Ainda sem resultados publicados.</p>
             )}
           </div>
+        </section>
+
+        {/* SECTION — Calendar */}
+        <section>
+          <SectionTitle eyebrow="Calendário" title="Calendário do Torneio" />
+          <p className="mb-4 text-sm text-zinc-500">
+            A tua equipa está destacada a vermelho.
+          </p>
+          <SportCalendarView
+            calendars={calendars}
+            highlightTeamId={data.team.id}
+            showDownload
+            compact
+          />
         </section>
 
         {/* SECTION 8 — Announcements */}

@@ -200,6 +200,11 @@ export async function saveSportGroupAction(
 ) {
   await requireOwner();
   const teamIds = formData.getAll("teamIds").map(String).filter(Boolean);
+  const uniqueIds = new Set(teamIds);
+  if (uniqueIds.size !== teamIds.length) {
+    throw new Error("Não podes repetir equipas no mesmo grupo.");
+  }
+
   let group = await prisma.sportGroup.findFirst({
     where: { sportId, name: groupName },
   });
@@ -209,6 +214,19 @@ export async function saveSportGroupAction(
       data: { sportId, name: groupName, order: count },
     });
   }
+
+  for (const teamId of teamIds) {
+    const inOtherGroup = await prisma.sportGroupTeam.findFirst({
+      where: {
+        teamId,
+        group: { sportId, id: { not: group.id } },
+      },
+    });
+    if (inOtherGroup) {
+      throw new Error("Esta equipa já está atribuída a outro grupo neste desporto.");
+    }
+  }
+
   await prisma.sportGroupTeam.deleteMany({ where: { groupId: group.id } });
   for (const teamId of teamIds) {
     if (teamId) {
@@ -219,20 +237,40 @@ export async function saveSportGroupAction(
   }
   const sport = await prisma.sport.findUnique({ where: { id: sportId } });
   revalidatePath(`/owner/sports/${sport?.slug ?? sportId}`);
+  revalidatePath("/owner/calendar");
+  revalidatePath("/");
+  revalidatePath("/team");
 }
 
 export async function createMatchAction(sportId: string, formData: FormData) {
   await requireOwner();
+  let groupId = String(formData.get("groupId") ?? "") || null;
+  const groupName = String(formData.get("groupName") ?? "");
+  if ((!groupId || groupId.startsWith("pending-")) && groupName) {
+    const group = await prisma.sportGroup.findFirst({
+      where: { sportId, name: groupName },
+    });
+    groupId = group?.id ?? null;
+  }
+  const round = String(formData.get("round") ?? "GROUP") || "GROUP";
+  const timeStr = String(formData.get("time") ?? "");
+  const dateStr = String(formData.get("date") ?? "");
+  let scheduledAt: Date | null = null;
+  if (dateStr && timeStr) {
+    scheduledAt = new Date(`${dateStr}T${timeStr}`);
+  } else if (formData.get("scheduledAt")) {
+    scheduledAt = new Date(String(formData.get("scheduledAt")));
+  }
+
   await prisma.match.create({
     data: {
       sportId,
-      title: String(formData.get("title") ?? ""),
-      round: String(formData.get("round") ?? "") || null,
+      groupId,
+      title: String(formData.get("title") ?? "") || "Jogo",
+      round,
       homeTeamId: String(formData.get("homeTeamId") ?? "") || null,
       awayTeamId: String(formData.get("awayTeamId") ?? "") || null,
-      scheduledAt: formData.get("scheduledAt")
-        ? new Date(String(formData.get("scheduledAt")))
-        : null,
+      scheduledAt,
       location: String(formData.get("location") ?? "") || null,
       status: String(formData.get("status") ?? "UPCOMING") as EventStatus,
       homeScore: String(formData.get("homeScore") ?? "") || null,
@@ -241,7 +279,58 @@ export async function createMatchAction(sportId: string, formData: FormData) {
       notes: String(formData.get("notes") ?? "") || null,
     },
   });
-  revalidatePath(`/owner/sports/${sportId}`);
+  const sport = await prisma.sport.findUnique({ where: { id: sportId } });
+  revalidatePath(`/owner/sports/${sport?.slug ?? sportId}`);
+  revalidatePath("/owner/calendar");
+  revalidatePath("/");
+  revalidatePath("/team");
+}
+
+export async function saveCalendarMatchResultAction(
+  matchId: string,
+  formData: FormData
+) {
+  await requireOwner();
+  const homeScore = String(formData.get("homeScore") ?? "");
+  const awayScore = String(formData.get("awayScore") ?? "");
+  const status = String(formData.get("status") ?? "FINISHED") as EventStatus;
+  const timeStr = String(formData.get("time") ?? "");
+  const dateStr = String(formData.get("date") ?? "");
+
+  let scheduledAt: Date | undefined;
+  if (dateStr && timeStr) {
+    scheduledAt = new Date(`${dateStr}T${timeStr}`);
+  }
+
+  const match = await prisma.match.update({
+    where: { id: matchId },
+    data: {
+      homeScore: homeScore || null,
+      awayScore: awayScore || null,
+      status,
+      ...(scheduledAt ? { scheduledAt } : {}),
+      homeTeamId: String(formData.get("homeTeamId") ?? "") || undefined,
+      awayTeamId: String(formData.get("awayTeamId") ?? "") || undefined,
+    },
+    include: { sport: true },
+  });
+
+  revalidatePath(`/owner/calendar`);
+  revalidatePath(`/owner/sports/${match.sport.slug}`);
+  revalidatePath("/");
+  revalidatePath("/team");
+}
+
+export async function deleteCalendarMatchAction(matchId: string) {
+  await requireOwner();
+  const match = await prisma.match.delete({
+    where: { id: matchId },
+    include: { sport: true },
+  });
+  revalidatePath("/owner/calendar");
+  revalidatePath(`/owner/sports/${match.sport.slug}`);
+  revalidatePath("/");
+  revalidatePath("/team");
 }
 
 export async function updateMatchResultAction(matchId: string, formData: FormData) {
@@ -263,6 +352,9 @@ export async function updateMatchResultAction(matchId: string, formData: FormDat
   }
   revalidatePath(`/owner/sports/${match.sportId}`);
   revalidatePath("/owner/rankings");
+  revalidatePath("/owner/calendar");
+  revalidatePath("/");
+  revalidatePath("/team");
 }
 
 export async function setTeamSportPositionAction(

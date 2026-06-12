@@ -79,6 +79,10 @@ export default async function OwnerTeamDetailPage({
                 <Input name="logoUrl" defaultValue={team.logoUrl ?? ""} />
               </div>
               <div className="md:col-span-2">
+                <Label>URL do banner</Label>
+                <Input name="bannerUrl" defaultValue={team.bannerUrl ?? ""} />
+              </div>
+              <div className="md:col-span-2">
                 <Label>Notas</Label>
                 <Textarea name="notes" defaultValue={team.notes ?? ""} />
               </div>

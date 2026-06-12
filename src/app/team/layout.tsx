@@ -1,4 +1,4 @@
-import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { TeamPortalShell } from "@/components/team/team-portal-shell";
 import { teamNav } from "@/lib/team-nav";
 import { requireSession } from "@/lib/session";
 import { prisma } from "@/lib/db";
@@ -14,12 +14,8 @@ export default async function TeamLayout({
     : null;
 
   return (
-    <DashboardShell
-      title={team?.name ?? "Portal da Equipa"}
-      subtitle="Painel do capitão"
-      navItems={teamNav}
-    >
+    <TeamPortalShell teamName={team?.name ?? "Portal da Equipa"} navItems={teamNav}>
       {children}
-    </DashboardShell>
+    </TeamPortalShell>
   );
 }

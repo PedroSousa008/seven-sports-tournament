@@ -67,6 +67,7 @@ model Team {
   captainEmail         String
   phone                String?
   logoUrl              String?
+  bannerUrl            String?
   color                String                 @default("#DC2626")
   paymentStatus        PaymentStatus          @default(UNPAID)
   notes                String?

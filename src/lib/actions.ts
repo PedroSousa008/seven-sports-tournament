@@ -82,6 +82,7 @@ export async function updateTeamAction(teamId: string, formData: FormData) {
       paymentStatus: String(formData.get("paymentStatus") ?? "UNPAID") as PaymentStatus,
       notes: String(formData.get("notes") ?? "") || null,
       logoUrl: String(formData.get("logoUrl") ?? "") || null,
+      bannerUrl: String(formData.get("bannerUrl") ?? "") || null,
       selectionsLocked: formData.get("selectionsLocked") === "on",
     },
   });
@@ -133,7 +134,7 @@ export async function createPlayerAction(teamId: string, formData: FormData) {
     },
   });
   revalidatePath(`/owner/teams/${teamId}`);
-  revalidatePath("/team/my-team");
+  revalidatePath("/team/equipa");
 }
 
 export async function deletePlayerAction(playerId: string) {
@@ -144,7 +145,7 @@ export async function deletePlayerAction(playerId: string) {
     throw new Error("Não autorizado");
   }
   await prisma.player.delete({ where: { id: playerId } });
-  revalidatePath("/team/my-team");
+  revalidatePath("/team/equipa");
   revalidatePath("/owner/teams");
 }
 
@@ -171,7 +172,7 @@ export async function togglePlayerSportAction(
       where: { playerId, sportId },
     });
   }
-  revalidatePath("/team/my-team");
+  revalidatePath("/team/equipa");
 }
 
 export async function updateSportAction(sportId: string, formData: FormData) {
@@ -462,6 +463,7 @@ export async function updateTeamProfileAction(formData: FormData) {
       captainName: String(formData.get("captainName") ?? ""),
       phone: String(formData.get("phone") ?? "") || null,
       logoUrl: String(formData.get("logoUrl") ?? "") || null,
+      bannerUrl: String(formData.get("bannerUrl") ?? "") || null,
     },
   });
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
@@ -472,6 +474,7 @@ export async function updateTeamProfileAction(formData: FormData) {
     });
   }
   revalidatePath("/team/profile");
+  revalidatePath("/team/equipa");
   revalidatePath("/team");
 }
 

@@ -11,12 +11,13 @@ async function main() {
   await prisma.tournamentSettings.upsert({
     where: { id: "default" },
     update: {
+      name: "Torneio 4 Desportos Braga",
       startDate: new Date(TOURNAMENT.startDate),
       endDate: new Date(TOURNAMENT.endDate),
     },
     create: {
       id: "default",
-      name: "Torneio 5 Desportos Braga",
+      name: "Torneio 4 Desportos Braga",
       location: "Braga",
       startDate: new Date(TOURNAMENT.startDate),
       endDate: new Date(TOURNAMENT.endDate),

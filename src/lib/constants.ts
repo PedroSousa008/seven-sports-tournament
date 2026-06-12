@@ -1,4 +1,6 @@
 export const TOURNAMENT = {
+  name: "Torneio 4 Desportos Braga",
+  shortName: "Torneio 4 Desportos",
   startDate: "2026-07-10",
   endDate: "2026-07-18",
   dateRange: "10–18 Julho 2026",

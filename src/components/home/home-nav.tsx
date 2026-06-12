@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { TOURNAMENT } from "@/lib/constants";
 
 export function HomeNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -28,10 +29,10 @@ export function HomeNav() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <Link href="/" className="group">
           <p className="font-display text-xs tracking-[0.35em] text-red-500">
-            T5DB
+            T4DB
           </p>
           <p className="text-sm font-semibold text-white transition group-hover:text-red-400">
-            Torneio 5 Desportos
+            {TOURNAMENT.shortName}
           </p>
         </Link>
 

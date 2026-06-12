@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input, Label } from "@/components/ui/input";
+import { TOURNAMENT } from "@/lib/constants";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -35,7 +36,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-red-500">
-            Torneio 5 Desportos Braga
+            {TOURNAMENT.name}
           </p>
           <h1 className="mt-3 text-3xl font-bold text-white">Iniciar sessão</h1>
           <p className="mt-2 text-sm text-zinc-400">

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { TOURNAMENT } from "@/lib/constants";
 import {
   BarChart3,
   Calendar,
@@ -97,7 +98,7 @@ export function DashboardShell({
         <aside className="hidden w-72 shrink-0 border-r border-white/10 bg-zinc-950 lg:flex lg:flex-col">
           <div className="border-b border-white/10 p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-red-500">
-              Torneio 5 Desportos
+              {TOURNAMENT.shortName}
             </p>
             <h1 className="mt-2 text-xl font-bold">{title}</h1>
             <p className="mt-1 text-sm text-zinc-500">{subtitle}</p>

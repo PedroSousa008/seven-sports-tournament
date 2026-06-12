@@ -59,7 +59,7 @@ export function HeroSection() {
           transition={{ delay: 0.35, duration: 0.9 }}
           className="font-display max-w-5xl text-5xl leading-[0.95] tracking-wide text-white sm:text-7xl md:text-8xl"
         >
-          TORNEIO 5 DESPORTOS BRAGA
+          {TOURNAMENT.name.toUpperCase()}
         </motion.h1>
 
         <motion.p

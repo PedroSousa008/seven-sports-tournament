@@ -38,6 +38,7 @@ export default async function HomePage() {
         logoUrl: partner.logoUrl,
         partnershipType: partner.partnershipType,
         websiteUrl: partner.websiteUrl,
+        logoFit: "fit" as const,
       })),
   ];
 

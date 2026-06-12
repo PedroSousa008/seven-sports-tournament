@@ -6,6 +6,8 @@ export type PartnerLogo = {
   logo: string;
   partnershipType: (typeof SPONSOR_CATEGORIES)[number]["type"];
   websiteUrl?: string;
+  /** "fill" = imagem preenche o cartão inteiro; "fit" = logo centrado com margem */
+  logoFit?: "fill" | "fit";
 };
 
 /**
@@ -19,12 +21,14 @@ export const PARTNER_LOGOS: PartnerLogo[] = [
     brandName: "7 Wonders",
     logo: "/partners/official-partners/7wonders.png",
     partnershipType: "OFFICIAL_PARTNER",
+    logoFit: "fill",
   },
   {
     slug: "kib",
     brandName: "KIB",
     logo: "/partners/official-partners/kib.png",
     partnershipType: "OFFICIAL_PARTNER",
+    logoFit: "fit",
   },
 ];
 
@@ -35,6 +39,7 @@ export function getHomePartners() {
     logoUrl: partner.logo,
     partnershipType: partner.partnershipType,
     websiteUrl: partner.websiteUrl ?? null,
+    logoFit: partner.logoFit ?? "fit",
   }));
 }
 

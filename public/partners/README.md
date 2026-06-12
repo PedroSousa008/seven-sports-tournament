@@ -26,6 +26,7 @@ Coloca aqui os logos dos parceiros e regista cada um em `src/lib/partners-conten
   logo: "/partners/official-partners/sport-zone.png",
   partnershipType: "OFFICIAL_PARTNER",
   websiteUrl: "https://...", // opcional
+  logoFit: "fill", // "fill" preenche o cartão; "fit" centrado (predefinido)
 },
 ```
 

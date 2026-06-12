@@ -11,7 +11,48 @@ type Sponsor = {
   logoUrl: string | null;
   partnershipType: string;
   websiteUrl?: string | null;
+  logoFit?: "fill" | "fit";
 };
+
+function PartnerLogoCard({ partner }: { partner: Sponsor }) {
+  const fill = partner.logoFit === "fill";
+
+  const content = partner.logoUrl ? (
+    <Image
+      src={partner.logoUrl}
+      alt={partner.brandName}
+      fill
+      className={fill ? "object-cover" : "object-contain p-4"}
+      sizes="220px"
+    />
+  ) : (
+    <span className="text-lg font-bold text-zinc-900">{partner.brandName}</span>
+  );
+
+  const className = fill
+    ? "relative block h-28 w-[220px] overflow-hidden rounded-2xl border border-white/10 shadow-lg shadow-black/20 transition hover:border-white/25"
+    : "relative flex h-28 w-[220px] items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white shadow-lg shadow-black/20 transition hover:border-white/25 hover:bg-white/95";
+
+  const motionProps = {
+    whileHover: { scale: 1.05, y: -4 } as const,
+    className,
+  };
+
+  if (partner.websiteUrl) {
+    return (
+      <motion.a
+        href={partner.websiteUrl}
+        target="_blank"
+        rel="noreferrer"
+        {...motionProps}
+      >
+        {content}
+      </motion.a>
+    );
+  }
+
+  return <motion.div {...motionProps}>{content}</motion.div>;
+}
 
 export function SponsorsSection({ partners }: { partners: Sponsor[] }) {
   const grouped = SPONSOR_CATEGORIES.map((cat) => ({
@@ -43,51 +84,9 @@ export function SponsorsSection({ partners }: { partners: Sponsor[] }) {
                       {group.label}
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-8">
-                      {group.partners.map((partner) => {
-                        const content = (
-                          <>
-                            {partner.logoUrl ? (
-                              <div className="relative h-12 w-[140px]">
-                                <Image
-                                  src={partner.logoUrl}
-                                  alt={partner.brandName}
-                                  fill
-                                  className="object-contain"
-                                  sizes="140px"
-                                />
-                              </div>
-                            ) : (
-                              <span className="text-lg font-bold text-zinc-900">
-                                {partner.brandName}
-                              </span>
-                            )}
-                          </>
-                        );
-
-                        const className =
-                          "flex h-24 min-w-[180px] items-center justify-center rounded-2xl border border-white/10 bg-white px-8 shadow-lg shadow-black/20 transition hover:border-white/25 hover:bg-white/95";
-
-                        return partner.websiteUrl ? (
-                          <motion.a
-                            key={partner.id}
-                            href={partner.websiteUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            whileHover={{ scale: 1.05, y: -4 }}
-                            className={className}
-                          >
-                            {content}
-                          </motion.a>
-                        ) : (
-                          <motion.div
-                            key={partner.id}
-                            whileHover={{ scale: 1.05, y: -4 }}
-                            className={className}
-                          >
-                            {content}
-                          </motion.div>
-                        );
-                      })}
+                      {group.partners.map((partner) => (
+                        <PartnerLogoCard key={partner.id} partner={partner} />
+                      ))}
                     </div>
                   </div>
                 )

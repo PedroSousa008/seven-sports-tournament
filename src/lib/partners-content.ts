@@ -14,12 +14,18 @@ export type PartnerLogo = {
  * 2. Adiciona uma entrada abaixo com o caminho /partners/...
  */
 export const PARTNER_LOGOS: PartnerLogo[] = [
-  // {
-  //   slug: "marca-exemplo",
-  //   brandName: "Marca Exemplo",
-  //   logo: "/partners/main-sponsor/marca-exemplo.png",
-  //   partnershipType: "MAIN_SPONSOR",
-  // },
+  {
+    slug: "7wonders",
+    brandName: "7 Wonders",
+    logo: "/partners/official-partners/7wonders.png",
+    partnershipType: "OFFICIAL_PARTNER",
+  },
+  {
+    slug: "kib",
+    brandName: "KIB",
+    logo: "/partners/official-partners/kib.png",
+    partnershipType: "OFFICIAL_PARTNER",
+  },
 ];
 
 export function getHomePartners() {

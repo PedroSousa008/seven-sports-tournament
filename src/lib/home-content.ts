@@ -61,7 +61,6 @@ export const SPORTS_SHOWCASE = [
     description: "O momento decisivo. Velocidade, estratégia e glória.",
     image: "/home/sports/karts.jpg",
     icon: "🏎️",
-    featured: true,
   },
 ] as const;
 

@@ -91,10 +91,10 @@ export function HeroSection() {
           className="mt-12 flex flex-wrap justify-center gap-4"
         >
           <Link
-            href="/login"
+            href="/inscricao"
             className="rounded-full bg-red-600 px-8 py-4 text-sm font-bold uppercase tracking-wider text-white shadow-2xl shadow-red-600/30 transition hover:scale-105 hover:bg-red-500"
           >
-            Entrar na Plataforma
+            INSCREVE-TE
           </Link>
           <a
             href="#desportos"

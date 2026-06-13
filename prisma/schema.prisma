@@ -48,6 +48,12 @@ enum PartnershipType {
   LOCAL_BUSINESS
 }
 
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -364,4 +370,24 @@ model TournamentSettings {
   logoUrl           String?
   primaryColor      String   @default("#DC2626")
   updatedAt         DateTime @updatedAt
+}
+
+model TeamApplication {
+  id                   String            @id @default(cuid())
+  captainName          String
+  captainAge           Int
+  email                String
+  phone                String
+  teamName             String
+  playerCount          Int
+  termCaptain          Boolean           @default(false)
+  termSchedule         Boolean           @default(false)
+  termRegisteredOnly   Boolean           @default(false)
+  termConduct          Boolean           @default(false)
+  termRegulation       Boolean           @default(false)
+  termPayment          Boolean           @default(false)
+  declarationAccepted  Boolean           @default(false)
+  status               ApplicationStatus @default(PENDING)
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
 }

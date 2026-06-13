@@ -32,10 +32,10 @@ export function CtaSection() {
             className="mt-12"
           >
             <Link
-              href="/login"
+              href="/inscricao"
               className="inline-block rounded-full bg-red-600 px-12 py-5 text-sm font-bold uppercase tracking-[0.2em] text-white shadow-2xl shadow-red-600/40 transition hover:bg-red-500"
             >
-              Entrar na Plataforma
+              INSCREVE-TE
             </Link>
           </motion.div>
         </FadeIn>

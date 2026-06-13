@@ -637,3 +637,77 @@ export async function saveKartHeatAction(sportId: string, formData: FormData) {
   revalidatePath(`/owner/sports/${sportId}`);
   revalidatePath("/owner/rankings");
 }
+
+export async function submitTeamApplicationAction(formData: FormData) {
+  const captainName = String(formData.get("captainName") ?? "").trim();
+  const captainAge = Number(formData.get("captainAge"));
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  const phone = String(formData.get("phone") ?? "").trim();
+  const teamName = String(formData.get("teamName") ?? "").trim();
+  const playerCount = Number(formData.get("playerCount"));
+
+  const termCaptain = formData.get("termCaptain") === "on";
+  const termSchedule = formData.get("termSchedule") === "on";
+  const termRegisteredOnly = formData.get("termRegisteredOnly") === "on";
+  const termConduct = formData.get("termConduct") === "on";
+  const termRegulation = formData.get("termRegulation") === "on";
+  const termPayment = formData.get("termPayment") === "on";
+  const declarationAccepted = formData.get("declarationAccepted") === "on";
+
+  if (
+    !captainName ||
+    !email ||
+    !phone ||
+    !teamName ||
+    !Number.isFinite(captainAge) ||
+    captainAge < 16 ||
+    !Number.isFinite(playerCount) ||
+    playerCount < 1 ||
+    playerCount > 10
+  ) {
+    throw new Error("Preenche todos os campos corretamente.");
+  }
+
+  if (
+    !termCaptain ||
+    !termSchedule ||
+    !termRegisteredOnly ||
+    !termConduct ||
+    !termRegulation ||
+    !termPayment ||
+    !declarationAccepted
+  ) {
+    throw new Error("Deves aceitar todos os termos e a declaração.");
+  }
+
+  await prisma.teamApplication.create({
+    data: {
+      captainName,
+      captainAge,
+      email,
+      phone,
+      teamName,
+      playerCount,
+      termCaptain,
+      termSchedule,
+      termRegisteredOnly,
+      termConduct,
+      termRegulation,
+      termPayment,
+      declarationAccepted,
+      status: "PENDING",
+    },
+  });
+}
+
+export async function updateApplicationStatusAction(
+  applicationId: string,
+  status: "PENDING" | "APPROVED" | "REJECTED"
+) {
+  await requireOwner();
+  await prisma.teamApplication.update({
+    where: { id: applicationId },
+    data: { status },
+  });
+  revalidatePath("/owner/inscricoes");
+}

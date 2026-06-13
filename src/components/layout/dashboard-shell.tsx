@@ -7,6 +7,7 @@ import { TOURNAMENT } from "@/lib/constants";
 import {
   BarChart3,
   Calendar,
+  ClipboardList,
   Handshake,
   Home,
   LogOut,
@@ -28,6 +29,7 @@ import { Button } from "@/components/ui/button";
 
 const ICONS: Record<string, LucideIcon> = {
   home: Home,
+  "clipboard-list": ClipboardList,
   users: Users,
   trophy: Trophy,
   calendar: Calendar,

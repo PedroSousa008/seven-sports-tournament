@@ -52,10 +52,10 @@ export function HomeNav() {
         </nav>
 
         <Link
-          href="/login"
+          href="/inscricao"
           className="rounded-full bg-red-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-red-600/25 transition hover:bg-red-500 hover:shadow-red-500/30"
         >
-          Entrar
+          INSCREVE-TE
         </Link>
       </div>
     </motion.header>

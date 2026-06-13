@@ -27,7 +27,7 @@ export default withAuth(
     callbacks: {
       authorized: ({ token, req }) => {
         const pathname = req.nextUrl.pathname;
-        const publicPaths = ["/", "/login", "/login/redirect"];
+        const publicPaths = ["/", "/login", "/login/redirect", "/inscricao"];
         if (
           publicPaths.includes(pathname) ||
           pathname.startsWith("/api/auth")

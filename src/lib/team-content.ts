@@ -4,7 +4,7 @@ export const DEFAULT_TEAM_BANNER = "/home/hero/01-futebol-celebracao.jpg";
 
 export const SPORT_IMAGES: Record<string, string> = {
   futebol7: "/home/sports/futebol7.jpg",
-  padel: "/home/sports/padel.jpg",
+  padel: "/home/sports/padel.png",
   voleibol: "/home/sports/voleibol.jpg",
   karts: "/home/sports/karts.jpg",
 };

@@ -43,7 +43,7 @@ export const SPORTS_SHOWCASE = [
     name: "Padel",
     format: "11 Julho · Grupos · Quartos · Melhor de 3 sets",
     description: "Duplas de elite em duelos intensos na rede.",
-    image: "/home/sports/padel.jpg",
+    image: "/home/sports/padel.png",
     icon: "🎾",
   },
   {
@@ -69,19 +69,19 @@ export const JOURNEY = [
     day: "Dia 1",
     sport: "Futebol 7",
     date: SPORTS[0].dateLabel,
-    image: "/home/journey/dia1-futebol7.jpg",
+    image: "/home/journey/dia3-futebol7.jpg",
   },
   {
     day: "Dia 2",
     sport: "Padel",
     date: SPORTS[1].dateLabel,
-    image: "/home/journey/dia2-padel.jpg",
+    image: "/home/journey/dia1-padel.jpg",
   },
   {
     day: "Dia 3",
     sport: "Voleibol",
     date: SPORTS[2].dateLabel,
-    image: "/home/journey/dia3-voleibol.jpg",
+    image: "/home/journey/dia2-voleibol.jpg",
   },
   {
     day: "Dia 4",

@@ -37,18 +37,6 @@ Substitui os ficheiros `.jpg` em cada pasta pelas tuas fotos, **mantendo o mesmo
 | `karts.png` | Karts — Troféu de Campeão |
 | `campeoes-torneio.png` | Campeões do Torneio — 1.ª Edição |
 
-### `gallery/` — Galeria de momentos (8 imagens)
-| Ficheiro | Descrição |
-|----------|-----------|
-| `01-celebracao-equipa.jpg` | Celebração de equipa |
-| `02-karting.jpg` | Karting |
-| `03-voleibol.jpg` | Voleibol |
-| `04-padel.jpg` | Padel |
-| `05-multidao.jpg` | Multidão |
-| `06-trofeu.jpg` | Troféu |
-| `07-podio.jpg` | Pódio |
-| `08-futebol.jpg` | Futebol |
-
 ### `cta/` — Fundo do call-to-action (1 imagem)
 | Ficheiro | Descrição |
 |----------|-----------|
@@ -58,5 +46,5 @@ Substitui os ficheiros `.jpg` em cada pasta pelas tuas fotos, **mantendo o mesmo
 
 - Formato recomendado: **JPG** ou **WebP**
 - Hero e CTA: largura mínima ~2400px
-- Sports, journey, trophies, gallery: ~800–1200px
+- Sports, journey, trophies: ~800–1200px
 - Se usares outro formato (ex: `.png`), atualiza o caminho em `src/lib/home-content.ts` ou `src/components/home/cta-section.tsx`

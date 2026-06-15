@@ -46,9 +46,6 @@ export function HomeNav() {
           <a href="#classificacao" className="transition hover:text-white">
             Classificação
           </a>
-          <a href="#galeria" className="transition hover:text-white">
-            Galeria
-          </a>
         </nav>
 
         <Link

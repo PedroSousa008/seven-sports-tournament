@@ -161,7 +161,7 @@ export function RegistrationForm() {
             <SummaryItem
               icon={Users}
               label="Jogadores"
-              value={`Máx. ${REGISTRATION_SUMMARY.maxPlayers} por equipa`}
+              value={REGISTRATION_SUMMARY.playersLabel}
             />
             <SummaryItem
               icon={Users}
@@ -270,11 +270,11 @@ export function RegistrationForm() {
             <Field label="Número de Jogadores na Equipa">
               <Input
                 type="number"
-                min={1}
-                max={10}
+                min={10}
+                max={13}
                 value={playerCount}
                 onChange={(e) => setPlayerCount(e.target.value)}
-                placeholder="Ex: 10"
+                placeholder="Ex: 12 (10-13)"
                 required
                 inputMode="numeric"
               />

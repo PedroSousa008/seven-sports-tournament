@@ -1,6 +1,5 @@
 import { CalendarSection } from "@/components/home/calendar-section";
 import { CtaSection } from "@/components/home/cta-section";
-import { GallerySection } from "@/components/home/gallery-section";
 import { HeroSection } from "@/components/home/hero-section";
 import { HomeFooter } from "@/components/home/home-footer";
 import { HomeNav } from "@/components/home/home-nav";
@@ -56,7 +55,6 @@ export default async function HomePage() {
       <LeaderboardSection ranking={ranking} />
       <TrophiesSection />
       <SponsorsSection partners={partners} />
-      <GallerySection />
       <CtaSection />
       <HomeFooter />
     </div>

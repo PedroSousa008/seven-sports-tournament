@@ -662,8 +662,8 @@ export async function submitTeamApplicationAction(formData: FormData) {
     !Number.isFinite(captainAge) ||
     captainAge < 16 ||
     !Number.isFinite(playerCount) ||
-    playerCount < 1 ||
-    playerCount > 10
+    playerCount < 10 ||
+    playerCount > 13
   ) {
     throw new Error("Preenche todos os campos corretamente.");
   }

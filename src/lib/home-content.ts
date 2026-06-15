@@ -131,49 +131,6 @@ export const GRAND_TROPHY = {
   accent: "from-amber-300/30 to-yellow-500/20",
 } as const;
 
-export const GALLERY_IMAGES = [
-  {
-    src: "/home/gallery/01-celebracao-equipa.jpg",
-    alt: "Celebração de equipa",
-    tall: true,
-  },
-  {
-    src: "/home/gallery/02-karting.jpg",
-    alt: "Karting",
-    tall: false,
-  },
-  {
-    src: "/home/gallery/03-voleibol.jpg",
-    alt: "Voleibol",
-    tall: false,
-  },
-  {
-    src: "/home/gallery/04-padel.jpg",
-    alt: "Padel",
-    tall: true,
-  },
-  {
-    src: "/home/gallery/05-multidao.jpg",
-    alt: "Multidão",
-    tall: false,
-  },
-  {
-    src: "/home/gallery/06-trofeu.jpg",
-    alt: "Troféu",
-    tall: true,
-  },
-  {
-    src: "/home/gallery/07-podio.jpg",
-    alt: "Pódio",
-    tall: false,
-  },
-  {
-    src: "/home/gallery/08-futebol.jpg",
-    alt: "Futebol",
-    tall: false,
-  },
-] as const;
-
 export const SPONSOR_CATEGORIES = [
   { type: "MAIN_SPONSOR", label: "Patrocinador Principal" },
   { type: "OFFICIAL_PARTNER", label: "Parceiros Oficiais" },

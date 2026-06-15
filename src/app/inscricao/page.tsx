@@ -5,7 +5,7 @@ import { TOURNAMENT } from "@/lib/constants";
 export const metadata = {
   title: `Inscrição | ${TOURNAMENT.name}`,
   description:
-    "Submete a candidatura da tua equipa para o Torneio 4 Desportos Braga.",
+    "Submete a candidatura da tua equipa para a Four Sports Cup.",
 };
 
 export default function InscricaoPage() {
@@ -15,7 +15,7 @@ export default function InscricaoPage() {
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
           <Link href="/" className="group">
             <p className="font-display text-xs tracking-[0.35em] text-red-500">
-              T4DB
+              {TOURNAMENT.abbrev}
             </p>
             <p className="text-sm font-semibold text-white transition group-hover:text-red-400">
               {TOURNAMENT.shortName}

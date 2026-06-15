@@ -141,7 +141,8 @@ export function RegistrationForm() {
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-zinc-400">
             Submete a candidatura da tua equipa e entra na lista de espera para
-            participar no maior torneio multidesportivo da cidade.
+            participar na {TOURNAMENT.name}, o maior evento multidesportivo de
+            Braga.
           </p>
         </div>
       </section>
@@ -151,7 +152,7 @@ export function RegistrationForm() {
         <div className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.06] to-white/[0.02]">
           <div className="border-b border-white/10 bg-red-600/10 px-6 py-4">
             <p className="text-xs font-bold uppercase tracking-[0.3em] text-red-400">
-              Resumo do Torneio
+              Resumo da {TOURNAMENT.name}
             </p>
           </div>
           <div className="grid gap-4 p-6 sm:grid-cols-2">

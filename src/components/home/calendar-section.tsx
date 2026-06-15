@@ -1,5 +1,6 @@
 import { SportCalendarView } from "@/components/calendar/sport-calendar-view";
 import { FadeIn } from "./fade-in";
+import { TOURNAMENT } from "@/lib/constants";
 import type { SportCalendarData } from "@/lib/calendar";
 
 export function CalendarSection({
@@ -18,7 +19,7 @@ export function CalendarSection({
             Calendário
           </p>
           <h2 className="font-display mt-4 text-4xl text-white sm:text-5xl">
-            CALENDÁRIO DO TORNEIO
+            CALENDÁRIO {TOURNAMENT.name.toUpperCase()}
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-zinc-400">
             Consulta os grupos, horários, jogos e fases finais de cada

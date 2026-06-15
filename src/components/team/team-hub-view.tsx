@@ -16,6 +16,7 @@ import { formatCurrency, formatDate, formatDateTime } from "@/lib/utils";
 import { SportCalendarView } from "@/components/calendar/sport-calendar-view";
 import { SportDetailModal } from "./sport-detail-modal";
 import type { SportCalendarData } from "@/lib/calendar";
+import { TOURNAMENT } from "@/lib/constants";
 
 function SectionTitle({
   eyebrow,
@@ -111,7 +112,7 @@ export function TeamHubView({
               </div>
               <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8">
                 <p className="text-xs font-semibold uppercase tracking-[0.25em] text-red-400">
-                  {data.nextMatch?.sportName ?? data.nextEvent?.sportName ?? "Torneio"}
+                  {data.nextMatch?.sportName ?? data.nextEvent?.sportName ?? TOURNAMENT.name}
                 </p>
                 <h3 className="font-display mt-1 text-3xl text-white sm:text-4xl">
                   {data.nextMatch?.title ?? data.nextEvent?.title}
@@ -148,7 +149,7 @@ export function TeamHubView({
 
         {/* SECTION 3 — Tournament Journey */}
         <section>
-          <SectionTitle eyebrow="A jornada" title="Roadmap do Torneio" />
+          <SectionTitle eyebrow="A jornada" title={`Roadmap ${TOURNAMENT.name}`} />
           <div className="flex gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {data.journey.map((step, i) => (
               <motion.div
@@ -334,7 +335,7 @@ export function TeamHubView({
 
         {/* SECTION — Calendar */}
         <section>
-          <SectionTitle eyebrow="Calendário" title="Calendário do Torneio" />
+          <SectionTitle eyebrow="Calendário" title={`Calendário ${TOURNAMENT.name}`} />
           <p className="mb-4 text-sm text-zinc-500">
             A tua equipa está destacada a vermelho.
           </p>
@@ -406,7 +407,7 @@ export function TeamHubView({
             </div>
             {data.storeItems[0] ? (
               <div className="mt-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4">
-                <p className="text-xs uppercase tracking-wider text-amber-400">Loja do torneio</p>
+                <p className="text-xs uppercase tracking-wider text-amber-400">Loja {TOURNAMENT.name}</p>
                 <p className="mt-1 font-semibold text-white">{data.storeItems[0].name}</p>
                 {data.storeItems[0].price ? (
                   <p className="text-sm text-zinc-400">

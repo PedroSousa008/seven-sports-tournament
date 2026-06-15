@@ -22,8 +22,7 @@ const bebas = Bebas_Neue({
 
 export const metadata: Metadata = {
   title: `${TOURNAMENT.name} | ${TOURNAMENT.dateRange}`,
-  description:
-    "O maior torneio multidesportivo de Braga. 12 equipas, 4 desportos, 1 campeão. Futebol 7 (10 Jul), Padel (11 Jul), Voleibol (17 Jul) e Karts (18 Jul).",
+  description: TOURNAMENT.description,
 };
 
 export default function RootLayout({

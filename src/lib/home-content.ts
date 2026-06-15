@@ -126,7 +126,7 @@ export const SPORT_TROPHIES = [
 export const GRAND_TROPHY = {
   slug: "campeoes-torneio",
   title: "1.ª Edição",
-  subtitle: "Campeões do Torneio",
+  subtitle: "Campeões Four Sports Cup",
   image: "/home/trophies/campeoes-torneio.png",
   accent: "from-amber-300/30 to-yellow-500/20",
 } as const;

@@ -9,7 +9,7 @@ export function HomeFooter() {
             {TOURNAMENT.name.toUpperCase()}
           </p>
           <p className="mt-1 text-sm text-zinc-500">
-            {TOURNAMENT.dateRange} · Braga, Portugal
+            {TOURNAMENT.dateRange} · {TOURNAMENT.locationFull}
           </p>
         </div>
         <p className="text-xs text-zinc-600">

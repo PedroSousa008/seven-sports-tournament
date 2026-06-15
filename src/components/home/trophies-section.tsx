@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { GRAND_TROPHY, SPORT_TROPHIES } from "@/lib/home-content";
+import { TOURNAMENT } from "@/lib/constants";
 import { FadeIn } from "./fade-in";
 
 type Trophy = (typeof SPORT_TROPHIES)[number] | typeof GRAND_TROPHY;
@@ -91,7 +92,7 @@ export function TrophiesSection() {
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-zinc-400">
             Quatro troféus de campeão por modalidade. Uma coroa suprema para os
-            vencedores do torneio.
+            vencedores da {TOURNAMENT.name}.
           </p>
         </FadeIn>
 

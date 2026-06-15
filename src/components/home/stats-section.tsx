@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { STATS } from "@/lib/home-content";
+import { TOURNAMENT } from "@/lib/constants";
 import { FadeIn } from "./fade-in";
 
 function AnimatedNumber({ value }: { value: number }) {
@@ -41,7 +42,7 @@ export function StatsSection() {
       <div className="relative mx-auto max-w-7xl px-6">
         <FadeIn className="mb-16 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-red-500">
-            O Torneio em Números
+            {TOURNAMENT.name} em Números
           </p>
           <h2 className="font-display mt-4 text-4xl text-white sm:text-5xl">
             UMA COMPETIÇÃO À ESCALA DA GLÓRIA

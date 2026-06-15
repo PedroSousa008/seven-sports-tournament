@@ -29,7 +29,7 @@ export function HomeNav() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <Link href="/" className="group">
           <p className="font-display text-xs tracking-[0.35em] text-red-500">
-            T4DB
+            {TOURNAMENT.abbrev}
           </p>
           <p className="text-sm font-semibold text-white transition group-hover:text-red-400">
             {TOURNAMENT.shortName}

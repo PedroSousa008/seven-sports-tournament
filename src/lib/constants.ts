@@ -1,10 +1,15 @@
 export const TOURNAMENT = {
-  name: "Torneio 4 Desportos Braga",
-  shortName: "Torneio 4 Desportos",
+  name: "Four Sports Cup",
+  shortName: "Four Sports Cup",
+  abbrev: "FSC",
+  location: "Braga",
+  locationFull: "Braga, Portugal",
   startDate: "2026-07-10",
   endDate: "2026-07-18",
   dateRange: "10–18 Julho 2026",
   dateRangeUpper: "10–18 JULHO 2026",
+  description:
+    "Four Sports Cup — o maior torneio multidesportivo de Braga. 12 equipas, 4 desportos, 1 campeão. Futebol 7 (10 Jul), Padel (11 Jul), Voleibol (17 Jul) e Karts (18 Jul).",
 } as const;
 
 export const SPORTS = [

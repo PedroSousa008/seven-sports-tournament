@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { TOURNAMENT } from "@/lib/constants";
 import { formatCurrency } from "@/lib/utils";
 
 type Promotion = {
@@ -43,7 +44,7 @@ export function PartnersMarketplace({
           Parceiros & Ofertas
         </h1>
         <p className="mt-2 text-sm text-zinc-400">
-          Promoções exclusivas e produtos do torneio.
+          Promoções exclusivas e produtos da {TOURNAMENT.name}.
         </p>
       </div>
 
@@ -122,7 +123,7 @@ export function PartnersMarketplace({
       </section>
 
       <section>
-        <h2 className="font-display mb-4 text-xl text-white">Loja do Torneio</h2>
+        <h2 className="font-display mb-4 text-xl text-white">Loja {TOURNAMENT.name}</h2>
         <div className="flex gap-4 overflow-x-auto pb-2">
           {storeItems.map((item) => (
             <article

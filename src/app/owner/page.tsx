@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatCard } from "@/components/ui/stat-card";
 import { getOwnerDashboardStats } from "@/lib/tournament";
+import { TOURNAMENT } from "@/lib/constants";
 import { formatCurrency, formatDate, formatDateTime } from "@/lib/utils";
 import { AlertCircle, Calendar } from "lucide-react";
 
@@ -13,7 +14,7 @@ export default async function OwnerHomePage() {
   return (
     <div>
       <PageHeader
-        title={stats.settings?.name ?? "Visão geral do torneio"}
+        title={stats.settings?.name ?? TOURNAMENT.name}
         description={`${stats.settings?.location ?? "Braga"} · ${stats.settings ? formatDate(stats.settings.startDate) : ""} – ${stats.settings ? formatDate(stats.settings.endDate) : ""}`}
       />
 

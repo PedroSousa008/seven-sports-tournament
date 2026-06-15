@@ -100,7 +100,7 @@ export function HeroSection() {
             href="#desportos"
             className="rounded-full border border-white/25 bg-white/5 px-8 py-4 text-sm font-bold uppercase tracking-wider text-white backdrop-blur transition hover:border-white/50 hover:bg-white/10"
           >
-            Explorar o Torneio
+            Explorar Modalidades
           </a>
           <a
             href="#calendario"

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { JOURNEY } from "@/lib/home-content";
+import { TOURNAMENT } from "@/lib/constants";
 import { FadeIn } from "./fade-in";
 
 export function JourneySection() {
@@ -70,7 +71,7 @@ export function JourneySection() {
                     </h3>
                     {featured ? (
                       <p className="mt-4 text-zinc-400">
-                        O clímax do torneio. A modalidade com maior peso na
+                        O clímax da {TOURNAMENT.name}. A modalidade com maior peso na
                         classificação final.
                       </p>
                     ) : null}

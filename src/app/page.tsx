@@ -10,6 +10,7 @@ import { SportsSection } from "@/components/home/sports-section";
 import { StatsSection } from "@/components/home/stats-section";
 import { TrophiesSection } from "@/components/home/trophies-section";
 import { getAllSportCalendars } from "@/lib/calendar";
+import { TOURNAMENT } from "@/lib/constants";
 import { getHomePartners } from "@/lib/partners-content";
 import { getOverallRanking } from "@/lib/rankings";
 import { getTournamentSettings } from "@/lib/tournament";
@@ -48,7 +49,7 @@ export default async function HomePage() {
 
   return (
     <div className="bg-black text-white">
-      <HomeNav logoUrl={settings?.logoUrl} />
+      <HomeNav logoUrl={settings?.logoUrl ?? TOURNAMENT.logoUrl} />
       <HeroSection />
       <StatsSection />
       <SportsSection />

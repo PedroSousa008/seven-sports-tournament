@@ -18,7 +18,7 @@ export default async function InscricaoPage() {
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
           <Link href="/">
-            <SiteLogo logoUrl={settings?.logoUrl} />
+            <SiteLogo logoUrl={settings?.logoUrl ?? TOURNAMENT.logoUrl} />
           </Link>
           <Link
             href="/"

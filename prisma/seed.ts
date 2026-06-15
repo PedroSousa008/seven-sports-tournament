@@ -12,6 +12,7 @@ async function main() {
     where: { id: "default" },
     update: {
       name: TOURNAMENT.name,
+      logoUrl: TOURNAMENT.logoUrl,
       startDate: new Date(TOURNAMENT.startDate),
       endDate: new Date(TOURNAMENT.endDate),
     },
@@ -19,6 +20,7 @@ async function main() {
       id: "default",
       name: TOURNAMENT.name,
       location: "Braga",
+      logoUrl: TOURNAMENT.logoUrl,
       startDate: new Date(TOURNAMENT.startDate),
       endDate: new Date(TOURNAMENT.endDate),
       maxTeams: 12,

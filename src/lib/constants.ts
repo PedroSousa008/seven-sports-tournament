@@ -10,6 +10,7 @@ export const TOURNAMENT = {
   dateRangeUpper: "10–18 JULHO 2026",
   description:
     "Four Sports Cup — o maior torneio multidesportivo de Braga. 12 equipas, 4 desportos, 1 campeão. Futebol 7 (10 Jul), Padel (11 Jul), Voleibol (17 Jul) e Karts (18 Jul).",
+  logoUrl: "/logo.png",
 } as const;
 
 export const SPORTS = [

@@ -162,7 +162,17 @@ export default async function OwnerSettingsPage() {
             </div>
             <div className="md:col-span-2">
               <Label>URL do logótipo</Label>
-              <Input name="logoUrl" defaultValue={settings?.logoUrl ?? ""} />
+              <Input
+                name="logoUrl"
+                defaultValue={settings?.logoUrl ?? ""}
+                placeholder="/logo.png"
+              />
+              <p className="mt-2 text-xs text-zinc-500">
+                Coloca o ficheiro em{" "}
+                <code className="text-zinc-400">public/logo.png</code> e usa o
+                caminho <code className="text-zinc-400">/logo.png</code>. Aparece
+                no canto superior esquerdo da homepage e da página de inscrição.
+              </p>
             </div>
             <Button type="submit">Guardar definições</Button>
           </form>

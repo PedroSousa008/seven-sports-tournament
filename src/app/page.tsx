@@ -12,16 +12,18 @@ import { TrophiesSection } from "@/components/home/trophies-section";
 import { getAllSportCalendars } from "@/lib/calendar";
 import { getHomePartners } from "@/lib/partners-content";
 import { getOverallRanking } from "@/lib/rankings";
+import { getTournamentSettings } from "@/lib/tournament";
 import { prisma } from "@/lib/db";
 
 export default async function HomePage() {
-  const [ranking, dbPartners, calendars] = await Promise.all([
+  const [ranking, dbPartners, calendars, settings] = await Promise.all([
     getOverallRanking(),
     prisma.partner.findMany({
       where: { status: { in: ["CONFIRMED", "PAID", "COMPLETED"] } },
       orderBy: { brandName: "asc" },
     }),
     getAllSportCalendars(),
+    getTournamentSettings(),
   ]);
 
   const staticPartners = getHomePartners();
@@ -46,7 +48,7 @@ export default async function HomePage() {
 
   return (
     <div className="bg-black text-white">
-      <HomeNav />
+      <HomeNav logoUrl={settings?.logoUrl} />
       <HeroSection />
       <StatsSection />
       <SportsSection />

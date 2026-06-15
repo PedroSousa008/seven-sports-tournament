@@ -543,6 +543,8 @@ export async function updateSettingsAction(formData: FormData) {
     },
   });
   revalidatePath("/owner/settings");
+  revalidatePath("/");
+  revalidatePath("/inscricao");
 }
 
 export async function updateTeamProfileAction(formData: FormData) {

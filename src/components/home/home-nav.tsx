@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { TOURNAMENT } from "@/lib/constants";
+import { SiteLogo } from "@/components/ui/site-logo";
 
-export function HomeNav() {
+export function HomeNav({ logoUrl }: { logoUrl?: string | null }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -28,12 +28,10 @@ export function HomeNav() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <Link href="/" className="group">
-          <p className="font-display text-xs tracking-[0.35em] text-red-500">
-            {TOURNAMENT.abbrev}
-          </p>
-          <p className="text-sm font-semibold text-white transition group-hover:text-red-400">
-            {TOURNAMENT.shortName}
-          </p>
+          <SiteLogo
+            logoUrl={logoUrl}
+            className="transition group-hover:opacity-90"
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 text-sm text-zinc-400 md:flex">

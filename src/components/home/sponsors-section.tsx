@@ -70,7 +70,7 @@ export function SponsorsSection({ partners }: { partners: Sponsor[] }) {
             Patrocinadores & Parceiros
           </p>
           <h2 className="font-display mt-4 text-4xl text-white sm:text-5xl">
-            MARCAS QUE FAZEM PARTE DA LENDA
+            MARCAS QUE FAZEM PARTE DO TORNEIO
           </h2>
         </FadeIn>
 

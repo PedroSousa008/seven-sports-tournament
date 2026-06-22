@@ -89,6 +89,7 @@ model Team {
   announcementTargets  AnnouncementTarget[]
   sportSelections      PlayerSportSelection[]
   kartResults          KartResult[]
+  rankingSlots         SportRankingSlot[]
   individualAssignments IndividualApplication[]
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
@@ -139,6 +140,7 @@ model Sport {
   pointsConfigs PointsConfig[]
   announcements Announcement[]
   kartHeats     KartHeat[]
+  rankingSlots  SportRankingSlot[]
   createdAt     DateTime               @default(now())
   updatedAt     DateTime               @updatedAt
 }
@@ -207,9 +209,23 @@ model KartResult {
   team     Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
   position Int
   points   Int      @default(0)
+  useX2    Boolean  @default(false)
   time     String?
 
   @@unique([heatId, teamId])
+}
+
+model SportRankingSlot {
+  id       String  @id @default(cuid())
+  sportId  String
+  sport    Sport   @relation(fields: [sportId], references: [id], onDelete: Cascade)
+  position Int
+  points   Int     @default(0)
+  teamId   String?
+  team     Team?   @relation(fields: [teamId], references: [id], onDelete: SetNull)
+
+  @@unique([sportId, position])
+  @@unique([sportId, teamId])
 }
 
 model Event {

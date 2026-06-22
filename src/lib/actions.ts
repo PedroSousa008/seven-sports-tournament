@@ -4,7 +4,11 @@ import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { requireSession } from "@/lib/session";
-import { applyPointsForPosition, recalculateKartPoints } from "@/lib/rankings";
+import {
+  applyPointsForPosition,
+  recalculateKartPoints,
+  syncSportRankingSlotsToTeamPoints,
+} from "@/lib/rankings";
 import type {
   AnnouncementPriority,
   EventStatus,
@@ -16,6 +20,12 @@ import type {
 async function requireOwner() {
   const session = await requireSession("OWNER");
   return session;
+}
+
+function revalidateRankingPaths() {
+  revalidatePath("/owner/rankings");
+  revalidatePath("/");
+  revalidatePath("/team");
 }
 
 async function requireTeam() {
@@ -351,7 +361,7 @@ export async function updateMatchResultAction(matchId: string, formData: FormDat
     await applyPointsForPosition(match.sportId, winnerTeamId, position);
   }
   revalidatePath(`/owner/sports/${match.sportId}`);
-  revalidatePath("/owner/rankings");
+  revalidateRankingPaths();
   revalidatePath("/owner/calendar");
   revalidatePath("/");
   revalidatePath("/team");
@@ -365,7 +375,7 @@ export async function setTeamSportPositionAction(
   await requireOwner();
   await applyPointsForPosition(sportId, teamId, position);
   revalidatePath(`/owner/sports/${sportId}`);
-  revalidatePath("/owner/rankings");
+  revalidateRankingPaths();
 }
 
 export async function createEventAction(formData: FormData) {
@@ -412,8 +422,149 @@ export async function updatePointsConfigAction(
   } else {
     await prisma.pointsConfig.create({ data: { position, points } });
   }
-  revalidatePath("/owner/rankings");
+  revalidateRankingPaths();
   revalidatePath("/owner/settings");
+}
+
+type RankingRowPayload = {
+  position: number;
+  points: number;
+  teamId: string | null;
+};
+
+type PointsConfigPayload = {
+  position: number;
+  points: number;
+};
+
+type KartRaceRowPayload = {
+  position: number;
+  points: number;
+  teamId: string | null;
+  useX2: boolean;
+};
+
+export async function saveSportPointsConfigAction(
+  sportId: string,
+  payload: string
+) {
+  await requireOwner();
+  const configs = JSON.parse(payload) as PointsConfigPayload[];
+
+  for (const config of configs) {
+    const existing = await prisma.pointsConfig.findFirst({
+      where: { sportId, position: config.position },
+    });
+    if (existing) {
+      await prisma.pointsConfig.update({
+        where: { id: existing.id },
+        data: { points: config.points },
+      });
+    } else {
+      await prisma.pointsConfig.create({
+        data: { sportId, position: config.position, points: config.points },
+      });
+    }
+  }
+
+  revalidateRankingPaths();
+}
+
+export async function saveSportRankingAction(
+  sportId: string,
+  sportName: string,
+  payload: string
+) {
+  await requireOwner();
+  const rows = JSON.parse(payload) as RankingRowPayload[];
+  const assigned = rows
+    .map((row) => row.teamId)
+    .filter((teamId): teamId is string => Boolean(teamId));
+
+  if (new Set(assigned).size !== assigned.length) {
+    throw new Error(
+      "Esta equipa já foi atribuída a outra posição neste desporto."
+    );
+  }
+
+  for (const row of rows) {
+    await prisma.sportRankingSlot.upsert({
+      where: {
+        sportId_position: { sportId, position: row.position },
+      },
+      create: {
+        sportId,
+        position: row.position,
+        points: row.points,
+        teamId: row.teamId,
+      },
+      update: {
+        points: row.points,
+        teamId: row.teamId,
+      },
+    });
+  }
+
+  await syncSportRankingSlotsToTeamPoints(sportId);
+  revalidateRankingPaths();
+
+  return `Classificação de ${sportName} atualizada com sucesso.`;
+}
+
+export async function saveKartRaceAction(
+  sportId: string,
+  heatId: string,
+  raceName: string,
+  payload: string
+) {
+  await requireOwner();
+  const rows = JSON.parse(payload) as KartRaceRowPayload[];
+  const assigned = rows
+    .map((row) => row.teamId)
+    .filter((teamId): teamId is string => Boolean(teamId));
+
+  if (new Set(assigned).size !== assigned.length) {
+    throw new Error(
+      "Esta equipa já foi atribuída a outra posição neste desporto."
+    );
+  }
+
+  const otherHeats = await prisma.kartHeat.findMany({
+    where: { sportId, NOT: { id: heatId } },
+    include: { results: true },
+  });
+
+  for (const row of rows) {
+    if (!row.teamId || !row.useX2) continue;
+    const alreadyUsed = otherHeats.some((heat) =>
+      heat.results.some(
+        (result) => result.teamId === row.teamId && result.useX2
+      )
+    );
+    if (alreadyUsed) {
+      throw new Error("Esta equipa já utilizou o x2 nos Karts.");
+    }
+  }
+
+  await prisma.kartResult.deleteMany({ where: { heatId } });
+
+  for (const row of rows) {
+    if (!row.teamId) continue;
+    await prisma.kartResult.create({
+      data: {
+        heatId,
+        teamId: row.teamId,
+        position: row.position,
+        points: row.points,
+        useX2: row.useX2,
+      },
+    });
+  }
+
+  await recalculateKartPoints(sportId);
+  revalidateRankingPaths();
+
+  return `Classificação de ${raceName} atualizada com sucesso.`;
 }
 
 export async function createPartnerAction(formData: FormData) {
@@ -623,6 +774,7 @@ export async function saveKartHeatAction(sportId: string, formData: FormData) {
   const teamIds = formData.getAll("teamId").map(String);
   const positions = formData.getAll("position").map((v) => Number(v));
   const points = formData.getAll("points").map((v) => Number(v));
+  const useX2Flags = formData.getAll("useX2").map((v) => v === "on");
   await prisma.kartResult.deleteMany({ where: { heatId: heat.id } });
   for (let i = 0; i < teamIds.length; i++) {
     if (!teamIds[i]) continue;
@@ -632,12 +784,12 @@ export async function saveKartHeatAction(sportId: string, formData: FormData) {
         teamId: teamIds[i],
         position: positions[i] || i + 1,
         points: points[i] || 0,
+        useX2: useX2Flags[i] ?? false,
       },
     });
   }
   await recalculateKartPoints(sportId);
-  revalidatePath(`/owner/sports/${sportId}`);
-  revalidatePath("/owner/rankings");
+  revalidateRankingPaths();
 }
 
 export async function submitTeamApplicationAction(formData: FormData) {

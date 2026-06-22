@@ -89,6 +89,46 @@ async function main() {
     }
   }
 
+  const sports = await prisma.sport.findMany();
+  for (const sport of sports) {
+    for (const row of DEFAULT_POINTS) {
+      const existing = await prisma.pointsConfig.findFirst({
+        where: { position: row.position, sportId: sport.id },
+      });
+      if (existing) {
+        await prisma.pointsConfig.update({
+          where: { id: existing.id },
+          data: { points: row.points },
+        });
+      } else {
+        await prisma.pointsConfig.create({
+          data: {
+            sportId: sport.id,
+            position: row.position,
+            points: row.points,
+          },
+        });
+      }
+    }
+
+    if (sport.slug === "karts") {
+      for (let i = 0; i < 3; i++) {
+        const existingHeat = await prisma.kartHeat.findFirst({
+          where: { sportId: sport.id, order: i + 1 },
+        });
+        if (!existingHeat) {
+          await prisma.kartHeat.create({
+            data: {
+              sportId: sport.id,
+              name: `Corrida ${i + 1}`,
+              order: i + 1,
+            },
+          });
+        }
+      }
+    }
+  }
+
   console.log("Conta de organizador pronta:");
   console.log(`  Email: ${OWNER_EMAIL}`);
   console.log(`  Palavra-passe: ${OWNER_PASSWORD}`);

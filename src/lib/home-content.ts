@@ -57,8 +57,8 @@ export const SPORTS_SHOWCASE = [
   {
     slug: "karts",
     name: "Karts",
-    format: "18 Julho · Grande Final · Máxima pontuação",
-    description: "O momento decisivo. Velocidade, estratégia e glória.",
+    format: "18 Julho · 3 Corridas · Joker · Grande Final do Torneio",
+    description: "3 pilotos representam a equipa, 1 em cada corrida",
     image: "/home/sports/karts.jpg",
     icon: "🏎️",
   },

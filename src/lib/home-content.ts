@@ -49,8 +49,8 @@ export const SPORTS_SHOWCASE = [
   {
     slug: "voleibol",
     name: "Voleibol",
-    format: "17 Julho · Grupos · Fase final · Equipas completas",
-    description: "Bloqueios, smashes e espírito de equipa em Braga.",
+    format: "17 Julho · Grupos · Meias · Final · Melhor de 3 sets",
+    description: "4x4 com substituições ilimitadas",
     image: "/home/sports/voleibol.jpg",
     icon: "🏐",
   },

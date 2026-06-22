@@ -55,45 +55,42 @@ export async function ensureKartHeats(sportId: string) {
   const existing = await prisma.kartHeat.findMany({
     where: { sportId },
     include: { results: { include: { team: true } } },
-    orderBy: { order: "asc" },
+    orderBy: [{ order: "asc" }, { createdAt: "asc" }],
   });
 
-  const heats = [];
-  const usedIds = new Set<string>();
-
-  for (let i = 0; i < 3; i++) {
-    const name = KART_RACE_NAMES[i];
-    const order = i + 1;
-
-    let heat =
-      existing.find((item) => item.order === order && !usedIds.has(item.id)) ??
-      existing.find((item) => !usedIds.has(item.id));
-
-    if (heat) {
-      heat = await prisma.kartHeat.update({
-        where: { id: heat.id },
-        data: { name, order },
-        include: { results: { include: { team: true } } },
-      });
-    } else {
-      heat = await prisma.kartHeat.create({
-        data: { sportId, name, order },
-        include: { results: { include: { team: true } } },
-      });
-    }
-
-    usedIds.add(heat.id);
-    heats.push(heat);
-  }
-
-  const extraHeats = existing.filter((item) => !usedIds.has(item.id));
-  if (extraHeats.length > 0) {
+  if (existing.length > 3) {
+    const extras = existing.slice(3);
     await prisma.kartHeat.deleteMany({
-      where: { id: { in: extraHeats.map((item) => item.id) } },
+      where: { id: { in: extras.map((heat) => heat.id) } },
     });
   }
 
-  return heats;
+  const heats = existing.slice(0, 3);
+
+  for (let i = 0; i < 3; i++) {
+    const expectedName = KART_RACE_NAMES[i];
+    const expectedOrder = i + 1;
+
+    if (heats[i]) {
+      if (heats[i].name !== expectedName || heats[i].order !== expectedOrder) {
+        await prisma.kartHeat.update({
+          where: { id: heats[i].id },
+          data: { name: expectedName, order: expectedOrder },
+        });
+      }
+    } else {
+      await prisma.kartHeat.create({
+        data: { sportId, name: expectedName, order: expectedOrder },
+      });
+    }
+  }
+
+  return prisma.kartHeat.findMany({
+    where: { sportId },
+    include: { results: { include: { team: true } } },
+    orderBy: { order: "asc" },
+    take: 3,
+  });
 }
 
 export async function getOverallRanking(): Promise<RankingEntry[]> {

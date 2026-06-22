@@ -1,4 +1,9 @@
-import type { ApplicationStatus } from "@prisma/client";
+import type {
+  ApplicationStatus,
+  IndividualApplication,
+  TeamApplication,
+} from "@prisma/client";
+import { prisma } from "@/lib/db";
 
 export const APPLICATION_STATUS_LABELS: Record<ApplicationStatus, string> = {
   PENDING: "Pendente",
@@ -73,3 +78,23 @@ export const REGISTRATION_SUMMARY = {
   maxTeams: 12,
   price: 500,
 } as const;
+
+export async function getOwnerApplications(): Promise<{
+  teamApplications: TeamApplication[];
+  individualApplications: IndividualApplication[];
+}> {
+  const teamApplications = await prisma.teamApplication.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+
+  let individualApplications: IndividualApplication[] = [];
+  try {
+    individualApplications = await prisma.individualApplication.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+  } catch {
+    individualApplications = [];
+  }
+
+  return { teamApplications, individualApplications };
+}

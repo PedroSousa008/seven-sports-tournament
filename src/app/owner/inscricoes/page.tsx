@@ -3,13 +3,11 @@ import {
   ApplicationsManager,
   type ApplicationRecord,
 } from "@/components/owner/applications-manager";
-import { prisma } from "@/lib/db";
+import { getOwnerApplications } from "@/lib/applications";
 
 export default async function OwnerApplicationsPage() {
-  const [teamApplications, individualApplications] = await Promise.all([
-    prisma.teamApplication.findMany({ orderBy: { createdAt: "desc" } }),
-    prisma.individualApplication.findMany({ orderBy: { createdAt: "desc" } }),
-  ]);
+  const { teamApplications, individualApplications } =
+    await getOwnerApplications();
 
   const applications: ApplicationRecord[] = [
     ...teamApplications.map((data) => ({ type: "TEAM" as const, data })),

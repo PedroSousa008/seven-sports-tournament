@@ -41,8 +41,8 @@ export const SPORTS_SHOWCASE = [
   {
     slug: "padel",
     name: "Padel",
-    format: "11 Julho · Grupos · Quartos · Melhor de 3 sets",
-    description: "Duplas de elite em duelos intensos na rede.",
+    format: "11 Julho · Grupos · Quartos · Meias · Final · Proset",
+    description: "Entre 1-2 Duplas por Equipa",
     image: "/home/sports/padel.png",
     icon: "🎾",
   },

@@ -74,7 +74,7 @@ export const REGISTRATION_SUMMARY = {
   location: "Braga",
   dates: "10–18 Julho 2026",
   sports: ["Futebol 7", "Padel", "Voleibol", "Karts"],
-  playersLabel: "10-13 por equipa",
+  playersLabel: "10 + 2 opcionais",
   maxTeams: 12,
   price: 500,
 } as const;

@@ -277,7 +277,7 @@ export function TeamRegistrationForm({
                 max={13}
                 value={playerCount}
                 onChange={(e) => setPlayerCount(e.target.value)}
-                placeholder="Ex: 12 (10-13)"
+                placeholder="Ex: 12 (10 + 2 opcionais)"
                 required
                 inputMode="numeric"
               />

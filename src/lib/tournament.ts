@@ -2,7 +2,13 @@ import { prisma } from "@/lib/db";
 import { getOverallRanking } from "@/lib/rankings";
 
 export async function getTournamentSettings() {
-  return prisma.tournamentSettings.findUnique({ where: { id: "default" } });
+  try {
+    return await prisma.tournamentSettings.findUnique({
+      where: { id: "default" },
+    });
+  } catch {
+    return null;
+  }
 }
 
 export async function getOwnerDashboardStats() {

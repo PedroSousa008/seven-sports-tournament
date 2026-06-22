@@ -490,10 +490,15 @@ export async function saveSportRankingAction(
   for (const row of rows) {
     await prisma.sportRankingSlot.upsert({
       where: {
-        sportId_position: { sportId, position: row.position },
+        sportId_kartRace_position: {
+          sportId,
+          kartRace: 0,
+          position: row.position,
+        },
       },
       create: {
         sportId,
+        kartRace: 0,
         position: row.position,
         points: row.points,
         teamId: row.teamId,
@@ -513,7 +518,7 @@ export async function saveSportRankingAction(
 
 export async function saveKartRaceAction(
   sportId: string,
-  heatId: string,
+  kartRace: number,
   raceName: string,
   payload: string
 ) {
@@ -529,34 +534,47 @@ export async function saveKartRaceAction(
     );
   }
 
-  const otherHeats = await prisma.kartHeat.findMany({
-    where: { sportId, NOT: { id: heatId } },
-    include: { results: true },
+  const otherRaces = [1, 2, 3].filter((race) => race !== kartRace);
+  const boostedElsewhere = await prisma.sportRankingSlot.findMany({
+    where: {
+      sportId,
+      kartRace: { in: otherRaces },
+      useX2: true,
+      teamId: { not: null },
+    },
   });
 
   for (const row of rows) {
     if (!row.teamId || !row.useX2) continue;
-    const alreadyUsed = otherHeats.some((heat) =>
-      heat.results.some(
-        (result) => result.teamId === row.teamId && result.useX2
-      )
+    const alreadyUsed = boostedElsewhere.some(
+      (slot) => slot.teamId === row.teamId
     );
     if (alreadyUsed) {
       throw new Error("Esta equipa já utilizou o x1.5 nos Karts.");
     }
   }
 
-  await prisma.kartResult.deleteMany({ where: { heatId } });
-
   for (const row of rows) {
-    if (!row.teamId) continue;
-    await prisma.kartResult.create({
-      data: {
-        heatId,
-        teamId: row.teamId,
+    await prisma.sportRankingSlot.upsert({
+      where: {
+        sportId_kartRace_position: {
+          sportId,
+          kartRace,
+          position: row.position,
+        },
+      },
+      create: {
+        sportId,
+        kartRace,
         position: row.position,
         points: row.points,
-        useX2: row.useX2,
+        teamId: row.teamId,
+        useX2: row.useX2 ?? false,
+      },
+      update: {
+        points: row.points,
+        teamId: row.teamId,
+        useX2: row.useX2 ?? false,
       },
     });
   }

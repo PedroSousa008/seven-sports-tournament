@@ -219,13 +219,15 @@ model SportRankingSlot {
   id       String  @id @default(cuid())
   sportId  String
   sport    Sport   @relation(fields: [sportId], references: [id], onDelete: Cascade)
+  kartRace Int     @default(0)
   position Int
   points   Int     @default(0)
   teamId   String?
   team     Team?   @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  useX2    Boolean @default(false)
 
-  @@unique([sportId, position])
-  @@unique([sportId, teamId])
+  @@unique([sportId, kartRace, position])
+  @@unique([sportId, kartRace, teamId])
 }
 
 model Event {

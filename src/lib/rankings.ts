@@ -154,7 +154,7 @@ export async function getSportRanking(sportId: string) {
 
 export async function syncSportRankingSlotsToTeamPoints(sportId: string) {
   const slots = await prisma.sportRankingSlot.findMany({
-    where: { sportId, teamId: { not: null } },
+    where: { sportId, kartRace: 0, teamId: { not: null } },
   });
 
   await prisma.teamSportPoints.deleteMany({ where: { sportId } });
@@ -172,31 +172,78 @@ export async function syncSportRankingSlotsToTeamPoints(sportId: string) {
   }
 }
 
+export async function migrateLegacyKartResultsToSlots(sportId: string) {
+  const savedSlots = await prisma.sportRankingSlot.count({
+    where: { sportId, kartRace: { in: [1, 2, 3] }, teamId: { not: null } },
+  });
+  if (savedSlots > 0) return;
+
+  const heats = await prisma.kartHeat.findMany({
+    where: { sportId },
+    include: { results: true },
+    orderBy: [{ order: "asc" }, { id: "asc" }],
+  });
+
+  for (let i = 0; i < 3; i++) {
+    const kartRace = i + 1;
+    const heat =
+      heats.find((item) => item.name === KART_RACE_NAMES[i]) ??
+      heats.find((item) => item.order === kartRace) ??
+      heats[i];
+
+    if (!heat) continue;
+
+    for (const result of heat.results) {
+      await prisma.sportRankingSlot.upsert({
+        where: {
+          sportId_kartRace_position: { sportId, kartRace, position: result.position },
+        },
+        create: {
+          sportId,
+          kartRace,
+          position: result.position,
+          points: result.points,
+          teamId: result.teamId,
+          useX2: result.useX2,
+        },
+        update: {
+          points: result.points,
+          teamId: result.teamId,
+          useX2: result.useX2,
+        },
+      });
+    }
+  }
+}
+
 export async function recalculateKartPoints(sportId: string) {
-  const heats = await ensureKartHeats(sportId);
+  await migrateLegacyKartResultsToSlots(sportId);
+
+  const slots = await prisma.sportRankingSlot.findMany({
+    where: { sportId, kartRace: { in: [1, 2, 3] }, teamId: { not: null } },
+  });
+
   const teamTotals = new Map<
     string,
     { corrida1: number; corrida2: number; corrida3: number; x2Used: boolean }
   >();
 
-  heats.forEach((heat, index) => {
-    for (const result of heat.results) {
-      const points = applyKartRaceMultiplier(result.points, result.useX2);
-      const current = teamTotals.get(result.teamId) ?? {
-        corrida1: 0,
-        corrida2: 0,
-        corrida3: 0,
-        x2Used: false,
-      };
+  for (const slot of slots) {
+    const points = applyKartRaceMultiplier(slot.points, slot.useX2);
+    const current = teamTotals.get(slot.teamId!) ?? {
+      corrida1: 0,
+      corrida2: 0,
+      corrida3: 0,
+      x2Used: false,
+    };
 
-      if (index === 0) current.corrida1 = points;
-      if (index === 1) current.corrida2 = points;
-      if (index === 2) current.corrida3 = points;
-      if (result.useX2) current.x2Used = true;
+    if (slot.kartRace === 1) current.corrida1 = points;
+    if (slot.kartRace === 2) current.corrida2 = points;
+    if (slot.kartRace === 3) current.corrida3 = points;
+    if (slot.useX2) current.x2Used = true;
 
-      teamTotals.set(result.teamId, current);
-    }
-  });
+    teamTotals.set(slot.teamId!, current);
+  }
 
   const sorted = [...teamTotals.entries()]
     .map(([teamId, races]) => ({
@@ -221,8 +268,12 @@ export async function recalculateKartPoints(sportId: string) {
 }
 
 export async function getKartTotals(sportId: string): Promise<KartTotalEntry[]> {
-  const [heats, teams] = await Promise.all([
-    ensureKartHeats(sportId),
+  await migrateLegacyKartResultsToSlots(sportId);
+
+  const [slots, teams] = await Promise.all([
+    prisma.sportRankingSlot.findMany({
+      where: { sportId, kartRace: { in: [1, 2, 3] }, teamId: { not: null } },
+    }),
     prisma.team.findMany({ orderBy: { name: "asc" } }),
   ]);
 
@@ -231,24 +282,22 @@ export async function getKartTotals(sportId: string): Promise<KartTotalEntry[]> 
     { corrida1: number; corrida2: number; corrida3: number; x2Used: boolean }
   >();
 
-  heats.forEach((heat, index) => {
-    for (const result of heat.results) {
-      const points = applyKartRaceMultiplier(result.points, result.useX2);
-      const current = totals.get(result.teamId) ?? {
-        corrida1: 0,
-        corrida2: 0,
-        corrida3: 0,
-        x2Used: false,
-      };
+  for (const slot of slots) {
+    const points = applyKartRaceMultiplier(slot.points, slot.useX2);
+    const current = totals.get(slot.teamId!) ?? {
+      corrida1: 0,
+      corrida2: 0,
+      corrida3: 0,
+      x2Used: false,
+    };
 
-      if (index === 0) current.corrida1 = points;
-      if (index === 1) current.corrida2 = points;
-      if (index === 2) current.corrida3 = points;
-      if (result.useX2) current.x2Used = true;
+    if (slot.kartRace === 1) current.corrida1 = points;
+    if (slot.kartRace === 2) current.corrida2 = points;
+    if (slot.kartRace === 3) current.corrida3 = points;
+    if (slot.useX2) current.x2Used = true;
 
-      totals.set(result.teamId, current);
-    }
-  });
+    totals.set(slot.teamId!, current);
+  }
 
   const entries = [...totals.entries()]
     .map(([teamId, races]) => {

@@ -108,19 +108,14 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
 
   const [kartRaces, setKartRaces] = useState(() => {
     if (!data.karts) return {};
-    const map: Record<string, RankingRow[]> = {};
-    for (const heat of data.karts.heats) {
-      map[heat.id] = data.karts.pointsConfig.map((config) => {
-        const result = heat.results.find(
-          (item) => item.position === config.position
-        );
-        return {
-          position: config.position,
-          points: result?.points ?? config.points,
-          teamId: result?.teamId ?? null,
-          useX2: result?.useX2 ?? false,
-        };
-      });
+    const map: Record<number, RankingRow[]> = {};
+    for (const race of data.karts.races) {
+      map[race.kartRace] = race.slots.map((slot) => ({
+        position: slot.position,
+        points: slot.points,
+        teamId: slot.teamId,
+        useX2: slot.useX2,
+      }));
     }
     return map;
   });
@@ -196,9 +191,9 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
     });
   }
 
-  function saveKartRace(heatId: string, raceName: string) {
+  function saveKartRace(kartRace: number, raceName: string) {
     if (!data.karts) return;
-    const rows = kartRaces[heatId] ?? [];
+    const rows = kartRaces[kartRace] ?? [];
     const assigned = rows
       .map((row) => row.teamId)
       .filter((teamId): teamId is string => Boolean(teamId));
@@ -221,8 +216,8 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
 
     for (const row of rows) {
       if (!row.teamId || !row.useX2) continue;
-      const usedElsewhere = Object.entries(kartRaces).some(([id, raceRows]) => {
-        if (id === heatId) return false;
+      const usedElsewhere = Object.entries(kartRaces).some(([race, raceRows]) => {
+        if (Number(race) === kartRace) return false;
         return raceRows.some(
           (item) => item.teamId === row.teamId && item.useX2
         );
@@ -240,7 +235,7 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
       try {
         const message = await saveKartRaceAction(
           data.karts!.sportId,
-          heatId,
+          kartRace,
           raceName,
           JSON.stringify(rows)
         );
@@ -265,14 +260,10 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
     }));
   }
 
-  function updateKartRow(
-    heatId: string,
-    position: number,
-    patch: Partial<RankingRow>
-  ) {
+  function updateKartRow(kartRace: number, position: number, patch: Partial<RankingRow>) {
     setKartRaces((prev) => ({
       ...prev,
-      [heatId]: (prev[heatId] ?? []).map((row) =>
+      [kartRace]: (prev[kartRace] ?? []).map((row) =>
         row.position === position ? { ...row, ...patch } : row
       ),
     }));
@@ -296,9 +287,9 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
     rows: RankingRow[],
     onUpdate: (position: number, patch: Partial<RankingRow>) => void,
     options?: {
-      heatId?: string;
+      kartRace?: number;
       showMultiplier?: boolean;
-      allKartRaces?: Record<string, RankingRow[]>;
+      allKartRaces?: Record<number, RankingRow[]>;
     }
   ) {
     const disabledTeams = rows
@@ -308,7 +299,7 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
     return (
       <div className="space-y-3">
         {rows.map((row) => {
-          const menuKey = `${options?.heatId ?? "sport"}-${row.position}`;
+          const menuKey = `${options?.kartRace ?? "sport"}-${row.position}`;
           const selectedTeam = data.teams.find((team) => team.id === row.teamId);
 
           return (
@@ -352,7 +343,7 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
                     onChange={(teamId) => {
                       const configPoints =
                         pointsConfigs[
-                          data.karts?.sportId && options?.heatId
+                          data.karts?.sportId && options?.kartRace
                             ? data.karts.sportId
                             : activePointsSport
                         ]?.find((item) => item.position === row.position)
@@ -407,8 +398,8 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
                               if (!row.teamId) return;
                               const usedElsewhere = Object.entries(
                                 options.allKartRaces ?? {}
-                              ).some(([heatId, raceRows]) => {
-                                if (heatId === options.heatId) return false;
+                              ).some(([race, raceRows]) => {
+                                if (Number(race) === options.kartRace) return false;
                                 return raceRows.some(
                                   (item) =>
                                     item.teamId === row.teamId && item.useX2
@@ -608,9 +599,9 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
           </div>
           <div className="border-b border-white/10 px-6 py-4">
             <div className="flex flex-wrap gap-2">
-              {data.karts.heats.map((heat, index) => (
+              {data.karts.races.map((race, index) => (
                 <button
-                  key={heat.id}
+                  key={race.kartRace}
                   type="button"
                   onClick={() => setKartTab(`race-${index}` as typeof kartTab)}
                   className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
@@ -644,7 +635,7 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
               (() => {
                 const index =
                   kartTab === "race-0" ? 0 : kartTab === "race-1" ? 1 : 2;
-                const heat = data.karts!.heats[index];
+                const race = data.karts!.races[index];
                 return (
                   <>
                     <div className="hidden border-b border-white/10 pb-3 text-xs uppercase tracking-wider text-zinc-500 md:grid md:grid-cols-[72px_120px_1fr_auto] md:gap-3">
@@ -654,10 +645,11 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
                       <span>Multiplicador</span>
                     </div>
                     {renderRankingRows(
-                      kartRaces[heat.id] ?? [],
-                      (position, patch) => updateKartRow(heat.id, position, patch),
+                      kartRaces[race.kartRace] ?? [],
+                      (position, patch) =>
+                        updateKartRow(race.kartRace, position, patch),
                       {
-                        heatId: heat.id,
+                        kartRace: race.kartRace,
                         showMultiplier: true,
                         allKartRaces: kartRaces,
                       }
@@ -667,7 +659,7 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
                       className="mt-5"
                       disabled={pending}
                       onClick={() =>
-                        saveKartRace(heat.id, KART_RACE_NAMES[index])
+                        saveKartRace(race.kartRace, KART_RACE_NAMES[index])
                       }
                     >
                       <Save className="h-4 w-4" />

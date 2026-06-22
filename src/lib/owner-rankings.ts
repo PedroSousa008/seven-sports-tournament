@@ -1,9 +1,10 @@
 import { prisma } from "@/lib/db";
 import {
-  ensureKartHeats,
   getKartTotals,
   getOverallRanking,
   getSportPointsConfig,
+  KART_RACE_NAMES,
+  migrateLegacyKartResultsToSlots,
   type KartTotalEntry,
   type RankingEntry,
 } from "@/lib/rankings";
@@ -31,16 +32,15 @@ export type OwnerSportRankingSection = {
 
 export type OwnerKartsSection = {
   sportId: string;
-  heats: Array<{
-    id: string;
+  races: Array<{
+    kartRace: number;
     name: string;
-    order: number;
-    results: Array<{
+    slots: {
       position: number;
       points: number;
-      teamId: string;
+      teamId: string | null;
       useX2: boolean;
-    }>;
+    }[];
   }>;
   pointsConfig: { position: number; points: number }[];
   totals: KartTotalEntry[];
@@ -87,7 +87,7 @@ export async function getOwnerRankingsData(): Promise<OwnerRankingsData> {
         getSportPointsConfig(sport.id),
         prisma.sportRankingSlot
           .findMany({
-            where: { sportId: sport.id },
+            where: { sportId: sport.id, kartRace: 0 },
             orderBy: { position: "asc" },
           })
           .catch(() => []),
@@ -103,8 +103,13 @@ export async function getOwnerRankingsData(): Promise<OwnerRankingsData> {
 
   let karts: OwnerKartsSection | null = null;
   if (kartsSport) {
-    const [heats, pointsConfig, totals] = await Promise.all([
-      ensureKartHeats(kartsSport.id),
+    await migrateLegacyKartResultsToSlots(kartsSport.id);
+
+    const [raceSlots, pointsConfig, totals] = await Promise.all([
+      prisma.sportRankingSlot.findMany({
+        where: { sportId: kartsSport.id, kartRace: { in: [1, 2, 3] } },
+        orderBy: [{ kartRace: "asc" }, { position: "asc" }],
+      }),
       getSportPointsConfig(kartsSport.id),
       getKartTotals(kartsSport.id),
     ]);
@@ -113,15 +118,25 @@ export async function getOwnerRankingsData(): Promise<OwnerRankingsData> {
       sportId: kartsSport.id,
       pointsConfig,
       totals,
-      heats: heats.map((heat, index) => ({
-        id: heat.id,
-        name: `Corrida ${index + 1}`,
-        order: index + 1,
-        results: heat.results.map((result) => ({
-          position: result.position,
-          points: result.points,
-          teamId: result.teamId,
-          useX2: result.useX2,
+      races: [1, 2, 3].map((kartRace) => ({
+        kartRace,
+        name: KART_RACE_NAMES[kartRace - 1],
+        slots: buildSlots(
+          kartsSport.id,
+          pointsConfig,
+          raceSlots
+            .filter((slot) => slot.kartRace === kartRace)
+            .map((slot) => ({
+              position: slot.position,
+              points: slot.points,
+              teamId: slot.teamId,
+            }))
+        ).map((slot) => ({
+          ...slot,
+          useX2:
+            raceSlots.find(
+              (row) => row.kartRace === kartRace && row.position === slot.position
+            )?.useX2 ?? false,
         })),
       })),
     };

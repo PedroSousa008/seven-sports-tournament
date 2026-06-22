@@ -17,13 +17,6 @@ export type PartnerLogo = {
  */
 export const PARTNER_LOGOS: PartnerLogo[] = [
   {
-    slug: "7wonders",
-    brandName: "7 Wonders",
-    logo: "/partners/official-partners/7wonders.png",
-    partnershipType: "OFFICIAL_PARTNER",
-    logoFit: "fill",
-  },
-  {
     slug: "kib",
     brandName: "KIB",
     logo: "/partners/official-partners/kib.png",

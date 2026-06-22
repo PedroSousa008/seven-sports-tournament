@@ -113,10 +113,10 @@ export async function getOwnerRankingsData(): Promise<OwnerRankingsData> {
       sportId: kartsSport.id,
       pointsConfig,
       totals,
-      heats: heats.map((heat) => ({
+      heats: heats.map((heat, index) => ({
         id: heat.id,
-        name: heat.name,
-        order: heat.order,
+        name: `Corrida ${index + 1}`,
+        order: index + 1,
         results: heat.results.map((result) => ({
           position: result.position,
           points: result.points,

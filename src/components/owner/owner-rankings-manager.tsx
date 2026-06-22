@@ -85,9 +85,6 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
   const [activePointsSport, setActivePointsSport] = useState(
     data.sportSections[0]?.sport.id ?? data.karts?.sportId ?? ""
   );
-  const [kartTab, setKartTab] = useState<"race-0" | "race-1" | "race-2" | "total">(
-    "race-0"
-  );
 
   const [pointsConfigs, setPointsConfigs] = useState(() => {
     const map: Record<string, { position: number; points: number }[]> = {};
@@ -606,75 +603,57 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
               </div>
             </div>
           </div>
-          <div className="border-b border-white/10 px-6 py-4">
-            <div className="flex flex-wrap gap-2">
-              {data.karts.heats.map((heat, index) => (
-                <button
-                  key={heat.id}
-                  type="button"
-                  onClick={() => setKartTab(`race-${index}` as typeof kartTab)}
-                  className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                    kartTab === `race-${index}`
-                      ? "bg-red-600 text-white"
-                      : "border border-white/10 text-zinc-400 hover:text-white"
-                  }`}
-                >
-                  <span className="mr-1">🏁</span>
-                  {heat.name}
-                </button>
-              ))}
-              <button
-                type="button"
-                onClick={() => setKartTab("total")}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                  kartTab === "total"
-                    ? "bg-red-600 text-white"
-                    : "border border-white/10 text-zinc-400 hover:text-white"
-                }`}
-              >
-                Total
-              </button>
-            </div>
-          </div>
 
-          <div className="p-6">
-            {kartTab === "total" ? (
-              <KartTotalsTable totals={kartTotals.length ? kartTotals : data.karts.totals} />
-            ) : (
-              (() => {
-                const index =
-                  kartTab === "race-0" ? 0 : kartTab === "race-1" ? 1 : 2;
-                const heat = data.karts!.heats[index];
-                return (
-                  <>
-                    <div className="hidden border-b border-white/10 pb-3 text-xs uppercase tracking-wider text-zinc-500 md:grid md:grid-cols-[72px_120px_1fr_auto] md:gap-3">
-                      <span>Ranking</span>
-                      <span>Pontos</span>
-                      <span>Equipa</span>
-                      <span>Multiplicador</span>
-                    </div>
-                    {renderRankingRows(
-                      kartRaces[heat.id] ?? [],
-                      (position, patch) => updateKartRow(heat.id, position, patch),
-                      {
-                        heatId: heat.id,
-                        showMultiplier: true,
-                        allKartRaces: kartRaces,
-                      }
-                    )}
-                    <Button
-                      type="button"
-                      className="mt-5"
-                      disabled={pending}
-                      onClick={() => saveKartRace(heat.id, heat.name)}
-                    >
-                      <Save className="h-4 w-4" />
-                      Guardar {heat.name}
-                    </Button>
-                  </>
-                );
-              })()
-            )}
+          <div className="divide-y divide-white/10">
+            {data.karts.heats.map((heat, index) => {
+              const raceTitle = `Corrida ${index + 1}`;
+              return (
+                <div key={heat.id} className="p-6">
+                  <div className="mb-5 flex items-center gap-3">
+                    <span className="text-xl">🏁</span>
+                    <h3 className="font-display text-xl tracking-wide text-white">
+                      {raceTitle}
+                    </h3>
+                  </div>
+                  <div className="hidden border-b border-white/10 pb-3 text-xs uppercase tracking-wider text-zinc-500 md:grid md:grid-cols-[72px_120px_1fr_auto] md:gap-3">
+                    <span>Ranking</span>
+                    <span>Pontos</span>
+                    <span>Equipa</span>
+                    <span>Multiplicador</span>
+                  </div>
+                  {renderRankingRows(
+                    kartRaces[heat.id] ?? [],
+                    (position, patch) => updateKartRow(heat.id, position, patch),
+                    {
+                      heatId: heat.id,
+                      showMultiplier: true,
+                      allKartRaces: kartRaces,
+                    }
+                  )}
+                  <Button
+                    type="button"
+                    className="mt-5"
+                    disabled={pending}
+                    onClick={() => saveKartRace(heat.id, raceTitle)}
+                  >
+                    <Save className="h-4 w-4" />
+                    Guardar {raceTitle}
+                  </Button>
+                </div>
+              );
+            })}
+
+            <div className="p-6">
+              <div className="mb-5 flex items-center gap-3">
+                <Trophy className="h-5 w-5 text-red-400" />
+                <h3 className="font-display text-xl tracking-wide text-white">
+                  Total
+                </h3>
+              </div>
+              <KartTotalsTable
+                totals={kartTotals.length ? kartTotals : data.karts.totals}
+              />
+            </div>
           </div>
         </section>
       ) : null}

@@ -58,19 +58,39 @@ export async function ensureKartHeats(sportId: string) {
     orderBy: { order: "asc" },
   });
 
-  if (existing.length >= 3) return existing.slice(0, 3);
+  const heats = [];
+  const usedIds = new Set<string>();
 
-  const heats = [...existing];
-  for (let i = existing.length; i < 3; i++) {
-    const created = await prisma.kartHeat.create({
-      data: {
-        sportId,
-        name: KART_RACE_NAMES[i],
-        order: i + 1,
-      },
-      include: { results: { include: { team: true } } },
+  for (let i = 0; i < 3; i++) {
+    const name = KART_RACE_NAMES[i];
+    const order = i + 1;
+
+    let heat =
+      existing.find((item) => item.order === order && !usedIds.has(item.id)) ??
+      existing.find((item) => !usedIds.has(item.id));
+
+    if (heat) {
+      heat = await prisma.kartHeat.update({
+        where: { id: heat.id },
+        data: { name, order },
+        include: { results: { include: { team: true } } },
+      });
+    } else {
+      heat = await prisma.kartHeat.create({
+        data: { sportId, name, order },
+        include: { results: { include: { team: true } } },
+      });
+    }
+
+    usedIds.add(heat.id);
+    heats.push(heat);
+  }
+
+  const extraHeats = existing.filter((item) => !usedIds.has(item.id));
+  if (extraHeats.length > 0) {
+    await prisma.kartHeat.deleteMany({
+      where: { id: { in: extraHeats.map((item) => item.id) } },
     });
-    heats.push(created);
   }
 
   return heats;

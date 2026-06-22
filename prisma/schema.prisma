@@ -89,6 +89,7 @@ model Team {
   announcementTargets  AnnouncementTarget[]
   sportSelections      PlayerSportSelection[]
   kartResults          KartResult[]
+  individualAssignments IndividualApplication[]
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
 }
@@ -390,4 +391,26 @@ model TeamApplication {
   status               ApplicationStatus @default(PENDING)
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt
+}
+
+model IndividualApplication {
+  id                  String            @id @default(cuid())
+  fullName            String
+  age                 Int
+  email               String
+  phone               String
+  preferredSports     String
+  sportsExperience    String?
+  termSchedule        Boolean           @default(false)
+  termRegisteredOnly  Boolean           @default(false)
+  termConduct         Boolean           @default(false)
+  termRegulation      Boolean           @default(false)
+  termPayment         Boolean           @default(false)
+  declarationAccepted Boolean           @default(false)
+  status              ApplicationStatus @default(PENDING)
+  assignedTeamId      String?
+  assignedTeam        Team?             @relation(fields: [assignedTeamId], references: [id], onDelete: SetNull)
+  assignedAt          DateTime?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
 }

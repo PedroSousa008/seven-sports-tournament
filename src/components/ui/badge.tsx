@@ -6,6 +6,8 @@ const variants = {
   warning: "bg-amber-500/15 text-amber-300",
   danger: "bg-red-500/15 text-red-300",
   live: "bg-red-600 text-white animate-pulse",
+  team: "bg-red-600 text-white",
+  individual: "bg-zinc-700 text-zinc-200",
 };
 
 export function Badge({

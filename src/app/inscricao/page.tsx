@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { RegistrationForm } from "@/components/registration/registration-form";
+import { RegistrationSelector } from "@/components/registration/registration-selector";
 import { SiteLogo } from "@/components/ui/site-logo";
 import { TOURNAMENT } from "@/lib/constants";
 import { getTournamentSettings } from "@/lib/tournament";
@@ -7,7 +7,7 @@ import { getTournamentSettings } from "@/lib/tournament";
 export const metadata = {
   title: `Inscrição | ${TOURNAMENT.name}`,
   description:
-    "Submete a candidatura da tua equipa para a Four Sports Cup.",
+    "Inscreve a tua equipa ou candidata-te individualmente à Four Sports Cup.",
 };
 
 export default async function InscricaoPage() {
@@ -28,7 +28,7 @@ export default async function InscricaoPage() {
           </Link>
         </div>
       </header>
-      <RegistrationForm />
+      <RegistrationSelector />
     </div>
   );
 }

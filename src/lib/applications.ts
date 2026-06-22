@@ -48,6 +48,23 @@ export const REGISTRATION_TERMS = [
   },
 ] as const;
 
+export const INDIVIDUAL_REGISTRATION_TERMS = REGISTRATION_TERMS.filter(
+  (term) => term.key !== "termCaptain"
+);
+
+export const INDIVIDUAL_DECLARATION =
+  "Confirmo que li e aceito as regras do torneio e assumo a responsabilidade pela minha participação no evento caso venha a ser selecionado pela organização.";
+
+export const INDIVIDUAL_REGISTRATION_INFO =
+  "Esta inscrição destina-se a atletas que não possuem equipa mas gostariam de participar no Torneio 4 Desportos Braga. A submissão da candidatura não garante a participação no evento. Todas as inscrições serão analisadas pela organização, que poderá posteriormente contactar os candidatos para integrar equipas com vagas disponíveis ou projetos criados para o torneio.";
+
+export type ApplicationType = "TEAM" | "INDIVIDUAL";
+
+export const APPLICATION_TYPE_LABELS: Record<ApplicationType, string> = {
+  TEAM: "Equipa",
+  INDIVIDUAL: "Individual",
+};
+
 export const REGISTRATION_SUMMARY = {
   location: "Braga",
   dates: "10–18 Julho 2026",

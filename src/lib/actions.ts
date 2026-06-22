@@ -704,12 +704,78 @@ export async function submitTeamApplicationAction(formData: FormData) {
 
 export async function updateApplicationStatusAction(
   applicationId: string,
-  status: "PENDING" | "APPROVED" | "REJECTED"
+  status: "PENDING" | "APPROVED" | "REJECTED",
+  type: "TEAM" | "INDIVIDUAL" = "TEAM"
 ) {
   await requireOwner();
-  await prisma.teamApplication.update({
-    where: { id: applicationId },
-    data: { status },
-  });
+  if (type === "TEAM") {
+    await prisma.teamApplication.update({
+      where: { id: applicationId },
+      data: { status },
+    });
+  } else {
+    await prisma.individualApplication.update({
+      where: { id: applicationId },
+      data: { status },
+    });
+  }
   revalidatePath("/owner/inscricoes");
+}
+
+export async function submitIndividualApplicationAction(formData: FormData) {
+  const fullName = String(formData.get("fullName") ?? "").trim();
+  const age = Number(formData.get("age"));
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  const phone = String(formData.get("phone") ?? "").trim();
+  const preferredSports = String(formData.get("preferredSports") ?? "").trim();
+  const sportsExperience = String(
+    formData.get("sportsExperience") ?? ""
+  ).trim();
+
+  const termSchedule = formData.get("termSchedule") === "on";
+  const termRegisteredOnly = formData.get("termRegisteredOnly") === "on";
+  const termConduct = formData.get("termConduct") === "on";
+  const termRegulation = formData.get("termRegulation") === "on";
+  const termPayment = formData.get("termPayment") === "on";
+  const declarationAccepted = formData.get("declarationAccepted") === "on";
+
+  if (
+    !fullName ||
+    !email ||
+    !phone ||
+    !preferredSports ||
+    !Number.isFinite(age) ||
+    age < 16
+  ) {
+    throw new Error("Preenche todos os campos corretamente.");
+  }
+
+  if (
+    !termSchedule ||
+    !termRegisteredOnly ||
+    !termConduct ||
+    !termRegulation ||
+    !termPayment ||
+    !declarationAccepted
+  ) {
+    throw new Error("Deves aceitar todos os termos e a declaração.");
+  }
+
+  await prisma.individualApplication.create({
+    data: {
+      fullName,
+      age,
+      email,
+      phone,
+      preferredSports,
+      sportsExperience: sportsExperience || null,
+      termSchedule,
+      termRegisteredOnly,
+      termConduct,
+      termRegulation,
+      termPayment,
+      declarationAccepted,
+      status: "PENDING",
+    },
+  });
 }

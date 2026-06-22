@@ -30,6 +30,11 @@ export type KartTotalEntry = {
 };
 
 export const KART_RACE_NAMES = ["Corrida 1", "Corrida 2", "Corrida 3"] as const;
+export const KART_RACE_MULTIPLIER = 1.5;
+
+export function applyKartRaceMultiplier(points: number, boosted: boolean) {
+  return boosted ? Math.round(points * KART_RACE_MULTIPLIER) : points;
+}
 
 export async function getSportPointsConfig(sportId: string) {
   const rows = await prisma.pointsConfig.findMany({
@@ -159,7 +164,7 @@ export async function recalculateKartPoints(sportId: string) {
 
   heats.forEach((heat, index) => {
     for (const result of heat.results) {
-      const points = result.points * (result.useX2 ? 2 : 1);
+      const points = applyKartRaceMultiplier(result.points, result.useX2);
       const current = teamTotals.get(result.teamId) ?? {
         corrida1: 0,
         corrida2: 0,
@@ -211,7 +216,7 @@ export async function getKartTotals(sportId: string): Promise<KartTotalEntry[]> 
 
   heats.forEach((heat, index) => {
     for (const result of heat.results) {
-      const points = result.points * (result.useX2 ? 2 : 1);
+      const points = applyKartRaceMultiplier(result.points, result.useX2);
       const current = totals.get(result.teamId) ?? {
         corrida1: 0,
         corrida2: 0,

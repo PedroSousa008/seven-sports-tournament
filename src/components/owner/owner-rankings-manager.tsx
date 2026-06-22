@@ -214,7 +214,7 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
     if (new Set(x2Teams).size !== x2Teams.length) {
       setToast({
         type: "error",
-        message: "Esta equipa já utilizou o x2 nos Karts.",
+        message: "Esta equipa já utilizou o x1.5 nos Karts.",
       });
       return;
     }
@@ -230,7 +230,7 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
       if (usedElsewhere) {
         setToast({
           type: "error",
-          message: "Esta equipa já utilizou o x2 nos Karts.",
+          message: "Esta equipa já utilizou o x1.5 nos Karts.",
         });
         return;
       }
@@ -378,7 +378,7 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
                     >
                       <span className="text-base leading-none">⋯</span>
                       {row.useX2 ? (
-                        <span className="ml-1 text-xs text-amber-300">x2</span>
+                        <span className="ml-1 text-xs text-amber-300">x1.5</span>
                       ) : null}
                     </Button>
                     {openMenu === menuKey ? (
@@ -418,7 +418,7 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
                                 setToast({
                                   type: "error",
                                   message:
-                                    "Esta equipa já utilizou o x2 nos Karts.",
+                                    "Esta equipa já utilizou o x1.5 nos Karts.",
                                 });
                                 return;
                               }
@@ -426,7 +426,7 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
                               setOpenMenu(null);
                             }}
                           >
-                            {row.useX2 ? "Remover x2" : "Aplicar x2"}
+                            {row.useX2 ? "Remover x1.5" : "Aplicar x1.5"}
                           </button>
                         </div>
                       </>
@@ -601,7 +601,7 @@ export function OwnerRankingsManager({ data }: { data: OwnerRankingsData }) {
                   Classificação de Karts
                 </h2>
                 <p className="text-sm text-zinc-400">
-                  3 corridas + total automático com multiplicador x2
+                  3 corridas + total automático com multiplicador x1.5
                 </p>
               </div>
             </div>
@@ -702,7 +702,7 @@ function KartTotalsTable({ totals }: { totals: KartTotalEntry[] }) {
               <th className="px-4 py-3">Corrida 1</th>
               <th className="px-4 py-3">Corrida 2</th>
               <th className="px-4 py-3">Corrida 3</th>
-              <th className="px-4 py-3">x2</th>
+              <th className="px-4 py-3">x1.5</th>
               <th className="px-4 py-3 text-red-400">Total</th>
             </tr>
           </thead>
@@ -728,7 +728,7 @@ function KartTotalsTable({ totals }: { totals: KartTotalEntry[] }) {
                 <td className="px-4 py-4">
                   {entry.x2Used ? (
                     <span className="rounded-full bg-amber-500/15 px-2 py-1 text-xs font-semibold text-amber-300">
-                      x2
+                      x1.5
                     </span>
                   ) : (
                     <span className="text-zinc-600">—</span>
@@ -779,7 +779,7 @@ function KartTotalsTable({ totals }: { totals: KartTotalEntry[] }) {
                 <p className="font-semibold text-white">{entry.corrida3}</p>
               </div>
               <div className="rounded-lg border border-white/10 px-3 py-2">
-                <p className="text-zinc-500">x2</p>
+                <p className="text-zinc-500">x1.5</p>
                 <p className="font-semibold text-white">
                   {entry.x2Used ? "Sim" : "Não"}
                 </p>

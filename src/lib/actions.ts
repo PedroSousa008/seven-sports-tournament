@@ -542,7 +542,7 @@ export async function saveKartRaceAction(
       )
     );
     if (alreadyUsed) {
-      throw new Error("Esta equipa já utilizou o x2 nos Karts.");
+      throw new Error("Esta equipa já utilizou o x1.5 nos Karts.");
     }
   }
 

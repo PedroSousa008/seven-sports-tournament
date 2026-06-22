@@ -55,7 +55,7 @@ export async function ensureKartHeats(sportId: string) {
   const existing = await prisma.kartHeat.findMany({
     where: { sportId },
     include: { results: { include: { team: true } } },
-    orderBy: [{ order: "asc" }, { createdAt: "asc" }],
+    orderBy: [{ order: "asc" }, { id: "asc" }],
   });
 
   if (existing.length > 3) {

@@ -33,8 +33,8 @@ export const SPORTS_SHOWCASE = [
   {
     slug: "futebol7",
     name: "Futebol 7",
-    format: "10 Julho · 4 grupos · Eliminatórias · Final épica",
-    description: "12 equipas, 7 em campo, emoção até ao último apito.",
+    format: "10 Julho · Grupos · Meias · Final",
+    description: "7x7 com substituições ilimitadas",
     image: "/home/sports/futebol7.jpg",
     icon: "⚽",
   },
